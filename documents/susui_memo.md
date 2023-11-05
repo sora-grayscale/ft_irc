@@ -11,3 +11,12 @@
 	このための拡張BNF表現は、「IRCクライアントプロトコル」[IRC-Client]にあります。
 	拡張プレフィックス（["！" user "@" host]）は、サーバー通信にサーバーに使用されてはならず、クライアントからクライアントへのメッセージのみを目的としているため、クライアントにメッセージが誰であるかについてのより有用な情報をクライアントに提供するためには、追加のクエリが必要です。
 
+## server
+	サーバーは、**最大63文字**（63）の文字を持つ名前で一意に識別されます。サーバー名で使用される可能性のあるもの、および使用されないものについては、プロトコル文法ルール（セクション3.3.1）を参照してください。
+
+You must be able to authenticate, set a nickname, a username, join a channel, send and receive private messages using your reference client.
+- [ ] authenticate
+- [ ] nickname
+- [ ] username
+- [ ] channel
+- [ ] send and receive private messages using your reference client
