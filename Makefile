@@ -33,7 +33,6 @@ $(OBJDIR):
 -include $(OBJDIR)/*.d
 
 clean:
-	$(RM) $(OBJDIR)
 	@$(RM) $(OBJDIR)
 
 fclean: clean
