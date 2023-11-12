@@ -30,6 +30,7 @@ int	main(int argc, char **argv)
 	}
 	if (argcheck(argv[1], argv[2]))
 		return 1;
+	// 無限loop
 	// server_start(port, password);
 }
 
