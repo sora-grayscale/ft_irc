@@ -1,8 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <iomanip>
-#include <algorithm>
-#include <cmath>
+#include "../inc/ircserv.hpp"
 
 // ./ircserv <port> <password>
 bool isnum(const std::string& input)
@@ -16,13 +12,13 @@ bool isnum(const std::string& input)
 int	check_port(std::string port);
 int	check_pass(std::string password);
 
-int	argcheck(std::string port, std::string password)
+bool	argcheck(std::string port, std::string password)
 {
 	if (check_port(port))
-		return 1;
+		return false;
 	if (check_pass(password))
-		return 1;
-	return 0;
+		return false;
+	return true;
 }
 
 int	main(int argc, char **argv)
@@ -32,6 +28,8 @@ int	main(int argc, char **argv)
 		std::cerr << "error usage: ./ircserv <port> <password>" << std::endl;
 		return 1;
 	}
-	argcheck(argv[1], argv[2]);
+	if (argcheck(argv[1], argv[2]))
+		return 1;
+	// server_start(port, password);
 }
 
