@@ -9,6 +9,19 @@ bool isnum(const std::string& input)
 	return true;
 }
 
+int stoi(std::string str)
+{
+	int  num = 0;
+	if (!isnum(str))
+	{
+		std::cerr << "stoi erro: invalid argumet" << std::endl;
+		return -1;
+	}
+	for (unsigned long i = 0; i < str.length(); i++)
+		num = (num * 10) + (str[i] - '0');
+	return num;
+}
+
 int	check_port(std::string port);
 int	check_pass(std::string password);
 
