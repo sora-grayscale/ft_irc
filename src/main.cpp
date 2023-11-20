@@ -40,4 +40,3 @@ int main(int argc, char **argv) {
   // 無限loop
   // server_start(port, password);
 }
-
