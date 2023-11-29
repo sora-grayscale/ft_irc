@@ -2,7 +2,6 @@
 
 // ./ircserv <port> <password>
 
-
 int check_port(std::string port);
 int check_pass(std::string password);
 
