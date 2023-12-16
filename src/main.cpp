@@ -2,8 +2,26 @@
 
 // ./ircserv <port> <password>
 
-int check_port(std::string port);
-int check_pass(std::string password);
+int check_port(std::string port)
+{
+  return 1;
+}
+int check_pass(std::string password)
+{
+  return 1;
+}
+
+int server_start(int port, str::string password) {
+  int fd = socket();
+  // treat error
+  setsocket();
+  // treat error
+  bind();
+  // treat error
+  listen();
+  // treat error
+  accept();
+}
 
 bool argcheck(std::string port, std::string password) {
   if (check_port(port))
@@ -21,6 +39,7 @@ int main(int argc, char **argv) {
   if (argcheck(argv[1], argv[2]))
     return 1;
   // 無限loop
+  // 構造体渡したほうがいいかも
   // server_start(port, password);
 }
 
