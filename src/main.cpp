@@ -35,7 +35,7 @@ bool argcheck(std::string port, std::string password) {
   return true;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
   if (argc != 3) {
     std::cerr << "error usage: ./ircserv <port> <password>" << std::endl;
     return 1;
