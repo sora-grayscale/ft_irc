@@ -2,6 +2,13 @@
 
 // ./ircserv <port> <password>
 
+class server {
+private:
+  int port;
+  std::string password;
+public:
+};
+
 int check_port(std::string port)
 {
   return 1;
@@ -12,9 +19,11 @@ int check_pass(std::string password)
 }
 
 int server_start(int port, str::string password) {
+  // init server
+
   int fd = socket();
   // treat error
-  setsocket();
+  setsockopt();
   // treat error
   bind();
   // treat error
