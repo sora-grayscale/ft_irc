@@ -6,17 +6,12 @@ class server {
 private:
   int port;
   std::string password;
+
 public:
 };
 
-int check_port(std::string port)
-{
-  return 1;
-}
-int check_pass(std::string password)
-{
-  return 1;
-}
+int check_port(std::string port) { return 1; }
+int check_pass(std::string password) { return 1; }
 
 int server_start(int port, str::string password) {
   // init server
