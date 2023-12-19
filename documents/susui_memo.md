@@ -40,7 +40,6 @@
 ### others
   - IRCのスカンジナビア起源のため、キャラクター{} |^は、それぞれ文字[] \〜の小文字と同等であると考えられています。
     - {}|^ == []\〜
-  
  
 You must be able to authenticate, set a nickname, a username, join a channel, send and receive private messages using your reference client.
 - [ ] authenticate
