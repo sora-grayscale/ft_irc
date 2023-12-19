@@ -29,9 +29,9 @@ int server_start(int port, str::string password) {
 
 bool argcheck(std::string port, std::string password) {
   if (check_port(port))
-    return false;
+    throw std::runtime_error("port setting faild");
   if (check_pass(password))
-    return false;
+    throw std::runtime_error("password setting faild");
   return true;
 }
 
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
   }
   try {
     argcheck(argv[2], argv[2])
-  } catch {
+  } catch (std::exeception &e){
     std::cout << e.what << std::endl;
   }
   // 無限loop
