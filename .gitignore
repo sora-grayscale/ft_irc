@@ -1,3 +1,4 @@
 *.swap
 *.DS_Store
 obj
+./sample
