@@ -75,3 +75,10 @@ You must be able to authenticate, set a nickname, a username, join a channel, se
    - 全てのクライアントが切断された場合、サーバはそのセッションを終了し、ソケットを閉じてリソースを解放します。
 
 IRCサーバは、複数のクライアントとの同時接続を管理し、チャットメッセージやコマンドを中継・処理する役割を果たします。クライアントからの接続を受け入れ、適切な処理を行いながら、リアルタイムなコミュニケーションを可能にします。
+
+
+- [RFC 1459 - IRC protocol](https://datatracker.ietf.org/doc/html/rfc1459)
+- [RFC 2810 IRC Architecture](https://datatracker.ietf.org/doc/html/rfc2810)
+- [RFC 2811](https://datatracker.ietf.org/doc/html/rfc2811)
+- [RFC 2812](https://datatracker.ietf.org/doc/html/rfc2812)
+- [RFC 2813](https://datatracker.ietf.org/doc/html/rfc2813)
