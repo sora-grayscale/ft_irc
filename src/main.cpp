@@ -13,7 +13,7 @@ public:
 int check_port(std::string port) { return 1; }
 int check_pass(std::string password) { return 1; }
 
-int server_start(int port, str::string password) {
+int init_server(int port, str::string password) {
   // init server
 
   int fd = socket();
@@ -47,6 +47,7 @@ int main(int argc, char *argv[]) {
   }
   // 無限loop
   // 構造体渡したほうがいいかも
-  // server_start(port, password);
+  // init_server
+  // while (1) server_start(port, password);
 }
 
