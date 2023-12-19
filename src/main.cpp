@@ -13,7 +13,7 @@ public:
 int check_port(std::string port) { return 1; }
 int check_pass(std::string password) { return 1; }
 
-int server_start(int port, str::string password) {
+int init_server(int port, str::string password) {
   // init server
 
   int fd = socket();
@@ -29,9 +29,9 @@ int server_start(int port, str::string password) {
 
 bool argcheck(std::string port, std::string password) {
   if (check_port(port))
-    return false;
+    throw std::runtime_error("port setting faild");
   if (check_pass(password))
-    return false;
+    throw std::runtime_error("password setting faild");
   return true;
 }
 
@@ -42,11 +42,12 @@ int main(int argc, char *argv[]) {
   }
   try {
     argcheck(argv[2], argv[2])
-  } catch {
+  } catch (std::exeception &e){
     std::cout << e.what << std::endl;
   }
   // 無限loop
   // 構造体渡したほうがいいかも
-  // server_start(port, password);
+  // init_server
+  // while (1) server_start(port, password);
 }
 
