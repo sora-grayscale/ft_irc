@@ -30,7 +30,6 @@
 - 各IRCメッセージは**prefix(optional)**, **コマンド**及び**コマンドパラメーター(最大15)**
     - 全てはスペースで区切られる
     - prefixは`;`から始まり、続く文字との間にスペースなし、絶対に最初でなくてはならない, serverによってのみ使われる
-
 - IRCメッセージはCR-LF（キャリッジリターン - ラインフィード）ペアで終了した行で構成されます。
 - 各IRCメッセージは512文字以内でなければなりません（Trailing CR-LFを含むすべての文字をカウントします）。
 - コマンドとそのパラメーターの合計長は最大510文字まで許容されます。
@@ -40,7 +39,6 @@
 ### others
   - IRCのスカンジナビア起源のため、キャラクター{} |^は、それぞれ文字[] \〜の小文字と同等であると考えられています。
     - {}|^ == []\〜
-  
  
 You must be able to authenticate, set a nickname, a username, join a channel, send and receive private messages using your reference client.
 - [ ] authenticate
