@@ -40,8 +40,11 @@ int main(int argc, char *argv[]) {
     std::cerr << "error usage: ./ircserv <port> <password>" << std::endl;
     return 1;
   }
-  if (argcheck(argv[1], argv[2]))
-    return 1;
+  try {
+    argcheck(argv[2], argv[2])
+  } catch {
+    std::cout << e.what << std::endl;
+  }
   // 無限loop
   // 構造体渡したほうがいいかも
   // server_start(port, password);
