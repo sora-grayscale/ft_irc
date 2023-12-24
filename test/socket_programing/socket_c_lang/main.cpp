@@ -8,6 +8,8 @@
 # include <cstring>
 # include <iostream>
 
+// エラー処理ほぼないsocket programing
+
 void execute(int client_fd) {
   int recv_size, send_size;
   char recv_buf[1025];
