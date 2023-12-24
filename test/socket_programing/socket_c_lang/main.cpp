@@ -11,7 +11,6 @@
 
 // エラー処理ほぼないsocket programing
 
-
 // 本来なら終了を意味する何kが来るまでここで無限ループする
 void execute(int client_fd) {
   int recv_size, send_size;
@@ -32,9 +31,11 @@ int main() {
     return 1;
   memset(&a_addr, 0, sizeof(struct sockaddr_in));
 
-  // set as a non blocking
+  // # set as a non blocking
   // ただこれを入れるだけだと無限ループになる
   // fcntl(fd, F_SETFL, O_NONBLOCK);
+  // これを入れると普通に動くけど、動作が別に変わらん
+  // ioctl(fd, (int)FIONBIO, (char *)1L);
 
   // setting server config
   a_addr.sin_family = AF_INET;
@@ -54,6 +55,7 @@ int main() {
     std::cout << "conected" << std::endl;
     execute(client_fd);
     close(client_fd);
+    std::cout << "closed" << std::endl;
   }
   close(fd);
 }
