@@ -8,6 +8,13 @@
 # include <cstring>
 # include <iostream>
 
+void execute(int client_fd) {
+  int recv_size, send_size;
+  char recv_buf[1025];
+  recv(client_fd, recv_buf, 1024, 0);
+  std::cout << recv_buf << std::endl;
+}
+
 int main() {
   int fd;
   struct sockaddr_in a_addr;
@@ -32,7 +39,11 @@ int main() {
   while (1)
   {
     std::cout << "wait connection" << std::endl;
-    int client_fd accept(fd, NULL, NULL);
+    int client_fd = accept(fd, NULL, NULL);
+    std::cout << "conected" << std::endl;
+    execute(client_fd);
+    close(client_fd);
   }
+  close(fd);
 }
 
