@@ -1,19 +1,24 @@
-#include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 # include <sys/socket.h>
+# include <sys/ioctl.h>
 # include <cstring>
 # include <iostream>
+# include <fcntl.h>
 
 // エラー処理ほぼないsocket programing
 
+
+// 本来なら終了を意味する何kが来るまでここで無限ループする
 void execute(int client_fd) {
   int recv_size, send_size;
   char recv_buf[1025];
-  recv(client_fd, recv_buf, 1024, 0);
+
+  recv_size = recv(client_fd, recv_buf, 1024, 0);
+
   std::cout << recv_buf << std::endl;
 }
 
@@ -26,6 +31,10 @@ int main() {
   if (fd == -1)
     return 1;
   memset(&a_addr, 0, sizeof(struct sockaddr_in));
+
+  // set as a non blocking
+  // ただこれを入れるだけだと無限ループになる
+  // fcntl(fd, F_SETFL, O_NONBLOCK);
 
   // setting server config
   a_addr.sin_family = AF_INET;
