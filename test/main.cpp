@@ -23,7 +23,7 @@ void execute(int client_fd) {
     if (recv_size < 0) {
       if (errno == EWOULDBLOCK || errno == EAGAIN)
       {
-        std::cout << "No data received" << std::endl;
+        std::cerr << "No data received" << std::endl;
         break ;
       }
       else {
@@ -38,14 +38,14 @@ void execute(int client_fd) {
       send_buf = 0;
       send_size = send(client_fd, &send_buf, 1, 0);
       if (send_size == -1) {
-        std::cout << "send error\n" << std::endl;
+        std::cerr  << "send error\n" << std::endl;
         break;
       }
     } else {
       send_buf = 1;
       send_size = send(client_fd, &send_buf, 1, 0);
       if (send_size == -1) {
-        printf("send error\n");
+        std::cerr  << "send error\n" << std::endl;
         break;
       }
     }
@@ -65,15 +65,17 @@ int main() {
   memset(&a_addr, 0, sizeof(struct sockaddr_in));
 
   // # set as a non blocking
-  // ただこれを入れるだけだと無限ループになる
-  // fcntl(fd, F_SETFL, O_NONBLOCK);
+  /* memo
+      ただこれを入れるだけだと無限ループになる ←I/O待ちの間に実行をしてるから合ってる
+      fcntl(fd, F_SETFL, O_NONBLOCK);
+      これを入れると普通に動くけど、動作が別に変わらん
+      ioctl(fd, (int)FIONBIO, (char *)1L);
+  */
 
   // これがあるとI/Oのwait中も他の動作が実行される。ないとI/O待ちで止まる
   int flags = fcntl(fd, F_GETFL, 0);
   fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 
-  // これを入れると普通に動くけど、動作が別に変わらん
-  // ioctl(fd, (int)FIONBIO, (char *)1L);
 
   // setting server config
   a_addr.sin_family = AF_INET;
