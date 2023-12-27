@@ -36,8 +36,11 @@ int main() {
   // # set as a non blocking
   // ただこれを入れるだけだと無限ループになる
   // fcntl(fd, F_SETFL, O_NONBLOCK);
+
+  // これがあるとI/Oのwait中も他の動作が実行される。ないとI/O待ちで止まる
   int flags = fcntl(fd, F_GETFL, 0);
   fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+
   // これを入れると普通に動くけど、動作が別に変わらん
   // ioctl(fd, (int)FIONBIO, (char *)1L);
 
