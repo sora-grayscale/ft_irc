@@ -20,17 +20,14 @@ int execute(int client_fd) {
   int recv_size, send_size;
   char recv_buf[BUF_SIZE], send_buf;
 
-//  while (1) {
     recv_size = recv(client_fd, recv_buf, BUF_SIZE, 0);
     if (recv_size < 0) {
       if (errno == EWOULDBLOCK || errno == EAGAIN) {
         std::cerr << "No data received" << std::endl;
         return 1;
-//        break;
       } else {
         perror("recv");
         return 1;
-//        break;
       }
     }
     recv_buf[recv_size] = '\0';
@@ -42,7 +39,6 @@ int execute(int client_fd) {
       if (send_size == -1) {
         std::cerr << "send error\n" << std::endl;
         return 1;
-//        break;
       }
     } else {
       send_buf = 1;
@@ -50,11 +46,9 @@ int execute(int client_fd) {
       if (send_size == -1) {
         std::cerr << "send error\n" << std::endl;
         return 1;
-//        break;
       }
     }
-        return 0;
-//  }
+  return 0;
 }
 
 int main() {
@@ -150,25 +144,6 @@ int main() {
         }
       }
     }
-
-//    int client_fd = accept(fd, NULL, NULL);
-//
-//    if (client_fd < 0) {
-//      if (errno == EWOULDBLOCK || errno == EAGAIN) {
-//        // std::cout << "No incomming connection" << std::endl;
-//        continue;
-//      } else {
-//        perror("accept");
-//        break;
-//      }
-//    }
-//    else
-//    {
-//      std::cout << "conected" << std::endl;
-//      execute(client_fd);
-//      close(client_fd);
-//      std::cout << "closed" << std::endl;
-//    }
   }
   close(fd);
   return 0;
