@@ -9,16 +9,43 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#define BUF_SIZE 1024
+
 // エラー処理ほぼないsocket programing
 
 // 本来なら終了を意味する何kが来るまでここで無限ループする
 void execute(int client_fd) {
   int recv_size, send_size;
-  char recv_buf[1025];
+  char recv_buf[BUF_SIZE], send_buf;
 
-  recv_size = recv(client_fd, recv_buf, 1024, 0);
+  while (1) {
+    recv_size = recv(client_fd, recv_buf, BUF_SIZE, 0);
+    if (recv_size < 0) {
+      if (errno == EWOULDBLOCK || errno == EAGAIN)
+        std::cout << "No data received" << std::endl;
+      else {
+        perror("recv");
+        break;
+      }
+    }
+    recv_buf[recv_size] = '\0';
+    std::cout << "Received: " << recv_buf << std::endl;
 
-  std::cout << recv_buf << std::endl;
+    if (strcmp(recv_buf, "finish") == 0) {
+      send_buf = 0;
+      send_size = send(client_fd, &send_buf, 1, 0);
+      if (send_size == -1)
+        printf("send error\n");
+      break;
+    } else {
+      send_buf = 1;
+      send_size = send(client_fd, &send_buf, 1, 0);
+      if (send_size == -1) {
+        printf("send error\n");
+        break;
+      }
+    }
+  }
 }
 
 int main() {
@@ -62,12 +89,15 @@ int main() {
   }
 
   while (1) {
-    std::cout << "wait connection" << std::endl;
+    // std::cout << "wait connection" << std::endl;
     int client_fd = accept(fd, NULL, NULL);
 
     if (client_fd < 0) {
       if (errno == EWOULDBLOCK || errno == EAGAIN)
-        std::cout << "No incomming connection" << std::endl;
+      {
+        // std::cout << "No incomming connection" << std::endl;
+        continue ;
+      }
       else {
         perror("accept");
         break;
