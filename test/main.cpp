@@ -8,6 +8,7 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <poll.h>
 
 #define BUF_SIZE 1024
 
@@ -21,14 +22,12 @@ void execute(int client_fd) {
   while (1) {
     recv_size = recv(client_fd, recv_buf, BUF_SIZE, 0);
     if (recv_size < 0) {
-      if (errno == EWOULDBLOCK || errno == EAGAIN)
-      {
+      if (errno == EWOULDBLOCK || errno == EAGAIN) {
         std::cerr << "No data received" << std::endl;
-        break ;
-      }
-      else {
+        break;
+      } else {
         perror("recv");
-        break ;
+        break;
       }
     }
     recv_buf[recv_size] = '\0';
@@ -38,14 +37,14 @@ void execute(int client_fd) {
       send_buf = 0;
       send_size = send(client_fd, &send_buf, 1, 0);
       if (send_size == -1) {
-        std::cerr  << "send error\n" << std::endl;
+        std::cerr << "send error\n" << std::endl;
         break;
       }
     } else {
       send_buf = 1;
       send_size = send(client_fd, &send_buf, 1, 0);
       if (send_size == -1) {
-        std::cerr  << "send error\n" << std::endl;
+        std::cerr << "send error\n" << std::endl;
         break;
       }
     }
@@ -55,6 +54,7 @@ void execute(int client_fd) {
 int main() {
   int fd;
   struct sockaddr_in a_addr;
+  std::vector<struct pollfd> fds;
 
   // create socket
   fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -66,16 +66,16 @@ int main() {
 
   // # set as a non blocking
   /* memo
-      ただこれを入れるだけだと無限ループになる ←I/O待ちの間に実行をしてるから合ってる
-      fcntl(fd, F_SETFL, O_NONBLOCK);
+      ただこれを入れるだけだと無限ループになる
+     ←I/O待ちの間に実行をしてるから合ってる fcntl(fd, F_SETFL, O_NONBLOCK);
       これを入れると普通に動くけど、動作が別に変わらん
       ioctl(fd, (int)FIONBIO, (char *)1L);
   */
 
+
   // これがあるとI/Oのwait中も他の動作が実行される。ないとI/O待ちで止まる
   int flags = fcntl(fd, F_GETFL, 0);
   fcntl(fd, F_SETFL, flags | O_NONBLOCK);
-
 
   // setting server config
   a_addr.sin_family = AF_INET;
@@ -94,17 +94,27 @@ int main() {
     return 1;
   }
 
+  // vectorの0にserverのfdを足す
+  fds.push_back(fd, POLLIN);
+
   while (1) {
     // std::cout << "wait connection" << std::endl;
+
+    // poll setting
+    if (poll(fds.data(), fds.size(), -1) < 0)
+    {
+      perror("poll");
+      break ;
+    }
+    if (fds[0].revents != POLLIN)
+
     int client_fd = accept(fd, NULL, NULL);
 
     if (client_fd < 0) {
-      if (errno == EWOULDBLOCK || errno == EAGAIN)
-      {
+      if (errno == EWOULDBLOCK || errno == EAGAIN) {
         // std::cout << "No incomming connection" << std::endl;
-        continue ;
-      }
-      else {
+        continue;
+      } else {
         perror("accept");
         break;
       }
