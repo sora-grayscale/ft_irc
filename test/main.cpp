@@ -22,10 +22,13 @@ void execute(int client_fd) {
     recv_size = recv(client_fd, recv_buf, BUF_SIZE, 0);
     if (recv_size < 0) {
       if (errno == EWOULDBLOCK || errno == EAGAIN)
+      {
         std::cout << "No data received" << std::endl;
+        break ;
+      }
       else {
         perror("recv");
-        break;
+        break ;
       }
     }
     recv_buf[recv_size] = '\0';
@@ -34,9 +37,10 @@ void execute(int client_fd) {
     if (strcmp(recv_buf, "finish") == 0) {
       send_buf = 0;
       send_size = send(client_fd, &send_buf, 1, 0);
-      if (send_size == -1)
-        printf("send error\n");
-      break;
+      if (send_size == -1) {
+        std::cout << "send error\n" << std::endl;
+        break;
+      }
     } else {
       send_buf = 1;
       send_size = send(client_fd, &send_buf, 1, 0);
