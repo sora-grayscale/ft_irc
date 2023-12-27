@@ -3,5 +3,6 @@
 obj
 sample/
 tags
-test/socket_programing/socket_c_lang/client
-test/socket_programing/socket_c_lang/server
+test/client
+test/server
+test/.main.cpp.swap
