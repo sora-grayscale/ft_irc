@@ -8,7 +8,7 @@ public:
 class User {
 private:
   std::string nick; // 9文字まで
-  std::string service; // nick + server
+  std::string service; // nick + server_name
 public:
 };
 
