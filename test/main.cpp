@@ -19,7 +19,7 @@ public:
 
 class Server {
 private:
-  std::string server_name = "404serv"; // 63文字まで
+  std::string server_name = "altimet super hyper server"; // 63文字まで
 public:
 };
 
@@ -37,6 +37,7 @@ int execute(int client_fd) {
       return 1;
     }
   }
+
   recv_buf[recv_size] = '\0';
   std::cout << "Received: " << recv_buf << std::endl;
 
@@ -55,6 +56,7 @@ int execute(int client_fd) {
       return 1;
     }
   }
+
   return 0;
 }
 
