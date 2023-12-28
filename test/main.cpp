@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <vector>
 
-#define BUF_SIZE 1024
+#define MAX_MESSAGE 512
 
 class Command {
 private:
@@ -20,6 +20,8 @@ public:
 
 class User {
 private:
+  std::string nick; // 9文字まで
+  std::string service; // nick + server
 public:
 };
 
@@ -30,16 +32,16 @@ public:
 
 class Server {
 private:
-  std::string server_name = "404serv";
+  std::string server_name = "404serv"; // 63文字まで
 public:
 };
 
 // 本来なら終了を意味する何kが来るまでここで無限ループする
 int execute(int client_fd) {
   int recv_size, send_size;
-  char recv_buf[BUF_SIZE], send_buf;
+  char recv_buf[MAX_MESSAGE], send_buf;
 
-  recv_size = recv(client_fd, recv_buf, BUF_SIZE, 0);
+  recv_size = recv(client_fd, recv_buf, MAX_MESSAGE, 0);
   if (recv_size < 0) {
     if (errno == EWOULDBLOCK || errno == EAGAIN) {
       std::cerr << "No data received" << std::endl;
