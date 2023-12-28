@@ -43,10 +43,15 @@ $(OBJDIR):
 -include $(OBJDIR)/*.d
 
 clean:
+	@echo "$(CYN)\n===== clean =====$(RES)"
+	@echo "$(YEL)delete: $(RES) $(GRN)$(OBJDIR)\n$(RES)"
 	@$(RM) $(OBJDIR)
 
 fclean: clean
-	$(RM) server client
+	@echo "$(CYN)\n===== fclean =====$(RES)"
+	@echo "$(YEL)delete: $(RES) $(GRN)server$(RES)"
+	@echo "$(YEL)delete: $(RES) $(GRN)client$(RES)\n"
+	@$(RM) server client
 
 re: fclean all
 
