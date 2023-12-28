@@ -1,31 +1,40 @@
-NAME = irc
+NAME = ircserv
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+# CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRCDIR = src
-SRCS = $(wildcard $(SRCDIR)/*.cpp)
+SERVER_SRC = $(SRCDIR)/main.cpp
+CLIENT_SRC = $(SRCDIR)/client.cpp
 
 OBJDIR = obj
-OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
+SERVER_OBJ = $(OBJDIR)/main.o
+CLIENT_OBJ = $(OBJDIR)/client.o
 
 INC = inc
 
 RM = rm -rf
 
-all: $(NAME)
+all: server client
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) -I$(INC) -MMD -MP -MF"$(@:%.o=%.d)" -c -o $@ $<
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
-$(NAME):
-	$(CXX) -o server main.cpp
-	$(CXX) -o client client.cpp
-	@echo "$(CYN)\n=====link=====$(RES)"
-	@echo "$(YEL)Objects$(RES): $(OBJS)\n"
+server: $(SERVER_OBJ)
+	$(CXX) -o $@ $(SERVER_OBJ)
+	@echo "$(CYN)\n=====link server=====$(RES)"
+	@echo "$(YEL)Objects$(RES): $(SERVER_OBJ)\n"
 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
-	@echo "     $(MGN)--->$(RES) $(GRN)server & client$(RES)"
+	@echo "     $(MGN)--->$(RES) $(GRN)server$(RES)"
+	@echo "$(CYN)==============$(RES)"
+
+client: $(CLIENT_OBJ)
+	$(CXX) -o $@ $(CLIENT_OBJ)
+	@echo "$(CYN)\n=====link client=====$(RES)"
+	@echo "$(YEL)Objects$(RES): $(CLIENT_OBJ)\n"
+	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
+	@echo "     $(MGN)--->$(RES) $(GRN)client$(RES)"
 	@echo "$(CYN)==============$(RES)"
 
 $(OBJDIR):
@@ -34,11 +43,10 @@ $(OBJDIR):
 -include $(OBJDIR)/*.d
 
 clean:
-	@$(RM) server
-	@$(RM) client
+	@$(RM) $(OBJDIR)
 
 fclean: clean
-# $(RM) $(NAME)
+	$(RM) server client
 
 re: fclean all
 
@@ -51,4 +59,3 @@ BLU = \033[34m
 MGN = \033[35m
 CYN = \033[36m
 RES = \033[m
-

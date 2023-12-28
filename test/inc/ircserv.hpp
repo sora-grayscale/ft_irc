@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <cstring>
 #include <fcntl.h>
+#include <unistd.h>
 #include <iostream>
 #include <netinet/in.h>
 #include <poll.h>
@@ -13,6 +14,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <vector>
+#include <cerrno>
 
 #define MAX_MESSAGE 512
 
