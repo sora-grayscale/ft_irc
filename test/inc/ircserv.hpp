@@ -19,5 +19,4 @@
 
 #define MAX_MESSAGE 512
 
-
 #endif // IRCSERV
