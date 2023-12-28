@@ -19,7 +19,7 @@ public:
 
 class Server {
 private:
-  std::string server_name = "altimet super hyper server"; // 63文字まで
+  const std::string server_name; // 63文字まで
 public:
 };
 
@@ -120,7 +120,10 @@ int main() {
   }
 
   // vectorの0にserverのfdを足す
-  fds.push_back({fd, POLLIN});
+  // fds.push_back({fd, POLLIN}); // c++11の書き方でした
+  fds.push_back(pollfd());
+  fds.back().fd = fd;
+  fds.back().events = POLLIN;
 
   while (1) {
     // std::cout << "wait connection" << std::endl;
@@ -143,7 +146,10 @@ int main() {
         }
       } else {
         std::cout << "conected" << std::endl;
-        fds.push_back({client_fd, POLLIN});
+        // fds.push_back({client_fd, POLLIN});
+        fds.push_back(pollfd());
+        fds.back().fd = client_fd;
+        fds.back().events = POLLIN;
       }
     } else {
       for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end();
