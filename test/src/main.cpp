@@ -146,7 +146,6 @@ int main() {
         }
       } else {
         std::cout << "conected" << std::endl;
-        // fds.push_back({client_fd, POLLIN});
         fds.push_back(pollfd());
         fds.back().fd = client_fd;
         fds.back().events = POLLIN;
