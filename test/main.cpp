@@ -1,17 +1,4 @@
-#include <arpa/inet.h>
-#include <cstring>
-#include <fcntl.h>
-#include <iostream>
-#include <netinet/in.h>
-#include <poll.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <vector>
-
-#define MAX_MESSAGE 512
+#include "ircserv.hpp"
 
 class Command {
 private:
@@ -36,7 +23,6 @@ private:
 public:
 };
 
-// 本来なら終了を意味する何kが来るまでここで無限ループする
 int execute(int client_fd) {
   int recv_size, send_size;
   char recv_buf[MAX_MESSAGE], send_buf;
