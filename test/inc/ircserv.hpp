@@ -5,6 +5,7 @@
 #include <cstring>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <iostream>
 #include <netinet/in.h>
 #include <poll.h>
