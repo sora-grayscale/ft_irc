@@ -3,51 +3,69 @@
 #include <fcntl.h>
 #include <iostream>
 #include <netinet/in.h>
+#include <poll.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <poll.h>
 #include <vector>
 
 #define BUF_SIZE 1024
 
-// エラー処理ほぼないsocket programing
+class Command {
+private:
+public:
+};
+
+class User {
+private:
+public:
+};
+
+class Channnel {
+private:
+public:
+};
+
+class Server {
+private:
+public:
+};
 
 // 本来なら終了を意味する何kが来るまでここで無限ループする
 int execute(int client_fd) {
   int recv_size, send_size;
   char recv_buf[BUF_SIZE], send_buf;
 
-    recv_size = recv(client_fd, recv_buf, BUF_SIZE, 0);
-    if (recv_size < 0) {
-      if (errno == EWOULDBLOCK || errno == EAGAIN) {
-        std::cerr << "No data received" << std::endl;
-        return 1;
-      } else {
-        perror("recv");
-        return 1;
-      }
-    }
-    recv_buf[recv_size] = '\0';
-    std::cout << "Received: " << recv_buf << std::endl;
-
-    if (strcmp(recv_buf, "finish") == 0) {
-      send_buf = 0;
-      send_size = send(client_fd, &send_buf, 1, 0);
-      if (send_size == -1) {
-        std::cerr << "send error\n" << std::endl;
-        return 1;
-      }
+  recv_size = recv(client_fd, recv_buf, BUF_SIZE, 0);
+  if (recv_size < 0) {
+    if (errno == EWOULDBLOCK || errno == EAGAIN) {
+      std::cerr << "No data received" << std::endl;
+      return 1;
     } else {
-      send_buf = 1;
-      send_size = send(client_fd, &send_buf, 1, 0);
-      if (send_size == -1) {
-        std::cerr << "send error\n" << std::endl;
-        return 1;
-      }
+      perror("recv");
+      return 1;
     }
+  }
+  recv_buf[recv_size] = '\0';
+  std::cout << "Received: " << recv_buf << std::endl;
+
+  if (strcmp(recv_buf, "finish") == 0) {
+    send_buf = 0;
+    send_size = send(client_fd, &send_buf, 1, 0);
+    if (send_size == -1) {
+      std::cerr << "send error\n" << std::endl;
+      return 1;
+    }
+  } else {
+    send_buf = 1;
+    send_size = send(client_fd, &send_buf, 1, 0);
+    if (send_size == -1) {
+      std::cerr << "send error\n" << std::endl;
+      return 1;
+    }
+  }
   return 0;
 }
 
@@ -71,7 +89,6 @@ int main() {
       これを入れると普通に動くけど、動作が別に変わらん
       ioctl(fd, (int)FIONBIO, (char *)1L);
   */
-
 
   // これがあるとI/Oのwait中も他の動作が実行される。ないとI/O待ちで止まる
   int flags = fcntl(fd, F_GETFL, 0);
@@ -97,47 +114,34 @@ int main() {
   // vectorの0にserverのfdを足す
   fds.push_back({fd, POLLIN});
 
-  while (1)
-  {
+  while (1) {
     // std::cout << "wait connection" << std::endl;
 
     // poll setting
-    if (poll(fds.data(), fds.size(), -1) < 0)
-    {
+    if (poll(fds.data(), fds.size(), -1) < 0) {
       perror("poll");
-      break ;
+      break;
     }
 
-    if (fds[0].revents == POLLIN)
-    {
+    if (fds[0].revents == POLLIN) {
       int client_fd = accept(fd, NULL, NULL);
-      if (client_fd < 0)
-      {
-        if (errno == EWOULDBLOCK || errno == EAGAIN)
-        {
+      if (client_fd < 0) {
+        if (errno == EWOULDBLOCK || errno == EAGAIN) {
           // std::cout << "No incomming connection" << std::endl;
           continue;
-        }
-        else
-        {
+        } else {
           perror("accept");
           break;
         }
-      }
-      else
-      {
+      } else {
         std::cout << "conected" << std::endl;
         fds.push_back({client_fd, POLLIN});
       }
-    }
-    else
-    {
-      for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end(); ++it)
-      {
-        if ((*it).revents == POLLIN)
-        {
-          if (execute((*it).fd))
-          {
+    } else {
+      for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end();
+           ++it) {
+        if ((*it).revents == POLLIN) {
+          if (execute((*it).fd)) {
             close((*it).fd);
             std::cout << "closed" << std::endl;
           }
