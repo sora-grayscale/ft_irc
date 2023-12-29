@@ -1,5 +1,5 @@
-#include "util.hpp"
 #include "ircserv.hpp"
+#include "util.hpp"
 
 class Command {
 private:
@@ -8,7 +8,7 @@ public:
 
 class User {
 private:
-  std::string nick; // 9文字まで
+  std::string nick;    // 9文字まで
   std::string service; // nick + server_name
 public:
 };
@@ -151,4 +151,3 @@ int main() {
   close(fd);
   return 0;
 }
-
