@@ -4,11 +4,14 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRCDIR = src
-SERVER_SRC = $(SRCDIR)/main.cpp
-CLIENT_SRC = $(SRCDIR)/client.cpp
-
+SERVER_SRC = $(SRCDIR)/main.cpp \
+             $(SRCDIR)/util.cpp
 OBJDIR = obj
-SERVER_OBJ = $(OBJDIR)/main.o
+SERVER_OBJ = $(OBJDIR)/main.o \
+             $(OBJDIR)/util.o
+
+
+CLIENT_SRC = $(SRCDIR)/client.cpp
 CLIENT_OBJ = $(OBJDIR)/client.o
 
 INC = inc
