@@ -66,7 +66,7 @@ int main() {
   struct sockaddr_in a_addr;
   std::vector<struct pollfd> fds;
 
-  start_announce();
+  Util::start_announce();
 
   // create socket
   fd = socket(AF_INET, SOCK_STREAM, 0);

@@ -1,6 +1,6 @@
 #include "util.hpp"
 
-void start_announce()
+void Util::start_announce()
 {
       std::cout << "\033[1;34m"<< " __  __         ___ ____   ____   ____                           \n"
                  "|  \\/  |_   _  |_ _|  _ \\ / ___| / ___|  ___ _ ____   _____ _ __ \n"

@@ -3,6 +3,9 @@
 
 #include "ircserv.hpp"
 
-void start_announce();
+class Util {
+public:
+  static void start_announce();
+};
 
 #endif // UTIL
