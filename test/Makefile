@@ -25,7 +25,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
 server: $(SERVER_OBJ)
-	$(CXX) -o $@ $(SERVER_OBJ)
+	@$(CXX) -o $@ $(SERVER_OBJ)
 	@echo "$(CYN)\n=====link server=====$(RES)"
 	@echo "$(YEL)Objects$(RES): $(SERVER_OBJ)\n"
 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
@@ -33,7 +33,7 @@ server: $(SERVER_OBJ)
 	@echo "$(CYN)==============$(RES)"
 
 client: $(CLIENT_OBJ)
-	$(CXX) -o $@ $(CLIENT_OBJ)
+	@$(CXX) -o $@ $(CLIENT_OBJ)
 	@echo "$(CYN)\n=====link client=====$(RES)"
 	@echo "$(YEL)Objects$(RES): $(CLIENT_OBJ)\n"
 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
@@ -47,7 +47,7 @@ $(OBJDIR):
 
 clean:
 	@echo "$(CYN)\n===== clean =====$(RES)"
-	@echo "$(YEL)delete: $(RES) $(GRN)$(OBJDIR)\n$(RES)"
+	@echo "$(YEL)delete: $(RES) $(GRN)$(OBJDIR)/*\n$(RES)"
 	@$(RM) $(OBJDIR)
 
 fclean: clean
