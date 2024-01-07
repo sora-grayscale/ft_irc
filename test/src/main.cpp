@@ -77,13 +77,6 @@ int main() {
   memset(&a_addr, 0, sizeof(struct sockaddr_in));
 
   // # set as a non blocking
-  /* memo
-      ただこれを入れるだけだと無限ループになる
-     ←I/O待ちの間に実行をしてるから合ってる fcntl(fd, F_SETFL, O_NONBLOCK);
-      これを入れると普通に動くけど、動作が別に変わらん
-      ioctl(fd, (int)FIONBIO, (char *)1L);
-  */
-
   // これがあるとI/Oのwait中も他の動作が実行される。ないとI/O待ちで止まる
   int flags = fcntl(fd, F_GETFL, 0);
   fcntl(fd, F_SETFL, flags | O_NONBLOCK);
