@@ -3,6 +3,6 @@
 obj
 sample/
 tags
-test/client
-test/server
-test/.main.cpp.swap
+client
+server
+.main.cpp.swap
