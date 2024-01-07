@@ -20,10 +20,18 @@ public:
 
 class Server {
 private:
+  int fd;
+  struct sockaddr_in a_addr;
+  std::vector<struct pollfd> fds;
+  std:::vector<User> User;
+  std:::vector<Channnel> Channnel;
+
   const std::string server_name; // 63文字まで
+
 public:
 };
 
+// 今はfdで処理しているのをclassで渡してuserとかをこのexecuteでできるようにする
 int execute(int client_fd) {
   int recv_size, send_size;
   char recv_buf[MAX_MESSAGE], send_buf;
@@ -62,6 +70,7 @@ int execute(int client_fd) {
 }
 
 int main() {
+  Server Server;
   int fd;
   struct sockaddr_in a_addr;
   std::vector<struct pollfd> fds;
@@ -114,6 +123,7 @@ int main() {
     }
 
     if (fds[0].revents == POLLIN) {
+      // new userの処理
       int client_fd = accept(fd, NULL, NULL);
       if (client_fd < 0) {
         if (errno == EWOULDBLOCK || errno == EAGAIN) {
@@ -130,6 +140,7 @@ int main() {
         fds.back().events = POLLIN;
       }
     } else {
+      // userからの処理
       for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end();
            ++it) {
         if ((*it).revents == POLLIN) {
