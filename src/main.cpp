@@ -60,6 +60,16 @@ int execute(int client_fd) {
       std::cerr << "send error\n" << std::endl;
       return 1;
     }
+  }
+  else if (strcmp(recv_buf, "NICK") == 0)
+  {
+    std::cout << "Exec Nick Command" << std::endl;
+    send_buf = 1;
+    send_size = send(client_fd, &send_buf, 1, 0);
+    if (send_size == -1) {
+      std::cerr << "send error\n" << std::endl;
+      return 1;
+    }
   } else {
     send_buf = 1;
     send_size = send(client_fd, &send_buf, 1, 0);
