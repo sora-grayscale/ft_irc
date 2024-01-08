@@ -23,12 +23,15 @@ private:
   int fd;
   struct sockaddr_in a_addr;
   std::vector<struct pollfd> fds;
-  std:::vector<User> User;
-  std:::vector<Channnel> Channnel;
+  std::vector<User> user;
+  std::vector<Channnel> channnel;
 
   const std::string server_name; // 63文字まで
 
 public:
+  int init();
+  int start();
+  int getfd();
 };
 
 // 今はfdで処理しているのをclassで渡してuserとかをこのexecuteでできるようにする
@@ -69,14 +72,8 @@ int execute(int client_fd) {
   return 0;
 }
 
-int main() {
-  Server Server;
-  int fd;
-  struct sockaddr_in a_addr;
-  std::vector<struct pollfd> fds;
-
-  Util::start_announce();
-
+int Server::init()
+{
   // create socket
   fd = socket(AF_INET, SOCK_STREAM, 0);
   if (fd == -1) {
@@ -108,50 +105,63 @@ int main() {
   }
 
   // vectorの0にserverのfdを足す
-  // fds.push_back({fd, POLLIN}); // c++11の書き方でした
   fds.push_back(pollfd());
   fds.back().fd = fd;
   fds.back().events = POLLIN;
+  return 0;
+}
 
-  while (1) {
-    // std::cout << "wait connection" << std::endl;
+int Server::start()
+{
+  // poll setting
+  if (poll(fds.data(), fds.size(), -1) < 0) {
+    perror("poll");
+    return 1;
+  }
 
-    // poll setting
-    if (poll(fds.data(), fds.size(), -1) < 0) {
-      perror("poll");
-      break;
-    }
-
-    if (fds[0].revents == POLLIN) {
-      // new userの処理
-      int client_fd = accept(fd, NULL, NULL);
-      if (client_fd < 0) {
-        if (errno == EWOULDBLOCK || errno == EAGAIN) {
-          // std::cout << "No incomming connection" << std::endl;
-          continue;
-        } else {
-          perror("accept");
-          break;
-        }
+  if (fds[0].revents == POLLIN) {
+    // new userの処理
+    int client_fd = accept(fd, NULL, NULL);
+    if (client_fd < 0) {
+      if (errno == EWOULDBLOCK || errno == EAGAIN) {
+        // std::cout << "No incomming connection" << std::endl;
+        // continue;
       } else {
-        std::cout << "conected" << std::endl;
-        fds.push_back(pollfd());
-        fds.back().fd = client_fd;
-        fds.back().events = POLLIN;
+        perror("accept");
+        return 1;
       }
     } else {
-      // userからの処理
-      for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end();
-           ++it) {
-        if ((*it).revents == POLLIN) {
-          if (execute((*it).fd)) {
-            close((*it).fd);
-            std::cout << "closed" << std::endl;
-          }
+      std::cout << "conected" << std::endl;
+      fds.push_back(pollfd());
+      fds.back().fd = client_fd;
+      fds.back().events = POLLIN;
+    }
+  } else {
+    // userからの処理
+    for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end();
+         ++it) {
+      if ((*it).revents == POLLIN) {
+        if (execute((*it).fd)) {
+          close((*it).fd);
+          std::cout << "closed" << std::endl;
         }
       }
     }
   }
-  close(fd);
+  return 0;
+}
+
+int Server::getfd() { return fd; }
+
+int main() {
+  Util::start_announce();
+  Server server;
+  if (server.init())
+    return 1;
+  while (1) {
+    if (server.start())
+      break ;
+  }
+  close(server.getfd());
   return 0;
 }
