@@ -68,12 +68,10 @@ int execute(int client_fd) {
       return 1;
     }
   }
-
   return 0;
 }
 
-int Server::init()
-{
+int Server::init() {
   // create socket
   fd = socket(AF_INET, SOCK_STREAM, 0);
   if (fd == -1) {
@@ -111,8 +109,7 @@ int Server::init()
   return 0;
 }
 
-int Server::start()
-{
+int Server::start() {
   // poll setting
   if (poll(fds.data(), fds.size(), -1) < 0) {
     perror("poll");
@@ -160,7 +157,7 @@ int main() {
     return 1;
   while (1) {
     if (server.start())
-      break ;
+      break;
   }
   close(server.getfd());
   return 0;
