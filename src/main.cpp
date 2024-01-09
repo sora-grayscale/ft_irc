@@ -4,13 +4,18 @@
 class Command {
 private:
 public:
+  void PASS();
+  void NICK();
+  void USER();
 };
 
 class User {
 private:
   std::string nick;    // 9文字まで
   std::string service; // nick + server_name
+  std::string status; // Nick nameが登録済みかどうかとか
 public:
+  Command command; // 多分Userのprivateにアクセスしたいよね？ setterとかでもいいのか
 };
 
 class Channnel {
