@@ -57,13 +57,13 @@ int execute(int client_fd) {
   if (strcmp(recv_buf, "finish") == 0) {
     send_buf = 0;
     send_size = send(client_fd, &send_buf, 1, 0);
+    close(client_fd);
+    std::cout << "closed" << std::endl;
     if (send_size == -1) {
       std::cerr << "send error\n" << std::endl;
       return 1;
     }
-  }
-  else if (strcmp(recv_buf, "NICK") == 0)
-  {
+  } else if (strcmp(recv_buf, "NICK") == 0) {
     std::cout << "Exec Nick Command" << std::endl;
     send_buf = 1;
     send_size = send(client_fd, &send_buf, 1, 0);
@@ -120,9 +120,7 @@ int Server::init() {
   return 0;
 }
 
-int Server::newUser()
-{
-  // new userの処理
+int Server::newUser() {
   int client_fd = accept(fd, NULL, NULL);
   if (client_fd < 0) {
     if (errno == EWOULDBLOCK || errno == EAGAIN) {
@@ -156,8 +154,7 @@ int Server::start() {
          ++it) {
       if ((*it).revents == POLLIN) {
         if (execute((*it).fd)) {
-          close((*it).fd);
-          std::cout << "closed" << std::endl;
+          return 1;
         }
       }
     }

@@ -20,6 +20,9 @@ RM = rm -rf
 
 all: server client
 
+run: all
+	@./server
+
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) -I$(INC) -MMD -MP -MF"$(@:%.o=%.d)" -c -o $@ $<
 	@echo "$< =========> $(GRN) $@ $(RES)"
@@ -58,7 +61,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re run server client
 
 RED = \033[31m
 GRN = \033[32m
