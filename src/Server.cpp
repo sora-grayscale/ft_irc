@@ -10,12 +10,10 @@ int Server::execute(int client_fd) {
     if (errno == EWOULDBLOCK || errno == EAGAIN) {
       std::cerr << "No data received" << std::endl;
       return 1;
-    } else {
-      perror("recv");
-      return 1;
     }
+    perror("recv");
+    return 1;
   }
-
   recv_buf[recv_size] = '\0';
   std::cout << "Received: " << recv_buf << std::endl;
 
@@ -46,8 +44,6 @@ int Server::execute(int client_fd) {
   }
   return 0;
 }
-
-
 
 int Server::init() {
   // create socket
