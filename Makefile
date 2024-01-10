@@ -5,10 +5,12 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRCDIR = src
 SERVER_SRC = $(SRCDIR)/main.cpp \
-             $(SRCDIR)/util.cpp
+             $(SRCDIR)/util.cpp \
+             $(SRCDIR)/Server.cpp
 OBJDIR = obj
 SERVER_OBJ = $(OBJDIR)/main.o \
-             $(OBJDIR)/util.o
+             $(OBJDIR)/util.o \
+             $(OBJDIR)/Server.o
 
 
 CLIENT_SRC = $(SRCDIR)/client.cpp
@@ -19,6 +21,9 @@ INC = inc
 RM = rm -rf
 
 all: server client
+
+run: all
+	@./server
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) -I$(INC) -MMD -MP -MF"$(@:%.o=%.d)" -c -o $@ $<
@@ -58,7 +63,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re run server client
 
 RED = \033[31m
 GRN = \033[32m

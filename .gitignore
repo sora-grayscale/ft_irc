@@ -5,4 +5,4 @@ sample/
 tags
 client
 server
-src/.main.cpp.swap
+src/*swap
