@@ -32,6 +32,7 @@ public:
   int init();
   int start();
   int getfd();
+  int newUser();
 };
 
 // 今はfdで処理しているのをclassで渡してuserとかをこのexecuteでできるようにする
@@ -119,6 +120,27 @@ int Server::init() {
   return 0;
 }
 
+int Server::newUser()
+{
+  // new userの処理
+  int client_fd = accept(fd, NULL, NULL);
+  if (client_fd < 0) {
+    if (errno == EWOULDBLOCK || errno == EAGAIN) {
+      // std::cout << "No incomming connection" << std::endl;
+      // continue;
+    } else {
+      perror("accept");
+      return 1;
+    }
+  } else {
+    std::cout << "conected" << std::endl;
+    fds.push_back(pollfd());
+    fds.back().fd = client_fd;
+    fds.back().events = POLLIN;
+  }
+  return 0;
+}
+
 int Server::start() {
   // poll setting
   if (poll(fds.data(), fds.size(), -1) < 0) {
@@ -127,22 +149,7 @@ int Server::start() {
   }
 
   if (fds[0].revents == POLLIN) {
-    // new userの処理
-    int client_fd = accept(fd, NULL, NULL);
-    if (client_fd < 0) {
-      if (errno == EWOULDBLOCK || errno == EAGAIN) {
-        // std::cout << "No incomming connection" << std::endl;
-        // continue;
-      } else {
-        perror("accept");
-        return 1;
-      }
-    } else {
-      std::cout << "conected" << std::endl;
-      fds.push_back(pollfd());
-      fds.back().fd = client_fd;
-      fds.back().events = POLLIN;
-    }
+    newUser();
   } else {
     // userからの処理
     for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end();
