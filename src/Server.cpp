@@ -2,8 +2,9 @@
 
 // 今はfdで処理しているのをclassで渡してuserとかをこのexecuteでできるようにする
 int Server::execute(int client_fd) {
+  // recieveはそれだけの関数として分解したほうがいいか
   int recv_size, send_size;
-  char recv_buf[MAX_MESSAGE], send_buf;
+  char recv_buf[MAX_MESSAGE + 1], send_buf;
 
   recv_size = recv(client_fd, recv_buf, MAX_MESSAGE, 0);
   if (recv_size < 0) {
@@ -17,6 +18,9 @@ int Server::execute(int client_fd) {
   recv_buf[recv_size] = '\0';
   std::cout << "Received: " << recv_buf << std::endl;
 
+  // ここでパース？
+  // parse(recv_buf);
+  // なんかしらのstrのの配列に分解して入れる
   if (strcmp(recv_buf, "finish") == 0) {
     send_buf = 0;
     send_size = send(client_fd, &send_buf, 1, 0);
@@ -128,5 +132,4 @@ int Server::start() {
 }
 
 int Server::getfd() { return fd; }
-
 
