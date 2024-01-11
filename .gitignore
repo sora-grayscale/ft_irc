@@ -1,5 +1,6 @@
 *.swap
 *.DS_Store
+*.vim
 obj
 sample/
 tags
