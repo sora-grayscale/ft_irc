@@ -1,9 +1,8 @@
 #include "Server.hpp"
 
-// 今はfdで処理しているのをclassで渡してuserとかをこのexecuteでできるようにする
-// UserのFunctionにしてしまえばok
-int Server::execute(int client_fd) {
-  // recieveはそれだけの関数として分解したほうがいいか
+int Server::execute(User &user) {
+  int client_fd = user.get_fd();
+  // recieve --------------------------------------------
   int recv_size, send_size;
   char recv_buf[MAX_MESSAGE + 1], send_buf;
 
@@ -18,10 +17,12 @@ int Server::execute(int client_fd) {
   }
   recv_buf[recv_size] = '\0';
   std::cout << "Received: " << recv_buf << std::endl;
+  // ------ --------------------------------------------
 
   // ここでパース？
   // parse(recv_buf);
-  // なんかしらのstrの配列に分解して入れる
+
+  // execute ------------------------------------------
   if (strcmp(recv_buf, "finish") == 0) {
     send_buf = 0;
     send_size = send(client_fd, &send_buf, 1, 0);
@@ -47,6 +48,7 @@ int Server::execute(int client_fd) {
       return 1;
     }
   }
+  // ----- --------------------------------------------
   return 0;
 }
 
@@ -125,7 +127,10 @@ int Server::start() {
     for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end();
          ++it) {
       if ((*it).revents == POLLIN) {
-        if (execute((*it).fd)) {
+        User * tmp = find_user_by_fd((*it).fd);
+        if (!tmp)
+          return 1;
+        if (execute(*tmp)) {
           // executeはfdのUserを渡したい。(コマンドはUserに影響するものだから)
             // (*it).fdと一致するfdを持ったUserを取り出してServerに渡す
 
@@ -141,3 +146,11 @@ int Server::start() {
 
 int Server::get_fd() { return fd; }
 
+User *Server::find_user_by_fd(int fd) {
+  for (std::vector<User>::iterator it = users.begin(); it != users.end();
+       ++it) {
+    if (it->get_fd() == fd)
+      return &(*it);
+  }
+  return NULL;
+}
