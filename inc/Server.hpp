@@ -16,6 +16,7 @@ private:
   std::string command;
 public:
   void set_fd(int fd) { this->fd = fd; }
+  int get_fd() { return this->fd; }
 };
 
 class Channnel {
@@ -38,7 +39,7 @@ public:
   int start();
   int execute(int client_fd);
   int newUser();
-  int getfd();
+  int get_fd();
 };
 
 #endif // SERVER

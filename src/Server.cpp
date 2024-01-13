@@ -138,5 +138,5 @@ int Server::start() {
   return 0;
 }
 
-int Server::getfd() { return fd; }
+int Server::get_fd() { return fd; }
 

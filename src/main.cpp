@@ -11,6 +11,6 @@ int main() {
     if (server.start())
       break;
   }
-  close(server.getfd());
+  close(server.get_fd());
   return 0;
 }
