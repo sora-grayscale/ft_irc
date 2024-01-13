@@ -18,6 +18,7 @@ private:
   std::string service; // nick + server_name
   std::string command;
   int status; // statusをdefineしておくといいかも
+  int level; // userがどの程度の権限を持っているのかを保持
 public:
   void set_fd(int fd) { this->fd = fd; }
   int get_fd() { return this->fd; }
