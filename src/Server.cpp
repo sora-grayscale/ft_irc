@@ -49,6 +49,29 @@ int Server::execute(int client_fd) {
   return 0;
 }
 
+int Server::newUser() {
+  int client_fd = accept(fd, NULL, NULL);
+  if (client_fd < 0) {
+    if (errno == EWOULDBLOCK || errno == EAGAIN) {
+      // std::cout << "No incomming connection" << std::endl;
+      // continue;
+    } else {
+      perror("accept");
+      return 1;
+    }
+  } else {
+    std::cout << "conected" << std::endl;
+    fds.push_back(pollfd());
+    fds.back().fd = client_fd;
+    fds.back().events = POLLIN;
+    // Userのクラスにも入れてるけどあんまりなっとくいってない
+    // Userの識別が内側まで行かないとできないのが面倒
+    users.push_back(User());
+    users.back().set_fd(client_fd);
+  }
+  return 0;
+}
+
 int Server::init() {
   // create socket
   fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -87,25 +110,6 @@ int Server::init() {
   return 0;
 }
 
-int Server::newUser() {
-  int client_fd = accept(fd, NULL, NULL);
-  if (client_fd < 0) {
-    if (errno == EWOULDBLOCK || errno == EAGAIN) {
-      // std::cout << "No incomming connection" << std::endl;
-      // continue;
-    } else {
-      perror("accept");
-      return 1;
-    }
-  } else {
-    std::cout << "conected" << std::endl;
-    fds.push_back(pollfd());
-    fds.back().fd = client_fd;
-    fds.back().events = POLLIN;
-  }
-  return 0;
-}
-
 int Server::start() {
   // poll setting
   if (poll(fds.data(), fds.size(), -1) < 0) {
@@ -121,6 +125,9 @@ int Server::start() {
          ++it) {
       if ((*it).revents == POLLIN) {
         if (execute((*it).fd)) {
+          // executeはfdのUserを渡したい。(コマンドはUserに影響するものだから)
+            // (*it).fdと一致するfdを持ったUserを取り出してServerに渡す
+
           // ToDo: execute でfdは閉じてるけど、vectorから外してない
           // ここの中を通ってない感じがする
           return 1;

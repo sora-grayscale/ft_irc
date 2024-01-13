@@ -15,6 +15,7 @@ private:
   int fd;
   std::string command;
 public:
+  void set_fd(int fd) { this->fd = fd; }
 };
 
 class Channnel {
@@ -27,8 +28,8 @@ private:
   int fd;
   struct sockaddr_in a_addr;
   std::vector<struct pollfd> fds;
-  std::vector<User> user;
-  std::vector<Channnel> channnel;
+  std::vector<User> users;
+  std::vector<Channnel> channnels;
 
   const std::string server_name; // 63文字まで
 
