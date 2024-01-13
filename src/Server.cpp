@@ -1,6 +1,7 @@
 #include "Server.hpp"
 
 // 今はfdで処理しているのをclassで渡してuserとかをこのexecuteでできるようにする
+// UserのFunctionにしてしまえばok
 int Server::execute(int client_fd) {
   // recieveはそれだけの関数として分解したほうがいいか
   int recv_size, send_size;
