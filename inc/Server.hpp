@@ -39,11 +39,16 @@ private:
   const std::string server_name; // 63文字まで
 
 public:
+  ~Server() {
+    close(fd);
+    std::cout << "Server closed!" << std::endl;
+  }
   int init();
   int start();
-  int execute(int client_fd);
+  int execute(User &user);
   int newUser();
   int get_fd();
+  User *find_user_by_fd(int fd);
 };
 
 #endif // SERVER
