@@ -20,7 +20,7 @@ int Server::execute(int client_fd) {
 
   // ここでパース？
   // parse(recv_buf);
-  // なんかしらのstrのの配列に分解して入れる
+  // なんかしらのstrの配列に分解して入れる
   if (strcmp(recv_buf, "finish") == 0) {
     send_buf = 0;
     send_size = send(client_fd, &send_buf, 1, 0);
