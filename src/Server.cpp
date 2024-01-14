@@ -16,11 +16,14 @@ int Server::execute(User &user) {
     return 1;
   }
   recv_buf[recv_size] = '\0';
+  user.set_command(recv_buf);
   std::cout << "Received: " << recv_buf << std::endl;
   // ------ --------------------------------------------
 
   // ここでパース？
   // parse(recv_buf);
+  // パース時にコマンドの種類をcommand_type 見たいので管理して、それを実行時に判断
+    // commandをdefineしたintで管理してそれでswitch文でいいかも #define NICK 1
 
   // execute ------------------------------------------
   if (strcmp(recv_buf, "finish") == 0) {
@@ -53,7 +56,7 @@ int Server::execute(User &user) {
 }
 
 int Server::newUser() {
-  int client_fd = accept(fd, NULL, NULL);
+  int client_fd = accept(this->_fd, NULL, NULL);
   if (client_fd < 0) {
     if (errno == EWOULDBLOCK || errno == EAGAIN) {
       // std::cout << "No incomming connection" << std::endl;
@@ -64,67 +67,67 @@ int Server::newUser() {
     }
   } else {
     std::cout << "conected" << std::endl;
-    fds.push_back(pollfd());
-    fds.back().fd = client_fd;
-    fds.back().events = POLLIN;
+    this->_fds.push_back(pollfd());
+    this->_fds.back().fd = client_fd;
+    this->_fds.back().events = POLLIN;
     // Userのクラスにも入れてるけどあんまりなっとくいってない
     // Userの識別が内側まで行かないとできないのが面倒
-    users.push_back(User());
-    users.back().set_fd(client_fd);
+    this->_users.push_back(User());
+    this->_users.back().set_fd(client_fd);
   }
   return 0;
 }
 
 int Server::init() {
   // create socket
-  fd = socket(AF_INET, SOCK_STREAM, 0);
-  if (fd == -1) {
+  this->_fd = socket(AF_INET, SOCK_STREAM, 0);
+  if (this->_fd == -1) {
     perror("socket");
     return 1;
   }
-  memset(&a_addr, 0, sizeof(struct sockaddr_in));
+  memset(&this->_a_addr, 0, sizeof(struct sockaddr_in));
 
   // # set as a non blocking
   // これがあるとI/Oのwait中も他の動作が実行される。ないとI/O待ちで止まる
-  int flags = fcntl(fd, F_GETFL, 0);
-  fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+  int flags = fcntl(this->_fd, F_GETFL, 0);
+  fcntl(this->_fd, F_SETFL, flags | O_NONBLOCK);
 
   // setting server config
-  a_addr.sin_family = AF_INET;
-  a_addr.sin_port = htons(uint16_t(atoi("8080")));
-  inet_aton("127.0.0.1", &a_addr.sin_addr);
+  this->_a_addr.sin_family = AF_INET;
+  this->_a_addr.sin_port = htons(uint16_t(atoi("8080")));
+  inet_aton("127.0.0.1", &this->_a_addr.sin_addr);
 
   // setting config to socket
-  if (bind(fd, (struct sockaddr *)&a_addr, sizeof(a_addr)) == -1) {
+  if (bind(this->_fd, (struct sockaddr *)&this->_a_addr, sizeof(this->_a_addr)) == -1) {
     perror("bind");
     return 1;
   }
 
   // wait connection
-  if (listen(fd, 5) == -1) {
+  if (listen(this->_fd, 5) == -1) {
     perror("listen");
     return 1;
   }
 
   // vectorの0にserverのfdを足す
-  fds.push_back(pollfd());
-  fds.back().fd = fd;
-  fds.back().events = POLLIN;
+  this->_fds.push_back(pollfd());
+  this->_fds.back().fd = this->_fd;
+  this->_fds.back().events = POLLIN;
   return 0;
 }
 
 int Server::start() {
   // poll setting
-  if (poll(fds.data(), fds.size(), -1) < 0) {
+  if (poll(this->_fds.data(), this->_fds.size(), -1) < 0) {
     perror("poll");
     return 1;
   }
 
-  if (fds[0].revents == POLLIN) {
+  if (this->_fds[0].revents == POLLIN) {
     newUser();
   } else {
     // userからの処理
-    for (std::vector<pollfd>::iterator it = fds.begin(); it != fds.end();
+    for (std::vector<pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end();
          ++it) {
       if ((*it).revents == POLLIN) {
         User * tmp = find_user_by_fd((*it).fd);
@@ -144,10 +147,10 @@ int Server::start() {
   return 0;
 }
 
-int Server::get_fd() { return fd; }
+int Server::get_fd() { return this->_fd; }
 
 User *Server::find_user_by_fd(int fd) {
-  for (std::vector<User>::iterator it = users.begin(); it != users.end();
+  for (std::vector<User>::iterator it = this->_users.begin(); it != this->_users.end();
        ++it) {
     if (it->get_fd() == fd)
       return &(*it);
