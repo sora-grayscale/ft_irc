@@ -3,25 +3,30 @@
 
 #include "ircserv.hpp"
 
-// status
-#define NOT_REGISTERED 0
+// command
+#define ERROR 0
+#define NICK 1
 
 class Command {
 private:
 public:
 };
 
+// status
+#define NOT_REGISTERED 0
+
 class User {
 private:
-  int fd;
-  std::string nick;    // 9文字まで
-  std::string service; // nick + server_name
-  std::string command;
-  int status; // statusをdefineしておくといいかも
-  int level; // userがどの程度の権限を持っているのかを保持
+  int _fd;
+  std::string _nick;    // 9文字まで
+  std::string _service; // nick + server_name
+  std::string _command;
+  int _status; // statusをdefineしておくといいかも
+  int _level; // userがどの程度の権限を持っているのかを保持
 public:
-  void set_fd(int fd) { this->fd = fd; }
-  int get_fd() { return this->fd; }
+  void set_fd(int fd) { this->_fd = fd; }
+  int get_fd() { return this->_fd; }
+  void set_command(std::string command) { this->_command = command; }
 };
 
 class Channnel {
@@ -31,17 +36,16 @@ public:
 
 class Server {
 private:
-  int fd;
-  struct sockaddr_in a_addr;
-  std::vector<struct pollfd> fds;
-  std::vector<User> users;
-  std::vector<Channnel> channnels;
-
-  const std::string server_name; // 63文字まで
+  int _fd;
+  struct sockaddr_in _a_addr;
+  std::vector<struct pollfd> _fds;
+  std::vector<User> _users;
+  std::vector<Channnel> _channnels;
+  const std::string _server_name; // 63文字まで
 
 public:
   ~Server() {
-    close(fd);
+    close(this->_fd);
     std::cout << "Server closed!" << std::endl;
   }
   int init();
