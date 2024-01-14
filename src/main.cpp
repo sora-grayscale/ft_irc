@@ -2,6 +2,8 @@
 #include "util.hpp"
 #include "Server.hpp"
 
+// server の終了をsignalで取り扱うようにする
+
 int main() {
   Util::start_announce();
   Server server;
