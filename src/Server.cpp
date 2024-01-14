@@ -16,8 +16,9 @@ int Server::execute(User &user) {
     return 1;
   }
   recv_buf[recv_size] = '\0';
-  user.set_command(recv_buf);
+  user.set_buf(recv_buf);
   std::cout << "Received: " << recv_buf << std::endl;
+  std::cout << GRN << "user buf: " << NC << user.get_buf() << std::endl;
   // ------ --------------------------------------------
 
   // ここでパース？

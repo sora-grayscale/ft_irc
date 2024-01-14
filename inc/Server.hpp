@@ -3,6 +3,13 @@
 
 #include "ircserv.hpp"
 
+// color
+#define NC "\e[0m"
+#define RED "\e[0;31m"
+#define GRN "\e[0;32m"
+#define PPL "\e[0;34m"
+#define CYN "\e[0;36m"
+
 // command
 #define ERROR 0
 #define NICK 1
@@ -20,13 +27,18 @@ private:
   int _fd;
   std::string _nick;    // 9文字まで
   std::string _service; // nick + server_name
-  std::string _command;
+  std::string _buf;
   int _status; // statusをdefineしておくといいかも
   int _level; // userがどの程度の権限を持っているのかを保持
 public:
   void set_fd(int fd) { this->_fd = fd; }
   int get_fd() { return this->_fd; }
-  void set_command(std::string command) { this->_command = command; }
+  void set_buf(std::string buf) {
+    // this->_buf += buf;
+    // ↓これだとMAX_SIZE より大きいメッセージが送られてきた場合困る
+    this->_buf = buf;
+  }
+  std::string get_buf() { return this->_buf; }
 };
 
 class Channnel {
