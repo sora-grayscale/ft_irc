@@ -36,6 +36,8 @@ public:
   void set_buf(std::string buf) {
     // this->_buf += buf;
     // ↓これだとMAX_SIZE より大きいメッセージが送られてきた場合困る
+    // もしMAX_MESSAGEが3文字だったら"hello"が"hel"と"lo"に分かれる
+    // それをいい感じに組み合わせられるようにするorしない
     this->_buf = buf;
   }
   std::string get_buf() { return this->_buf; }
