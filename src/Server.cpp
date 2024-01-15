@@ -2,6 +2,14 @@
 
 Server::Server() { Util::start_announce(); }
 
+void User::parse()
+{
+  // 何をするのか全然わかってない
+  if (this->_status == NOT_REGISTERED && this->_buf == "PASS")
+    return ;
+  return ;
+}
+
 int Server::execute(User &user) {
   int client_fd = user.get_fd();
   // receive --------------------------------------------
@@ -11,8 +19,8 @@ int Server::execute(User &user) {
   // ------ --------------------------------------------
 
   // ここでパース？
-  // parse(recv_buf);
   // パース時にコマンドの種類をcommand_type
+  user.parse();
   // 見たいので管理して、それを実行時に判断
   // commandをdefineしたintで管理してそれでswitch文でいいかも #define NICK 1
 

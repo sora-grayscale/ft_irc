@@ -1,5 +1,5 @@
-#include "ircserv.hpp"
 #include "Server.hpp"
+#include "ircserv.hpp"
 #include <csignal>
 
 bool stop = false;

@@ -36,6 +36,7 @@ private:
   int _level;  // userがどの程度の権限を持っているのかを保持
 public:
   int receive();
+  void parse();
   void set_fd(int fd);
   int get_fd();
   void set_buf(std::string buf);
