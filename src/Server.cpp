@@ -5,6 +5,9 @@ Server::Server() { Util::start_announce(); }
 void User::parse()
 {
   // 何をするのか全然わかってない
+  // パース時にコマンドの種類をset_command_type
+  // みたいので管理して、それを実行時に判断
+  // 実行のときはcommandをdefineしたintで管理してそれでswitch文でいいかも #define NICK 1
   if (this->_status == NOT_REGISTERED && this->_buf == "PASS")
     return ;
   return ;
@@ -19,10 +22,7 @@ int Server::execute(User &user) {
   // ------ --------------------------------------------
 
   // ここでパース？
-  // パース時にコマンドの種類をcommand_type
   user.parse();
-  // 見たいので管理して、それを実行時に判断
-  // commandをdefineしたintで管理してそれでswitch文でいいかも #define NICK 1
 
   // execute ------------------------------------------
   int send_size;
