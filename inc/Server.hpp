@@ -1,7 +1,9 @@
-#ifndef SERVER_HPP 
+#ifndef SERVER_HPP
 #define SERVER_HPP
 
 #include "ircserv.hpp"
+#include "util.hpp"
+#define MAX_MESSAGE 512
 
 // color
 #define NC "\e[0m"
@@ -10,7 +12,8 @@
 #define PPL "\e[0;34m"
 #define CYN "\e[0;36m"
 
-// command
+// Command ===================================================
+// status
 #define ERROR 0
 #define NICK 1
 
@@ -19,6 +22,7 @@ private:
 public:
 };
 
+// User ======================================================
 // status
 #define NOT_REGISTERED 0
 
@@ -29,25 +33,22 @@ private:
   std::string _service; // nick + server_name
   std::string _buf;
   int _status; // statusをdefineしておくといいかも
-  int _level; // userがどの程度の権限を持っているのかを保持
+  int _level;  // userがどの程度の権限を持っているのかを保持
 public:
-  void set_fd(int fd) { this->_fd = fd; }
-  int get_fd() { return this->_fd; }
-  void set_buf(std::string buf) {
-    // this->_buf += buf;
-    // ↓これだとMAX_SIZE より大きいメッセージが送られてきた場合困る
-    // もしMAX_MESSAGEが3文字だったら"hello"が"hel"と"lo"に分かれる
-    // それをいい感じに組み合わせられるようにするorしない
-    this->_buf = buf;
-  }
-  std::string get_buf() { return this->_buf; }
+  int receive();
+  void set_fd(int fd);
+  int get_fd();
+  void set_buf(std::string buf);
+  std::string get_buf();
 };
 
+// Channnel ====================================================
 class Channnel {
 private:
 public:
 };
 
+// Server ======================================================
 class Server {
 private:
   int _fd;
@@ -58,10 +59,7 @@ private:
   const std::string _server_name; // 63文字まで
 
 public:
-  ~Server() {
-    close(this->_fd);
-    std::cout << "Server closed!" << std::endl;
-  }
+  Server();
   int init();
   int start();
   int execute(User &user);
