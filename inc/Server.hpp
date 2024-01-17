@@ -25,6 +25,7 @@ public:
 // User ======================================================
 // status
 #define NOT_REGISTERED 0
+#define PASSWORD_SENT 1
 
 class User {
 private:
@@ -36,7 +37,10 @@ private:
   int _level;  // userがどの程度の権限を持っているのかを保持
 public:
   int receive();
-  void parse();
+  void validate_input_format();
+  void check_user_status();
+
+  // setter getter
   void set_fd(int fd);
   int get_fd();
   void set_buf(std::string buf);
