@@ -2,8 +2,11 @@
 #include "ircserv.hpp"
 #include <csignal>
 
-bool stop = false;
-void sig_handler(int) { stop = true; }
+#define RUNNING 0
+#define STOP 1
+
+bool server_statu = RUNNING;
+void sig_handler(int) { server_statu = STOP; }
 
 int main() {
   Server server;
@@ -11,7 +14,7 @@ int main() {
 
   if (server.init())
     return 1;
-  while (stop == false) {
+  while (server_statu == RUNNING) {
     if (server.start())
       break;
   }

@@ -19,9 +19,8 @@ int Server::execute(User &user) {
   if (user.receive())
     return 1;
   std::cout << GRN << "Received: " << NC << user.get_buf() << std::endl;
-  // ------ --------------------------------------------
 
-  // ここでパース？
+  //parser  ------ ------------------------------------
   user.parse();
 
   // execute ------------------------------------------
