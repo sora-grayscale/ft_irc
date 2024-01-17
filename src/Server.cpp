@@ -2,14 +2,22 @@
 
 Server::Server() { Util::start_announce(); }
 
-void User::parse()
+void User::validate_input_format()
 {
   // 何をするのか全然わかってない
+  // command or messageを見る
   // パース時にコマンドの種類をset_command_type
   // みたいので管理して、それを実行時に判断
   // 実行のときはcommandをdefineしたintで管理してそれでswitch文でいいかも #define NICK 1
-  if (this->_status == NOT_REGISTERED && this->_buf == "PASS")
+}
+
+void User::check_user_status() {
+  if (this->_status == NOT_REGISTERED && this->_buf != "PASS")
     return ;
+  if (this->_status == PASSWORD_SENT && (this->_buf != "NICK" || this->_buf != "USER"))
+    return ;
+  // 実行だめ条件を弾き終わった
+  // 実行();
   return ;
 }
 
@@ -19,10 +27,12 @@ int Server::execute(User &user) {
   if (user.receive())
     return 1;
   std::cout << GRN << "Received: " << NC << user.get_buf() << std::endl;
-  // ------ --------------------------------------------
 
-  // ここでパース？
-  user.parse();
+  //parser  ------ ------------------------------------
+  user.validate_input_format();
+
+  // check status  ------ -----------------------------
+  user.check_user_status();
 
   // execute ------------------------------------------
   int send_size;
@@ -32,7 +42,7 @@ int Server::execute(User &user) {
     send_buf = 0;
     send_size = send(client_fd, &send_buf, 1, 0);
     close(client_fd);
-    // pollfd,userからこのfdを取り出す
+    // ToDo: pollfd,userからこのfdを取り出す
     std::cout << "closed" << std::endl;
     if (send_size == -1) {
       std::cerr << "send error\n" << std::endl;
