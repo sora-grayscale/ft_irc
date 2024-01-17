@@ -6,10 +6,13 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 SRCDIR = src
 SERVER_SRC = $(SRCDIR)/main.cpp \
              $(SRCDIR)/util.cpp \
+             $(SRCDIR)/User.cpp \
              $(SRCDIR)/Server.cpp
+
 OBJDIR = obj
 SERVER_OBJ = $(OBJDIR)/main.o \
              $(OBJDIR)/util.o \
+             $(OBJDIR)/User.o \
              $(OBJDIR)/Server.o
 
 

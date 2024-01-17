@@ -1,4 +1,4 @@
-*.swap
+*.swp
 *.DS_Store
 *.vim
 obj
@@ -6,4 +6,4 @@ sample/
 tags
 client
 server
-src/*swap
+src/*swp

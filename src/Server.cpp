@@ -1,41 +1,44 @@
 #include "Server.hpp"
 
+Server::Server() { Util::start_announce(); }
+
+void User::parse()
+{
+  // 何をするのか全然わかってない
+  // パース時にコマンドの種類をset_command_type
+  // みたいので管理して、それを実行時に判断
+  // 実行のときはcommandをdefineしたintで管理してそれでswitch文でいいかも #define NICK 1
+  if (this->_status == NOT_REGISTERED && this->_buf == "PASS")
+    return ;
+  return ;
+}
+
 int Server::execute(User &user) {
   int client_fd = user.get_fd();
-  // recieve --------------------------------------------
-  int recv_size, send_size;
-  char recv_buf[MAX_MESSAGE + 1], send_buf;
-
-  recv_size = recv(client_fd, recv_buf, MAX_MESSAGE, 0);
-  if (recv_size < 0) {
-    if (errno == EWOULDBLOCK || errno == EAGAIN) {
-      std::cerr << "No data received" << std::endl;
-      return 1;
-    }
-    perror("recv");
+  // receive --------------------------------------------
+  if (user.receive())
     return 1;
-  }
-  recv_buf[recv_size] = '\0';
-  user.set_command(recv_buf);
-  std::cout << "Received: " << recv_buf << std::endl;
+  std::cout << GRN << "Received: " << NC << user.get_buf() << std::endl;
   // ------ --------------------------------------------
 
   // ここでパース？
-  // parse(recv_buf);
-  // パース時にコマンドの種類をcommand_type 見たいので管理して、それを実行時に判断
-    // commandをdefineしたintで管理してそれでswitch文でいいかも #define NICK 1
+  user.parse();
 
   // execute ------------------------------------------
-  if (strcmp(recv_buf, "finish") == 0) {
+  int send_size;
+  char send_buf;
+
+  if (user.get_buf() == "finish") {
     send_buf = 0;
     send_size = send(client_fd, &send_buf, 1, 0);
     close(client_fd);
+    // pollfd,userからこのfdを取り出す
     std::cout << "closed" << std::endl;
     if (send_size == -1) {
       std::cerr << "send error\n" << std::endl;
       return 1;
     }
-  } else if (strcmp(recv_buf, "NICK") == 0) {
+  } else if (user.get_buf() == "NICK") {
     std::cout << "Exec Nick Command" << std::endl;
     send_buf = 1;
     send_size = send(client_fd, &send_buf, 1, 0);
@@ -98,7 +101,8 @@ int Server::init() {
   inet_aton("127.0.0.1", &this->_a_addr.sin_addr);
 
   // setting config to socket
-  if (bind(this->_fd, (struct sockaddr *)&this->_a_addr, sizeof(this->_a_addr)) == -1) {
+  if (bind(this->_fd, (struct sockaddr *)&this->_a_addr,
+           sizeof(this->_a_addr)) == -1) {
     perror("bind");
     return 1;
   }
@@ -127,15 +131,15 @@ int Server::start() {
     newUser();
   } else {
     // userからの処理
-    for (std::vector<pollfd>::iterator it = this->_fds.begin(); it != this->_fds.end();
-         ++it) {
+    for (std::vector<pollfd>::iterator it = this->_fds.begin();
+         it != this->_fds.end(); ++it) {
       if ((*it).revents == POLLIN) {
-        User * tmp = find_user_by_fd((*it).fd);
+        User *tmp = find_user_by_fd((*it).fd);
         if (!tmp)
           return 1;
         if (execute(*tmp)) {
           // executeはfdのUserを渡したい。(コマンドはUserに影響するものだから)
-            // (*it).fdと一致するfdを持ったUserを取り出してServerに渡す
+          // (*it).fdと一致するfdを持ったUserを取り出してServerに渡す
 
           // ToDo: execute でfdは閉じてるけど、vectorから外してない
           // ここの中を通ってない感じがする
@@ -150,8 +154,8 @@ int Server::start() {
 int Server::get_fd() { return this->_fd; }
 
 User *Server::find_user_by_fd(int fd) {
-  for (std::vector<User>::iterator it = this->_users.begin(); it != this->_users.end();
-       ++it) {
+  for (std::vector<User>::iterator it = this->_users.begin();
+       it != this->_users.end(); ++it) {
     if (it->get_fd() == fd)
       return &(*it);
   }
