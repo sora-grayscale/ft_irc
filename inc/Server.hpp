@@ -50,6 +50,10 @@ public:
 // Channnel ====================================================
 class Channnel {
 private:
+  std::string _name;
+  std::string _topic;
+
+  std::vector<User> _users; // 参加者
 public:
 };
 
