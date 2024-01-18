@@ -36,6 +36,8 @@ private:
   int _status; // statusをdefineしておくといいかも
   int _level;  // userがどの程度の権限を持っているのかを保持
 public:
+  User();
+  ~User();
   int receive();
   void validate_input_format();
   void check_user_status();
@@ -50,6 +52,10 @@ public:
 // Channnel ====================================================
 class Channnel {
 private:
+  std::string _name;
+  std::string _topic;
+
+  std::vector<User> _users; // 参加者
 public:
 };
 
