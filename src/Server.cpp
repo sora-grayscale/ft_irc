@@ -1,10 +1,13 @@
 #include "Server.hpp"
 
 User::User() { this->_status = NOT_REGISTERED; }
-User::~User() { close(this->_fd); }
+User::~User() { /*close(this->_fd);*/
+}
 
 void User::validate_input_format()
 {
+  // コマンドだったらcommandにいい感じにstrを入れる感じかな
+    // buf をあくまでbufとして使うなら
   // 何をするのか全然わかってない
   // command or messageを見る
   // パース時にコマンドの種類をset_command_type
