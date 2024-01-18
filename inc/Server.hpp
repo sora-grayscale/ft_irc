@@ -33,6 +33,7 @@ private:
   std::string _nick;    // 9文字まで
   std::string _service; // nick + server_name
   std::string _buf;
+  std::vector<std::string> _command; //
   int _status; // statusをdefineしておくといいかも
   int _level;  // userがどの程度の権限を持っているのかを保持
 public:
