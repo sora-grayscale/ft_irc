@@ -36,6 +36,8 @@ private:
   int _status; // statusをdefineしておくといいかも
   int _level;  // userがどの程度の権限を持っているのかを保持
 public:
+  User();
+  ~User();
   int receive();
   void validate_input_format();
   void check_user_status();
