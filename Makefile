@@ -23,7 +23,9 @@ INC = inc
 
 RM = rm -rf
 
-all: server client
+all: server
+
+debug: server client
 
 run: all
 	@./server
@@ -66,7 +68,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re run server client
+.PHONY: all clean fclean re run server client debug
 
 RED = \033[31m
 GRN = \033[32m
