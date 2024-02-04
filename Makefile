@@ -1,7 +1,8 @@
 NAME := ircserv
 
 CXX := c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD -MP -MF "$(@:%.o=%.d)"
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+DEPFLAGS = -MMD -MP -MF
 #-pedantic-errors
 SRCDIR := src
 SERVER_SRC = $(SRCDIR)/main.cpp \
@@ -34,14 +35,14 @@ run: all
 	@./server
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
-	@$(CXX) $(CXXFLAGS) -I$(INC) -c -o $@ $<
+	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) "$(@:%.o=%.d)" -I$(INC) -c -o $@ $<
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
 server: $(SERVER_OBJ)
 	@$(CXX) -o $@ $(SERVER_OBJ)
 	@echo "$(CYN)\n=====link server=====$(RES)"
 	@echo "$(YEL)Objects$(RES): $(SERVER_OBJ)\n"
-	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
+	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
 	@echo "     $(MGN)--->$(RES) $(GRN)server$(RES)"
 	@echo "$(CYN)==============$(RES)"
 
@@ -49,7 +50,7 @@ client: $(CLIENT_OBJ)
 	@$(CXX) -o $@ $(CLIENT_OBJ)
 	@echo "$(CYN)\n=====link client=====$(RES)"
 	@echo "$(YEL)Objects$(RES): $(CLIENT_OBJ)\n"
-	@echo "$(YEL)Flags$(RES): $(CXXFLAGS)\n"
+	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
 	@echo "     $(MGN)--->$(RES) $(GRN)client$(RES)"
 	@echo "$(CYN)==============$(RES)"
 
