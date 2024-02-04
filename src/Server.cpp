@@ -4,25 +4,26 @@ User::User() { this->_status = NOT_REGISTERED; }
 User::~User() { /*close(this->_fd);*/
 }
 
-void User::validate_input_format()
-{
+void User::validate_input_format() {
   // コマンドだったらcommandにいい感じにstrを入れる感じかな
-    // buf をあくまでbufとして使うなら
+  // buf をあくまでbufとして使うなら
   // 何をするのか全然わかってない
   // command or messageを見る
   // パース時にコマンドの種類をset_command_type
   // みたいので管理して、それを実行時に判断
-  // 実行のときはcommandをdefineしたintで管理してそれでswitch文でいいかも #define NICK 1
+  // 実行のときはcommandをdefineしたintで管理してそれでswitch文でいいかも
+  // #define NICK 1
 }
 
 void User::check_user_status() {
   if (this->_status == NOT_REGISTERED && this->_buf != "PASS")
-    return ;
-  if (this->_status == PASSWORD_SENT && (this->_buf != "NICK" || this->_buf != "USER"))
-    return ;
+    return;
+  if (this->_status == PASSWORD_SENT &&
+      (this->_buf != "NICK" || this->_buf != "USER"))
+    return;
   // 実行だめ条件を弾き終わった
   // 実行();
-  return ;
+  return;
 }
 
 Server::Server() { Util::start_announce(); }
@@ -34,7 +35,7 @@ int Server::execute(User &user) {
     return 1;
   std::cout << GRN << "Received: " << NC << user.get_buf() << std::endl;
 
-  //parser  ------ ------------------------------------
+  // parser  ------ ------------------------------------
   user.validate_input_format();
 
   // check status  ------ -----------------------------
@@ -168,11 +169,13 @@ int Server::start() {
   return 0;
 }
 
-int Server::get_fd()const { return this->_fd; }
-void Server::set_port(const int port) { this->_port = port;}
-int Server::get_port()const { return this->_port;}
-void Server::set_password(const std::string password) { this->_password = password;}
-std::string Server::get_password()const { return this->_password;}
+int Server::get_fd() const { return this->_fd; }
+void Server::set_port(const int port) { this->_port = port; }
+int Server::get_port() const { return this->_port; }
+void Server::set_password(const std::string password) {
+  this->_password = password;
+}
+std::string Server::get_password() const { return this->_password; }
 
 User *Server::find_user_by_fd(const int fd) {
   for (std::vector<User>::iterator it = this->_users.begin();
