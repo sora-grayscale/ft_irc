@@ -114,6 +114,7 @@ int Server::init() {
   // setting server config
   this->_a_addr.sin_family = AF_INET;
   this->_a_addr.sin_port = htons(uint16_t(atoi("8080")));
+  // this->_a_addr.sin_port = htons(uint16_t(this->_port));
   inet_aton("127.0.0.1", &this->_a_addr.sin_addr);
 
   // setting config to socket
