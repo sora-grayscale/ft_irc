@@ -167,11 +167,11 @@ int Server::start() {
   return 0;
 }
 
-int Server::get_fd() { return this->_fd; }
+int Server::get_fd()const { return this->_fd; }
 void Server::set_port(const int port) { this->_port = port;}
-int Server::get_port() { return this->_port;}
+int Server::get_port()const { return this->_port;}
 void Server::set_password(const std::string password) { this->_password = password;}
-std::string Server::get_password() { return this->_password;}
+std::string Server::get_password()const { return this->_password;}
 
 User *Server::find_user_by_fd(const int fd) {
   for (std::vector<User>::iterator it = this->_users.begin();
