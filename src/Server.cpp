@@ -168,8 +168,12 @@ int Server::start() {
 }
 
 int Server::get_fd() { return this->_fd; }
+void Server::set_port(const int port) { this->_port = port;}
+int Server::get_port() { return this->_port;}
+void Server::set_password(const std::string password) { this->_password = password;}
+std::string Server::get_password() { return this->_password;}
 
-User *Server::find_user_by_fd(int fd) {
+User *Server::find_user_by_fd(const int fd) {
   for (std::vector<User>::iterator it = this->_users.begin();
        it != this->_users.end(); ++it) {
     if (it->get_fd() == fd)
