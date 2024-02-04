@@ -1,7 +1,7 @@
 NAME = ircserv
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD -MP -MF"$(@:%.o=%.d)" 
 
 SRCDIR = src
 SERVER_SRC = $(SRCDIR)/main.cpp \
@@ -29,7 +29,7 @@ run: all
 	@./server
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
-	@$(CXX) $(CXXFLAGS) -I$(INC) -MMD -MP -MF"$(@:%.o=%.d)" -c -o $@ $<
+	@$(CXX) $(CXXFLAGS) -I$(INC) -c -o $@ $<
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
 server: $(SERVER_OBJ)
