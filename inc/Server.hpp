@@ -64,6 +64,8 @@ public:
 // Server ======================================================
 class Server {
 private:
+  int _port;
+  std::string _password;
   int _fd;
   struct sockaddr_in _a_addr;
   std::vector<struct pollfd> _fds;
@@ -78,7 +80,11 @@ public:
   int execute(User &user);
   int newUser();
   int get_fd();
-  User *find_user_by_fd(int fd);
+  void set_port(const int port);
+  int get_port();
+  void set_password(const std::string password);
+  std::string get_password();
+  User *find_user_by_fd(const int fd);
 };
 
 #endif // SERVER
