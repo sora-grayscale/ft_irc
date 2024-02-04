@@ -18,11 +18,11 @@ int User::receive() {
   return 0;
 }
 
-void User::set_fd(int fd) { this->_fd = fd; }
+void User::set_fd(const int fd) { this->_fd = fd; }
 
-int User::get_fd() { return this->_fd; }
+int User::get_fd()const { return this->_fd; }
 
-void User::set_buf(std::string buf) {
+void User::set_buf(const std::string buf) {
   // this->_buf += buf;
   // ↓これだとMAX_SIZE より大きいメッセージが送られてきた場合困る
   // もしMAX_MESSAGEが3文字だったら"hello"が"hel"と"lo"に分かれる
@@ -30,4 +30,4 @@ void User::set_buf(std::string buf) {
   this->_buf = buf;
 }
 
-std::string User::get_buf() { return this->_buf; }
+std::string User::get_buf()const { return this->_buf; }

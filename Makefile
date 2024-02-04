@@ -1,15 +1,15 @@
-NAME = ircserv
+NAME := ircserv
 
-CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD -MP -MF"$(@:%.o=%.d)" 
-
-SRCDIR = src
+CXX := c++
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD -MP -MF "$(@:%.o=%.d)"
+#-pedantic-errors
+SRCDIR := src
 SERVER_SRC = $(SRCDIR)/main.cpp \
              $(SRCDIR)/util.cpp \
              $(SRCDIR)/User.cpp \
              $(SRCDIR)/Server.cpp
 
-OBJDIR = obj
+OBJDIR := obj
 SERVER_OBJ = $(OBJDIR)/main.o \
              $(OBJDIR)/util.o \
              $(OBJDIR)/User.o \
@@ -19,13 +19,16 @@ SERVER_OBJ = $(OBJDIR)/main.o \
 CLIENT_SRC = $(SRCDIR)/client.cpp
 CLIENT_OBJ = $(OBJDIR)/client.o
 
-INC = inc
+INC := inc
 
-RM = rm -rf
+RM := rm -rf
 
 all: server
 
-debug: server client
+debug: client server
+# debug: CXXFLAGS += -g -fsanitize=address -fsanitize=leak #-fsanitize=integer
+debug: all
+#	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server
 
 run: all
 	@./server

@@ -45,10 +45,10 @@ public:
   void check_user_status();
 
   // setter getter
-  void set_fd(int fd);
-  int get_fd();
-  void set_buf(std::string buf);
-  std::string get_buf();
+  void set_fd(const int fd);
+  int get_fd()const;
+  void set_buf(const std::string buf);
+  std::string get_buf()const;
 };
 
 // Channnel ====================================================
@@ -79,11 +79,11 @@ public:
   int start();
   int execute(User &user);
   int newUser();
-  int get_fd();
+  int get_fd()const;
   void set_port(const int port);
-  int get_port();
+  int get_port()const;
   void set_password(const std::string password);
-  std::string get_password();
+  std::string get_password()const;
   User *find_user_by_fd(const int fd);
 };
 
