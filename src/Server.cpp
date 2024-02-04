@@ -143,9 +143,9 @@ int Server::start() {
     return 1;
   }
 
-  if (this->_fds[0].revents == POLLIN) {
+  if (this->_fds[0].revents == POLLIN)
     newUser();
-  } else {
+  else {
     // userからの処理
     for (std::vector<pollfd>::iterator it = this->_fds.begin();
          it != this->_fds.end(); ++it) {
