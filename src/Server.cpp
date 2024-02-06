@@ -86,12 +86,10 @@ int Server::newUser() {
       return 1;
     }
   } else {
-    std::cout << "conected" << std::endl;
+    std::cout << "conected: user fd " << client_fd << std::endl;
     this->_fds.push_back(pollfd());
     this->_fds.back().fd = client_fd;
     this->_fds.back().events = POLLIN;
-    // Userのクラスにも入れてるけどあんまりなっとくいってない
-    // Userの識別が内側まで行かないとできないのが面倒
     this->_users.push_back(User());
     this->_users.back().set_fd(client_fd);
   }
