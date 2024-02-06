@@ -26,7 +26,7 @@ RM := rm -rf
 all: server
 
 debug: client
-debug: CXXFLAGS += -g -fsanitize=address -fsanitize=leak #-fsanitize=integer
+# debug: CXXFLAGS += -g -fsanitize=address -fsanitize=leak #-fsanitize=integer
 debug: all
 #	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server 8080 password
 
