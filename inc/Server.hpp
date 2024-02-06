@@ -6,11 +6,11 @@
 #define MAX_MESSAGE 512
 
 // color
-#define NC "\e[0m"
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define PPL "\e[0;34m"
-#define CYN "\e[0;36m"
+#define NC "\x1B[0m"
+#define RED "\x1B[0;31m"
+#define GRN "\x1B[0;32m"
+#define PPL "\x1B[0;34m"
+#define CYN "\x1B[0;36m"
 
 // Command ===================================================
 // status
