@@ -33,7 +33,7 @@ int Server::execute(User &user) {
   // receive --------------------------------------------
   if (user.receive())
     return 1;
-  std::cout << GRN << "Received: " << NC << user.get_buf() << std::endl;
+  std::cout << GRN << "Received fd(" <<  user.get_fd() << "): "<< NC << user.get_buf() << std::endl;
 
   // parser  ------ ------------------------------------
   user.validate_input_format();
@@ -112,8 +112,8 @@ int Server::init() {
 
   // setting server config
   this->_a_addr.sin_family = AF_INET;
-  this->_a_addr.sin_port = htons(uint16_t(atoi("8080")));
-  // this->_a_addr.sin_port = htons(uint16_t(this->_port));
+  // this->_a_addr.sin_port = htons(uint16_t(atoi("8080")));
+  this->_a_addr.sin_port = htons(uint16_t(this->_port));
   inet_aton("127.0.0.1", &this->_a_addr.sin_addr);
 
   // setting config to socket
