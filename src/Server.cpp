@@ -33,7 +33,8 @@ int Server::execute(User &user) {
   // receive --------------------------------------------
   if (user.receive())
     return 1;
-  std::cout << GRN << "Received fd(" <<  user.get_fd() << "): "<< NC << user.get_buf() << std::endl;
+  std::cout << GRN << "Received fd(" << user.get_fd() << "): " << NC
+            << user.get_buf() << std::endl;
 
   // parser  ------ ------------------------------------
   user.validate_input_format();
