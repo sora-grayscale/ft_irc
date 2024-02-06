@@ -50,7 +50,6 @@ int Server::execute(User &user) {
     send_buf = 0;
     send_size = send(client_fd, &send_buf, 1, 0);
     close(client_fd);
-    // ToDo: pollfd,userからこのfdを取り出す
     std::cout << "closed" << std::endl;
     if (send_size == -1) {
       std::cerr << "send error\n" << std::endl;
@@ -87,6 +86,8 @@ int Server::newUser() {
       return 1;
     }
   } else {
+    if (find_user_by_fd(client_fd))
+      return 0;
     std::cout << "conected: user fd " << client_fd << std::endl;
     this->_fds.push_back(pollfd());
     this->_fds.back().fd = client_fd;
