@@ -1,9 +1,8 @@
 NAME := ircserv
 
 CXX := c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic-errors
 DEPFLAGS = -MMD -MP -MF
-#-pedantic-errors
 SRCDIR := src
 SERVER_SRC = $(SRCDIR)/main.cpp \
              $(SRCDIR)/util.cpp \
@@ -26,13 +25,13 @@ RM := rm -rf
 
 all: server
 
-debug: client server
+debug: client
 # debug: CXXFLAGS += -g -fsanitize=address -fsanitize=leak #-fsanitize=integer
 debug: all
-#	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server
+#	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server 8080 password
 
 run: all
-	@./server
+	@./server 8080 password
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) "$(@:%.o=%.d)" -I$(INC) -c -o $@ $<
