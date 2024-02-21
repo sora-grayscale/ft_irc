@@ -40,12 +40,12 @@ flowchart TD
 
 ```mermaid
 graph TD
-    A[Start] --> B[Try block]
+    A[ああ漢字] --> B[Try block]
     B -- Exception occurs --> C[Catch block]
     B -- No exception --> D[End of try block]
     C --> E[Exception handling]
     E --> F[Continue after catch]
-    D --> F
+    D --> F[あ]
 
 ```
 
