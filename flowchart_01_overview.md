@@ -23,6 +23,7 @@ flowchart TD
     M -- 終了 --> N[クライエントの切断]
     N --> O[サーバー停止または待機]
 
+    click A href "https://github.com/sora-grayscale/ft_irc/blob/docs/30-make-flowchart/flowchart_01_overview.md"
     click B href "Makefile"
     click C href "google.com"
 ```
