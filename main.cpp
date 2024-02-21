@@ -1,38 +1,3 @@
-## サーバー起動準備
-
-```mermaid
-graph TD
-    A[サーバー起動準備] --> B[/Try Brock\]
-    B --> C{argcは3か？}
-    C -- Yes --> D{"argv[1](port)は6665-6669の間か？"}
-    C -- No --> E[Throw]
-    D -- Yes --> F{"argv[2](pass)は英数字かつ32文字以内か？"}
-    D -- No --> G[Throw]
-    F --> H{socket 作成}
-    H -- Yes --> I[bind]
-    H -- No --> J[Throw]
-    I --> K[Listen]
-    E --> L[\Catch/]
-    G --> L[\Catch/]
-    J --> L[\Catch/]
-    L --> M[Exit]
-    K --> N[サーバー起動]
-
-    click N href "https://github.com/sora-grayscale/ft_irc/blob/docs/30-make-flowchart/flowchart_03_run-server.md"
-```
-
-```cpp
-class Server {
-public:
-    Server(int argc, const char *argv[]);
-    ~Server();
-private:
-    int sfd;
-    struct sockaddr_in addr;
-}
-```
-
-```cpp
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <cstring> // stderro
@@ -88,4 +53,3 @@ int main() {
 //    }
     close(cfd);
 }
-```
