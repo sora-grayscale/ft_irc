@@ -1,4 +1,4 @@
-# IRC Server Architecture Overview
+## IRC Server Architecture Overview
 
 ```mermaid
 flowchart TD
@@ -23,3 +23,26 @@ flowchart TD
     M --> |終了| N[クライエントの切断]
     N --> O[サーバー停止または待機]
 ```
+
+## サーバー起動準備
+
+```mermaid
+flowchart TD
+    A[サーバー起動準備] --> B{argcは2ですか？}
+    B -->|Yes| C
+    B -->|No| D[Throw]
+
+```
+
+```mermaid
+graph TD
+    A[Start] --> B[Try block]
+    B -- Exception occurs --> C[Catch block]
+    B -- No exception --> D[End of try block]
+    C --> E[Exception handling]
+    E --> F[Continue after catch]
+    D --> F
+
+```
+
+server::server(int argc, const char *argv[])
