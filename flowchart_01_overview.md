@@ -25,7 +25,7 @@ flowchart TD
 
     click A href "sora-grayscale/ft_irc/blob/docs/30-make-flowchart/flowchart_02.md"
     click B href "flowchart_02.md"
-    click C href "https://github.com/sora-grayscale/ft_irc/blob/docs/30-make-flowchart/flowchart_01_overview.md"
+    click C href "https://github.com/sora-grayscale/ft_irc/blob/docs/30-make-flowchart/flowchart_02.md"
 ```
 
 ## サーバー起動準備
