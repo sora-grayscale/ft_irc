@@ -30,7 +30,7 @@ flowchart TD
 ## サーバー起動準備
 
 ```mermaid
-flowchart TD
+graph TD
     A[サーバー起動準備] --> B[/Try Brock\]
     B{argcは2ですか？}
     B -->|Yes| C
