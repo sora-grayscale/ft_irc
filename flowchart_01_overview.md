@@ -5,8 +5,8 @@ flowchart TD
     A[開始] --> B[サーバー起動準備]
     B --> C[サーバー起動]
     C --> D[クライエントとの接続・認証...CAP]
-    D -- コネクション登録 --> E[Password, Nick, User, Oper...]
 ```
+    D -- コネクション登録 --> E[Password, Nick, User, Oper...]
     E --> F{チャネル内の活動}
     F -- チャンネル操作 --> G[Join, Part, Mode, Topic...]
     F -- メッセージの送信 --> H[Private, Notice]
