@@ -23,18 +23,9 @@ flowchart TD
     M -- 終了 --> N[クライエントの切断]
     N --> O[サーバー停止または待機]
 
-    click A href "sora-grayscale/ft_irc/blob/docs/30-make-flowchart/flowchart_02.md"
-    click B href "flowchart_02.md"
-    click C href "https://github.com/sora-grayscale/ft_irc/blob/docs/30-make-flowchart/flowchart_02.md"
+    click B href "https://github.com/sora-grayscale/ft_irc/blob/docs/30-make-flowchart/flowchart_02_init-server.md"
 ```
 
-## サーバー起動準備
-
-```mermaid
-graph TD
-    A[サーバー起動準備] --> B[/Try Brock\]
-
-```
 
 ```mermaid
 graph TD
