@@ -12,32 +12,42 @@ graph TD
 
 ### Serverクラス
 ```cpp
+#include <set>
+#include <map>
+#include <vector>
+#include <string>
+#include <netinet/in.h>
+
 class Server {
 public:
     Server(int argc, const char *argv[]);
     ~Server();
     void run();
-    void changeNickname(const std::stirng &before, const std::string &after);
+    void changeNickname(const std::string &before, const std::string &after);
     const std::string &getServerName() const;
     const std::string &getNickHistory() const;
-    void setNickHistory(const string &nick);
+    void setNickHistory(const std::string &nick);
 
 private:
 
     std::string serverName; //    > 1.1 サーバー  サーバーは名前で一意に識別されます。この名前は、最大63文字（63）の文字です。サーバー名で使用される可能性のあるもの、および使用されないものについては、プロトコル文法ルール（セクション2.3.1）を参照してください。
-    void checkServerName(const std::string &serverName) const;
 
     std::string password; // 32 自分で決めた
-    void checkPassword(const std::string &password) const;
 
     short port; //
-    void checkPortNum(const std::string &port) const;
 
     int sfd;
     struct sockaddr_in _addr;
     std::vector <struct pollfd> _pollFd;
+    
+    void checkServerName(const std::string &serverName) const;
+    void checkArgc(int argc) const;
+    void checkArgv(const char *argv[]) const;
+    void checkPassword(const std::string &password) const;
+    void checkPortNum(const std::string &port) const;
 
-    std::map <const size_t clFd, std::string nickname> fdToNickname;
+//    std::map <const size_t clFd, std::string nickname> fdToNickname;
+    std::map <const size_t, std::string> fdToNickname;
     std::map <std::string nickname, User user> users;
     std::map <std::string channelName, Channel &channel> channels;
     std::set <std::string> _nickHistory;
@@ -50,9 +60,11 @@ private:
 
 ### Userクラス
 ```cpp
+#include <string>
+
 class User {
 public:
-    enum CommandState {
+    enum RegisterState {
         NONE = 0,
         PASS = 1,
         NICK = 2,
@@ -60,22 +72,6 @@ public:
         REGISTERD = PASS | NICK | USER
     };
 
-  User(const std::string &nick,const std::string &realName);
-  ~User();
-  void setNickName(const std::string &nickname);
-  void setRealName(const std::string &realname);
-
-private:
-    std::string nickname; // 1.2.1 ユーザー 各ユーザーは、最大長さ9文字の一意のニックネームで他のユーザーと区別されます。ニックネームで使用される可能性のあるものとできないものについては、プロトコル文法規則（セクション2.3.1）を参照してください。 
-    std::string username
-    std::string realname; // 63 自分で決めた
-    const int userFd;
-};
-```
-
-```cpp
-class User {
-public:
     enum ModeFlags {
         None    = 0,
         Away    = 1 << 0, // a
@@ -87,43 +83,49 @@ public:
         ServerNotices = 1 << 6, // s
     };
 
-    User() : modeFlags(None) {}
+  User(const std::string &nick,const std::string &realName);
+  ~User();
 
-    // モードフラグの設定
-    void setMode(char mode, bool enable) {
-        switch (mode) {
-            case 'a': modeFlags = enable ? (modeFlags | Away) : (modeFlags & ~Away); break;
-            case 'i': modeFlags = enable ? (modeFlags | Invisible) : (modeFlags & ~Invisible); break;
-            case 'w': modeFlags = enable ? (modeFlags | Wallops) : (modeFlags & ~Wallops); break;
-            case 'r': modeFlags = enable ? (modeFlags | Restricted) : (modeFlags & ~Restricted); break;
-            case 'o': modeFlags = enable ? (modeFlags | Operator) : (modeFlags & ~Operator); break;
-            case 'O': modeFlags = enable ? (modeFlags | LocalOperator) : (modeFlags & ~LocalOperator); break;
-            case 's': modeFlags = enable ? (modeFlags | ServerNotices) : (modeFlags & ~ServerNotices); break;
-            default: /* 不明なフラグの処理 */ break;
-        }
-    }
+  void setNickName(const std::string &nickname);
+  void setRealName(const std::string &realname);
+  void setUserName(const std::string &username);
+  const std::string &getNickName(const std::string &nickname) const;
+  const std::string &getRealName(const std::string &realname) const;
+  const std::string &getUserName(const std::string &username) const;
 
-    // モードフラグの確認
-    bool hasMode(ModeFlags flag) const {
-        return (modeFlags & flag) != None;
-    }
+  void setMode(unsigned int mode, bool enable);
+  bool hasMode(ModeFlags flag) const;
 
 private:
+    std::string nickname; // 1.2.1 ユーザー 各ユーザーは、最大長さ9文字の一意のニックネームで他のユーザーと区別されます。ニックネームで使用される可能性のあるものとできないものについては、プロトコル文法規則（セクション2.3.1）を参照してください。 
+    std::string username;
+    std::string realname; // 63 自分で決めた
+    const int userFd;
+    RegisterState state;
     unsigned int modeFlags;
 };
-
 ```
-
 
 ### Channelクラス
 ```cpp
+#include <map>
+#include <set>
+#include <string>
+
 class Channel {
 public:
+    enum UserStatusFlags {
+        Normal = 0,
+        Creator = 1 <<0,
+        Operator = 1 << 1,
+        Voice = 1 << 2,
+    };
+
      enum ChannelModeFlags {
         None        = 0,
-        Creator     = 1 << 0, // O
-        Operator    = 1 << 1, // o
-        Voice       = 1 << 2, // v
+        ChannelCreator     = 1 << 0, // O
+        ChannelOperator    = 1 << 1, // o
+        ChannelVoice       = 1 << 2, // v
         Anonymous   = 1 << 3, // a
         InviteOnly  = 1 << 4, // i
         Moderated   = 1 << 5, // m
@@ -145,7 +147,14 @@ public:
 
   void setTopic(const std::string &topic);
   
-  void setChannelMode(const ChannelModeflags flag, bool enable);
+  // user status
+  void setUserStatus(const std::string &nickname, UserStatusFlags status, bool enable);
+  void addUserStatus(const std::string &nickname, UserStatusFlags status); // 上とほぼ一緒
+  void removeUserStatus(const std::string &nickname, UserStatusFlags status);
+  bool hasUserStatus(const std::string &nickname, UserStatusFlags status) const;
+  
+  // channel mode
+  void setChannelMode(const ChannelModeFlags flag, bool enable);
   bool hasChannleMode(const ChannelModeFlags flag) const;
   
   // k flag
@@ -173,13 +182,14 @@ public:
 
 private:
     std::map <std::string nickname, User &user> users;
-    std::map <std::string nickname, std::string mode> usersMode;
-    std::string topic;
+    std::string topic; 
+    
+    std::map<std::string nickname, unsigned int userStatus> userStatus;
+    
 
     unsigned int channelModeFlags;
     std::string channelKey; //k flag
     int userLimit; // l flag
-
     std::set<std::string> banMasks; //b flag
     std::set<std::string> exceptionMasks; //e flag
     std::set<std::string> invitationMasks; // I flag
@@ -188,6 +198,9 @@ private:
 
 ### CommandHandlerクラス
 ```cpp
+#inclulde <string>
+#inclulde <vector>
+
 class CommandHandler{
 public:
     void handleCommad(const std::string &command, User &user);
@@ -195,20 +208,13 @@ public:
 private:
     void parseCommand(const std::string &commad);
     void executeCommand(const std::string &commandName, const std::vector<string> &params, User &user);
-//    Password 
-//    Nick 
-//    User 
-//    Oper
-//    User mode
-//    Service
-//    Quit
-//    Squit
-}
+
+};
 ```
 
 ```cpp
 // static
 class Replies {
 public:
-}
+};
 ```
