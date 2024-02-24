@@ -4,16 +4,16 @@ CXX := c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic-errors
 DEPFLAGS = -MMD -MP -MF
 SRCDIR := src
-SERVER_SRC = $(SRCDIR)/main.cpp \
-             $(SRCDIR)/util.cpp \
-             $(SRCDIR)/User.cpp \
-             $(SRCDIR)/Server.cpp
+SERVER_SRC = $(SRCDIR)/main.cpp
+#             $(SRCDIR)/util.cpp \
+#             $(SRCDIR)/User.cpp \
+#             $(SRCDIR)/Server.cpp
 
 OBJDIR := obj
-SERVER_OBJ = $(OBJDIR)/main.o \
-             $(OBJDIR)/util.o \
-             $(OBJDIR)/User.o \
-             $(OBJDIR)/Server.o
+SERVER_OBJ = $(OBJDIR)/main.o
+#             $(OBJDIR)/util.o \
+#             $(OBJDIR)/User.o \
+#             $(OBJDIR)/Server.o
 
 
 CLIENT_SRC = $(SRCDIR)/client.cpp

@@ -1,8 +1,14 @@
+#ifndef SERVER_HPP
+#define SERVER_HPP
+
 #include <map>
+#include <poll.h>
 #include <netinet/in.h>
 #include <set>
 #include <string>
 #include <vector>
+#include "User.hpp"
+#include "Channel.hpp"
 
 class Server {
 public:
@@ -33,13 +39,17 @@ private:
   void checkPassword(const std::string &password) const;
   void checkPortNum(const std::string &port) const;
 
-  //    std::map <const size_t clFd, std::string nickname> fdToNickname;
+  // std::map <const size_t clFd, std::string nickname> fdToNickname;
   std::map<const size_t, std::string> fdToNickname;
-  std::map<std::string nickname, User user> users;
-  std::map<std::string channelName, Channel & channel> channels;
+  // std::map<std::string nickname, User user> nicknameToUserMap;
+  std::map<std::string, User> nicknameToUserMap;
+  // std::map<std::string channelName, Channel & channel> channelNameToChannelMap;
+  std::map<std::string, Channel> channelNameToChannelMap;
   std::set<std::string> _nickHistory;
 
   Server();
   Server(const Server &server);
   Server &operator=(const Server &server);
 };
+
+#endif

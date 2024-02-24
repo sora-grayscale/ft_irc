@@ -1,6 +1,10 @@
+#ifndef CHANNEL_HPP
+#define CHANNEL_HPP
+
 #include <map>
 #include <set>
 #include <string>
+#include "User.hpp"
 
 class Channel {
 public:
@@ -8,7 +12,7 @@ public:
         Normal = 0,
         Creator = 1 <<0,
         Operator = 1 << 1,
-        Voice = 1 << 2,
+        Voice = 1 << 2
     };
 
      enum ChannelModeFlags {
@@ -29,7 +33,7 @@ public:
         Limit       = 1 << 13, // l 特別扱いが必要
         BanMask     = 1 << 14, // b 特別扱いが必要
         ExceptionMask = 1 << 15, // e 特別扱いが必要
-        InvitationMask = 1 << 16, // I 特別扱いが必要
+        InvitationMask = 1 << 16 // I 特別扱いが必要
     };
 
   void addUser(User &user);
@@ -71,10 +75,12 @@ public:
   bool isInvited(const std::string& mask) const;
 
 private:
-    std::map <std::string nickname, User &user> users;
+    // std::map <std::string nickname, User &user> users;
+    std::map <std::string, User *> users;
     std::string topic; 
     
-    std::map<std::string nickname, unsigned int userStatus> userStatus;
+    //std::map<std::string nickname, unsigned int userStatus> userStatus;
+    std::map<std::string, unsigned int> userStatus;
     
 
     unsigned int channelModeFlags;
@@ -84,3 +90,4 @@ private:
     std::set<std::string> exceptionMasks; //e flag
     std::set<std::string> invitationMasks; // I flag
 };
+#endif

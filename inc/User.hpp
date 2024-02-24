@@ -1,3 +1,6 @@
+#ifndef USER_HPP
+#define USER_HPP
+
 #include <string>
 
 class User {
@@ -18,7 +21,7 @@ public:
         Restricted = 1 << 3, // r
         Operator = 1 << 4, // o
         LocalOperator = 1 << 5, // O
-        ServerNotices = 1 << 6, // s
+        ServerNotices = 1 << 6 // s
     };
 
   User(const std::string &nick,const std::string &realName);
@@ -43,3 +46,4 @@ private:
     unsigned int modeFlags;
 };
 
+#endif
