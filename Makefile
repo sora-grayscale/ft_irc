@@ -1,8 +1,11 @@
 NAME := ircserv
+NAME_DEBUG := $(NAME)_debug
 
 CXX := c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic-errors
+CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98
+CXXFLAGS_DEBUG = $(CXXFLAGS) -g -fsanitize=address -fsanitize=leak -fsanitize=undefined #-fsanitize=integer
 DEPFLAGS = -MMD -MP -MF
+
 SRCDIR := src
 SERVER_SRC = $(SRCDIR)/main.cpp
 #             $(SRCDIR)/util.cpp \
@@ -10,64 +13,93 @@ SERVER_SRC = $(SRCDIR)/main.cpp
 #             $(SRCDIR)/Server.cpp
 
 OBJDIR := obj
-SERVER_OBJ = $(OBJDIR)/main.o
-#             $(OBJDIR)/util.o \
-#             $(OBJDIR)/User.o \
-#             $(OBJDIR)/Server.o
+SERVER_OBJ = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SERVER_SRC))
 
+OBJDIR_DEBUG := obj_debug
+SERVER_OBJ_DEBUG = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR_DEBUG)/%.debug.o,$(SERVER_SRC))
 
-CLIENT_SRC = $(SRCDIR)/client.cpp
-CLIENT_OBJ = $(OBJDIR)/client.o
+#CLIENT_SRC = $(SRCDIR)/client.cpp
+#CLIENT_OBJ = $(OBJDIR)/client.o
 
 INC := inc
 
 RM := rm -rf
 
-all: server
+all: $(NAME)
 
-debug: client
-# debug: CXXFLAGS += -g -fsanitize=address -fsanitize=leak #-fsanitize=integer
-debug: all
-#	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server 8080 password
+# debug: client
+# # debug: CXXFLAGS += -g -fsanitize=address -fsanitize=leak #-fsanitize=integer
+# debug: all
+# #	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server 8080 password
 
 run: all
-	@./server 8080 password
+	@./$(NAME) 8080 password
+
+run_debug: all
+	@./$(NAME_DEBUG) 8080 password
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) "$(@:%.o=%.d)" -I$(INC) -c -o $@ $<
 	@echo "$< =========> $(GRN) $@ $(RES)"
 
-server: $(SERVER_OBJ)
+$(OBJDIR_DEBUG)/%.debug.o: $(SRCDIR)/%.cpp | $(OBJDIR_DEBUG)
+	@$(CXX) $(CXXFLAGS_DEBUG) $(DEPFLAGS) "$(@:%.debug.o=%.d)" -I$(INC) -c -o $@ $<
+	@echo "$< =========> $(GRN) $@ $(RES)"
+
+$(NAME): $(SERVER_OBJ)
 	@$(CXX) -o $@ $(SERVER_OBJ)
 	@echo "$(CYN)\n=====link server=====$(RES)"
 	@echo "$(YEL)Objects$(RES): $(SERVER_OBJ)\n"
 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
-	@echo "     $(MGN)--->$(RES) $(GRN)server$(RES)"
+	@echo "     $(MGN)--->$(RES) $(GRN)$(NAME)$(RES)"
 	@echo "$(CYN)==============$(RES)"
 
-client: $(CLIENT_OBJ)
-	@$(CXX) -o $@ $(CLIENT_OBJ)
-	@echo "$(CYN)\n=====link client=====$(RES)"
-	@echo "$(YEL)Objects$(RES): $(CLIENT_OBJ)\n"
-	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
-	@echo "     $(MGN)--->$(RES) $(GRN)client$(RES)"
+$(NAME_DEBUG): $(SERVER_OBJ_DEBUG)
+	@$(CXX) $(CXXFLAGS_DEBUG) -o $(NAME_DEBUG) $(SERVER_OBJ_DEBUG)
+	@echo "$(CYN)\n=====link server=====$(RES)"
+	@echo "$(YEL)Objects$(RES): $(SERVER_OBJ_DEBUG)\n"
+	@echo "$(YEL)Flags$(RES): $(CXXFLAGS_DEBUG) $(DEPFLAGS)\n"
+	@echo "     $(MGN)--->$(RES) $(GRN)$(NAME_DEBUG)$(RES)"
 	@echo "$(CYN)==============$(RES)"
+
+# server: $(SERVER_OBJ)
+# 	@$(CXX) -o $@ $(SERVER_OBJ)
+# 	@echo "$(CYN)\n=====link server=====$(RES)"
+# 	@echo "$(YEL)Objects$(RES): $(SERVER_OBJ)\n"
+# 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
+# 	@echo "     $(MGN)--->$(RES) $(GRN)server$(RES)"
+# 	@echo "$(CYN)==============$(RES)"
+
+# client: $(CLIENT_OBJ)
+# 	@$(CXX) -o $@ $(CLIENT_OBJ)
+# 	@echo "$(CYN)\n=====link client=====$(RES)"
+# 	@echo "$(YEL)Objects$(RES): $(CLIENT_OBJ)\n"
+# 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
+# 	@echo "     $(MGN)--->$(RES) $(GRN)client$(RES)"
+# 	@echo "$(CYN)==============$(RES)"
 
 $(OBJDIR):
 	@mkdir -p $@
 
+$(OBJDIR_DEBUG):
+	@mkdir -p $@
+
 -include $(OBJDIR)/*.d
+-include $(OBJDIR_DEBUG)/*.d
+
+debug: $(NAME_DEBUG)
 
 clean:
 	@echo "$(CYN)\n===== clean =====$(RES)"
 	@echo "$(YEL)delete: $(RES) $(GRN)$(OBJDIR)/*\n$(RES)"
-	@$(RM) $(OBJDIR)
+	@echo "$(YEL)delete: $(RES) $(GRN)$(OBJDIR_DEBUG)/*\n$(RES)"
+	@$(RM) $(OBJDIR) $(OBJDIR_DEBUG)
 
 fclean: clean
 	@echo "$(CYN)\n===== fclean =====$(RES)"
-	@echo "$(YEL)delete: $(RES) $(GRN)server$(RES)"
-	@echo "$(YEL)delete: $(RES) $(GRN)client$(RES)\n"
-	@$(RM) server client
+	@echo "$(YEL)delete: $(RES) $(GRN)$(NAME)$(RES)"
+	@echo "$(YEL)delete: $(RES) $(GRN)$(NAME_DEBUG)$(RES)\n"
+	@$(RM) $(NAME) $(NAME_DEBUG)
 
 re: fclean all
 
