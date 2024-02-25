@@ -35,7 +35,6 @@ void Server::checkArgv(const char *argv[]) {
 
   issPort >> port;
   issPassword >> password;
-  issPort >> port;
   if (!(issPort >> port)) {
     if (issPort.bad()) {
       throw std::runtime_error("Unexpected read error port.");
