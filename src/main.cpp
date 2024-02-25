@@ -38,9 +38,5 @@
 // }
 
 int main(int argc, const char *argv[]) {
-  try {
     Server server(argc, argv);
-  } catch (const std::exception &e) {
-    std::cout << "Error: " << e.what() << std::endl;
-  }
 }

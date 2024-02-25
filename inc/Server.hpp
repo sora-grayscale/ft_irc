@@ -9,6 +9,10 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <iostream>
+
+#define SERVER_NAME "localhost"
 
 class Server {
 public:
@@ -35,9 +39,9 @@ private:
 
   void checkServerName(const std::string &serverName) const;
   void checkArgc(int argc) const;
-  void checkArgv(const char *argv[]) const;
+  void checkArgv(const char *argv[]);
+  void checkPortNum(const short port) const;
   void checkPassword(const std::string &password) const;
-  void checkPortNum(const std::string &port) const;
 
   // std::map <const size_t clFd, std::string nickname> fdToNickname;
   std::map<const size_t, std::string> fdToNickname;
