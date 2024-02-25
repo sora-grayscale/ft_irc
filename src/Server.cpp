@@ -15,13 +15,13 @@ Server::Server(int argc, const char *argv[]) {
 Server::~Server() {}
 
 void Server::checkServerName(const std::string &serverName) const {
-  const size_t MAX_LENGTH = 63;
+  const size_t serverMaxLen = SERVER_MAX_LEN;
 
-  if (MAX_LENGTH < serverName.size()) {
+  if (serverMaxLen < serverName.size()) {
     throw std::runtime_error("Server name is too long.");
   }
-  for (unsigned long i = 0; i < serverName.size(); ++i) {
-    char c = serverName[i];
+  for (std::size_t i = 0; i < serverName.size(); ++i) {
+    char c = serverName.at(i);
     if (!std::isalnum(static_cast<unsigned char>(c))) {
       throw std::runtime_error("Password contains invalid characters.");
     }
@@ -29,7 +29,7 @@ void Server::checkServerName(const std::string &serverName) const {
 
 }
 
-void Server::checkArgc(int argc) const {
+void Server::checkArgc(const int argc) const {
   if (argc != 3) {
       throw std::runtime_error("usage ./ircserv port password");
   }
@@ -54,12 +54,12 @@ void Server::checkPortNum(const short port) const {
 }
 
 void Server::checkPassword(const std::string &password) const {
-  const size_t MAX_LENGTH = 32;
+  const size_t passMaxLen = PASS_MAX_LEN;
 
-  if (password.size() > MAX_LENGTH) {
+  if (password.size() > passMaxLen) {
     throw std::runtime_error("Password is too long.");
   }
-  for (unsigned long i = 0; i < password.size(); ++i) {
+  for (std::size_t i = 0; i < password.size(); ++i) {
     char c = password[i];
     if (!std::isalnum(static_cast<unsigned char>(c))) {
       throw std::runtime_error("Password contains invalid characters.");
