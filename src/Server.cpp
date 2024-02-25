@@ -33,7 +33,7 @@ void Server::checkArgv(const char *argv[]) {
 
   iss >> port >> password;
   checkPortNum(port);
-//  checkPassword(password);
+  checkPassword(password);
   this->port = port;
   this->password = password;
 }
@@ -44,5 +44,21 @@ void Server::checkPortNum(const short port) const {
   }
 }
 
-//void Server::checkPassword(const std::string &password) const {
-//}
+void Server::checkPassword(const std::string &password) const {
+  const size_t MAX_LENGTH = 32;
+
+  if (password == NULL || *password == '\0') {
+    throw std::runtime_error("Password cannot be empty.");
+  }
+
+  size_t length = 0;
+  for (const char *p = password; *p != '\0'; ++p, ++length) {
+    if (!isalnum(*p)) {
+      throw std::runtime_error("Password contains invalid characters.");
+    }
+    if (length > MAX_LENGTH) {
+      throw std::runtime_error("Password is too long.");
+    }
+  }
+  return ;
+}
