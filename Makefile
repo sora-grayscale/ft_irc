@@ -7,9 +7,7 @@ CXXFLAGS_DEBUG = $(CXXFLAGS) -g -fsanitize=address -fsanitize=leak -fsanitize=un
 DEPFLAGS = -MMD -MP -MF
 
 SRCDIR := src
-SERVER_SRC = $(SRCDIR)/main.cpp \
-             src/Server.cpp \
-             src/User.cpp
+SERVER_SRC = $(SRCDIR)/main.cpp
 #             $(SRCDIR)/util.cpp \
 #             $(SRCDIR)/User.cpp \
 #             $(SRCDIR)/Server.cpp
