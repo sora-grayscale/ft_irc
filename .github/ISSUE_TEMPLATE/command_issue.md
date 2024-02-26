@@ -1,3 +1,12 @@
+---
+name: Command issue
+about: Create a report to help us improve
+title: ''
+labels: enhancement
+assignees: ''
+
+---
+
 # COMMAND_NAME command
 ## 入力形式
 > Command:
@@ -23,3 +32,4 @@
 
 ## 参考
 []()
+
