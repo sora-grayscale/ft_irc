@@ -17,6 +17,8 @@
 #include <sstream>
 
 #define SERVER_NAME "localhost"
+#define PASS_MAX_LEN 32
+#define SERVER_MAX_LEN 63
 
 class Server {
 public:
@@ -42,7 +44,7 @@ private:
   std::vector<struct pollfd> _pollFd;
 
   void checkServerName(const std::string &serverName) const;
-  void checkArgc(int argc) const;
+  void checkArgc(const int argc) const;
   void checkArgv(const char *argv[]);
   void checkPortNum(const short port) const;
   void checkPassword(const std::string &password) const;

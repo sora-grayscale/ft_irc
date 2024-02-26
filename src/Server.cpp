@@ -2,7 +2,7 @@
 
 Server::Server(int argc, const char *argv[]) {
   try {
-    //    Server::checkServerName(SERVER_NAME);
+    Server::checkServerName(SERVER_NAME);
     Server::checkArgc(argc);
     Server::checkArgv(argv);
     Server::initSocket();
@@ -15,13 +15,22 @@ Server::Server(int argc, const char *argv[]) {
 
 Server::~Server() {}
 
-// void Server::checkServerName(const std::string &serverName) const {
-//   if (63 < serverName.size()) {
-//     throw std::runtime_error("");
-//   }
-// }
+void Server::checkServerName(const std::string &serverName) const {
+  const size_t serverMaxLen = SERVER_MAX_LEN;
 
-void Server::checkArgc(int argc) const {
+  if (serverMaxLen < serverName.size()) {
+    throw std::runtime_error("Server name is too long.");
+  }
+  for (std::size_t i = 0; i < serverName.size(); ++i) {
+    char c = serverName.at(i);
+    if (!std::isalnum(static_cast<unsigned char>(c))) {
+      throw std::runtime_error("Password contains invalid characters.");
+    }
+  }
+
+}
+
+void Server::checkArgc(const int argc) const {
   if (argc != 3) {
     throw std::runtime_error("usage ./ircserv port password");
   }
@@ -54,7 +63,7 @@ void Server::checkArgv(const char *argv[]) {
     throw std::runtime_error("Trailing characters after password.");
   }
   checkPortNum(port);
-  //  checkPassword(password);
+  checkPassword(password);
   this->port = port;
   this->password = password;
 }
@@ -64,9 +73,6 @@ void Server::checkPortNum(const short port) const {
     throw std::runtime_error("Port number must be between 6665 and 6669");
   }
 }
-
-// void Server::checkPassword(const std::string &password) const {
-// }
 
 void Server::initSocket() {
   this->sfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -87,4 +93,19 @@ void Server::initSocket() {
   if (listen(this->sfd, SOMAXCONN) == -1) {
     throw std::runtime_error(std::strerror(errno));
   }
+}
+
+void Server::checkPassword(const std::string &password) const {
+  const size_t passMaxLen = PASS_MAX_LEN;
+
+  if (password.size() > passMaxLen) {
+    throw std::runtime_error("Password is too long.");
+  }
+  for (std::size_t i = 0; i < password.size(); ++i) {
+    char c = password[i];
+    if (!std::isalnum(static_cast<unsigned char>(c))) {
+      throw std::runtime_error("Password contains invalid characters.");
+    }
+  }
+  return;
 }
