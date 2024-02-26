@@ -92,7 +92,7 @@ private:
     std::string username;
     std::string realname; // 63 自分で決めた
     const int userFd;
-    unsigned int state;
+    RegisterState state;
     unsigned int modeFlags;
 };
 ```
