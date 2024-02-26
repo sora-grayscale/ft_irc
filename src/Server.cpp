@@ -78,9 +78,9 @@ void Server::initSocket() {
   }
 
   memset(&this->_addr, 0, sizeof(struct sockaddr_in));
-  _addr.sin_family = AF_INET;
-  _addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-  _addr.sin_port = htons(this->port);
+  this->_addr.sin_family = AF_INET;
+  this->_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+  this->_addr.sin_port = htons(this->port);
 
   if (bind(this->sfd, reinterpret_cast<struct sockaddr *>(&this->_addr),
            sizeof(struct sockaddr_in)) == -1) {
