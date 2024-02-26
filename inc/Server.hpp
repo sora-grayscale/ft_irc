@@ -11,6 +11,10 @@
 #include <vector>
 #include <cstdlib>
 #include <iostream>
+#include <exception>
+#include <cerrno>
+#include <cstring>
+#include <sstream>
 
 #define SERVER_NAME "localhost"
 #define PASS_MAX_LEN 32
@@ -44,6 +48,8 @@ private:
   void checkArgv(const char *argv[]);
   void checkPortNum(const short port) const;
   void checkPassword(const std::string &password) const;
+
+  void initSocket();
 
   // std::map <const size_t clFd, std::string nickname> fdToNickname;
   std::map<const size_t, std::string> fdToNickname;
