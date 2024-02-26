@@ -83,7 +83,9 @@ public:
 
   void setMode(unsigned int mode, bool enable);
   bool hasMode(ModeFlags flag) const;
-
+  void setState(RegisterState state);
+  RegisterState getState() const;
+  
 private:
     std::string nickname; // 1.2.1 ユーザー 各ユーザーは、最大長さ9文字の一意のニックネームで他のユーザーと区別されます。ニックネームで使用される可能性のあるものとできないものについては、プロトコル文法規則（セクション2.3.1）を参照してください。 
     std::string username;
