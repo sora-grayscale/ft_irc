@@ -24,7 +24,9 @@ class Server {
 public:
   Server(int argc, const char *argv[]);
   ~Server();
+
   void run();
+
   void changeNickname(const std::string &before, const std::string &after);
   const std::string &getServerName() const;
   const std::string &getNickHistory() const;

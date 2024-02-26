@@ -6,6 +6,7 @@ Server::Server(int argc, const char *argv[]) {
     Server::checkArgc(argc);
     Server::checkArgv(argv);
     Server::initSocket();
+  //  Server::
   } catch (const std::exception &e) {
     std::cout << "Error: " << e.what() << std::endl;
     std::exit(EXIT_FAILURE);
@@ -71,6 +72,21 @@ void Server::checkPortNum(const unsigned short port) const {
   }
 }
 
+void Server::checkPassword(const std::string &password) const {
+  const size_t passMaxLen = PASS_MAX_LEN;
+
+  if (password.size() > passMaxLen) {
+    throw std::runtime_error("Password is too long.");
+  }
+  for (std::size_t i = 0; i < password.size(); ++i) {
+    char c = password[i];
+    if (!std::isalnum(static_cast<unsigned char>(c))) {
+      throw std::runtime_error("Password contains invalid characters.");
+    }
+  }
+  return;
+}
+
 void Server::initSocket() {
   this->_sfd = socket(AF_INET, SOCK_STREAM, 0);
   if (this->_sfd == -1) {
@@ -92,17 +108,13 @@ void Server::initSocket() {
   }
 }
 
-void Server::checkPassword(const std::string &password) const {
-  const size_t passMaxLen = PASS_MAX_LEN;
+Server::Server() {}
 
-  if (password.size() > passMaxLen) {
-    throw std::runtime_error("Password is too long.");
-  }
-  for (std::size_t i = 0; i < password.size(); ++i) {
-    char c = password[i];
-    if (!std::isalnum(static_cast<unsigned char>(c))) {
-      throw std::runtime_error("Password contains invalid characters.");
-    }
-  }
-  return;
+Server::Server(const Server &server) {
+  (void)server;
+}
+
+Server &Server::operator=(const Server &server) {
+  (void)server;
+  return (*this);
 }
