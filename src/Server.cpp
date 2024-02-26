@@ -36,7 +36,7 @@ void Server::checkArgc(const int argc) const {
 }
 
 void Server::checkArgv(const char *argv[]) {
-  short port;
+  unsigned short port;
   std::string password;
   std::istringstream issPort(argv[1]);
   std::istringstream issPassword(argv[2]);
@@ -61,33 +61,33 @@ void Server::checkArgv(const char *argv[]) {
 
   checkPortNum(port);
   checkPassword(password);
-  this->port = port;
-  this->password = password;
+  this->_port = port;
+  this->_password = password;
 }
 
-void Server::checkPortNum(const short port) const {
+void Server::checkPortNum(const unsigned short port) const {
   if (port < 6665 || 6669 < port) {
     throw std::runtime_error("Port number must be between 6665 and 6669");
   }
 }
 
 void Server::initSocket() {
-  this->sfd = socket(AF_INET, SOCK_STREAM, 0);
-  if (this->sfd == -1) {
+  this->_sfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (this->_sfd == -1) {
     throw std::runtime_error(std::strerror(errno));
   }
 
   memset(&this->_addr, 0, sizeof(struct sockaddr_in));
   this->_addr.sin_family = AF_INET;
   this->_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-  this->_addr.sin_port = htons(this->port);
+  this->_addr.sin_port = htons(this->_port);
 
-  if (bind(this->sfd, reinterpret_cast<struct sockaddr *>(&this->_addr),
+  if (bind(this->_sfd, reinterpret_cast<struct sockaddr *>(&this->_addr),
            sizeof(struct sockaddr_in)) == -1) {
     throw std::runtime_error(std::strerror(errno));
   }
 
-  if (listen(this->sfd, SOMAXCONN) == -1) {
+  if (listen(this->_sfd, SOMAXCONN) == -1) {
     throw std::runtime_error(std::strerror(errno));
   }
 }
