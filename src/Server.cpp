@@ -27,7 +27,6 @@ void Server::checkServerName(const std::string &serverName) const {
       throw std::runtime_error("Password contains invalid characters.");
     }
   }
-
 }
 
 void Server::checkArgc(const int argc) const {
@@ -43,25 +42,23 @@ void Server::checkArgv(const char *argv[]) {
   std::istringstream issPassword(argv[2]);
 
   issPort >> port;
-  issPassword >> password;
-  if (!(issPort >> port)) {
-    if (issPort.bad()) {
-      throw std::runtime_error("Unexpected read error port.");
-    } else if (issPort.fail()) {
-      throw std::runtime_error("Invalid port number format.");
-    }
+  if (issPort.bad()) {
+    throw std::runtime_error("Unexpected read error port.");
+  } else if (issPort.fail()) {
+    throw std::runtime_error("Invalid port number format.");
   } else if (!issPort.eof()) {
     throw std::runtime_error("Trailing characters after port number.");
   }
-  if (!(issPassword >> port)) {
-    if (issPassword.bad()) {
-      throw std::runtime_error("Unexpected read error password.");
-    } else if (issPassword.fail()) {
-      throw std::runtime_error("Invalid password format.");
-    }
+
+  issPassword >> password;
+  if (issPassword.bad()) {
+    throw std::runtime_error("Unexpected read error password.");
+  } else if (issPassword.fail()) {
+    throw std::runtime_error("Invalid password format.");
   } else if (!issPassword.eof()) {
     throw std::runtime_error("Trailing characters after password.");
   }
+
   checkPortNum(port);
   checkPassword(password);
   this->port = port;
