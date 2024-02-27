@@ -1,13 +1,15 @@
 #include "CommandHandler.hpp"
 
-void CommandHandler::PASS(const std::string &commandName,
-                          const std::vector<string> &params, User &user,) {
+std::string CommandHandler::PASS(const std::string &commandName,
+                                 const std::vector<string> &params,
+                                 User &user, ) {
   if (user.getState() != User::NONE)
-    // throw std::runtime_error(":You may not reregister");
+    return ERR_ALREADYREGISTRED("PASS");
   if (params.size() < 1)
-    // throw std::runtime_error("PASS :Not enough parameters");
+    return ERR_NEEDMOREPARAMS();
   if (params[0] != this->server.getPassword())
-    return ;
+    return "";
   setState(User::PASS);
+  return "";
 }
 
