@@ -24,7 +24,7 @@ std::string CommandHandler::USER(const std::string &commandName,
     return ERR_NEEDMOREPARAMS();
   // statusを確認
   if (user.getState() != User::NONE)
-    return ("");
+    return "";
   // stateが4,5,7だったら弾く(4以上)
   if (user.getState() >= User::USER)
     return ERR_ALREADYREGISTRED("USER");
@@ -33,7 +33,7 @@ std::string CommandHandler::USER(const std::string &commandName,
   // params[0]のバリデート
   if (params[0].empty() || params[1].empty() || params[2].empty() ||
       params[3].empty())
-    return;
+    return "";
 
   // params[0]のバリデート user
   for (std::size_t i = 0; i < params[0].size(); ++i) {
@@ -61,21 +61,25 @@ std::string CommandHandler::USER(const std::string &commandName,
   for (std::size_t i = 3; i < params.size(); ++i) {
     if (i == 3 && params[3].at(0) == ":")
       realname = params[3].substr(1);
-    else if (i != params.size() - 1)
+    else if (i != params.size() - 1) {
       realname += " ";
       realname += params[i];
-    else
+    } else
       realname += params[i];
     if (realname.size() > REAL_NAME_MAX_LEN)
       return "";
   }
 
-    // 全部ok setをする
-    user.setUserName(params[0]);
-    user.setMode(mode);
-    user.setRealName(realname);
+  // 全部ok setをする
+  user.setUserName(params[0]);
+  user.setMode(mode);
+  user.setRealName(realname);
+  setState(User::USER);
 
-    if (user.getState == User::REGISTERD)
   // 登録済みのmapに移動させる
+  if (user.getState == User::REGISTERD) {
+  }
+
+  return "";
 }
 
