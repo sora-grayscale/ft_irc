@@ -9,6 +9,8 @@ DEPFLAGS = -MMD -MP -MF
 SRCDIR := src
 SERVER_SRC = $(SRCDIR)/main.cpp \
              src/Server.cpp \
+             src/Server_init.cpp \
+             src/Server_run.cpp \
              src/User.cpp
 #             $(SRCDIR)/util.cpp \
 #             $(SRCDIR)/User.cpp \
