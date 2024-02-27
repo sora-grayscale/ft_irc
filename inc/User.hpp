@@ -24,7 +24,10 @@ public:
     ServerNotices = 1 << 6  // s
   };
 
+  User();
+  User(const int fd);
   User(const std::string &nick, const std::string &realName);
+  User &operator=(const User &user);
   ~User();
 
   void setNickName(const std::string &nickname);
@@ -39,13 +42,13 @@ public:
 
 private:
   std::string
-      nickname; // 1.2.1 ユーザー
-                // 各ユーザーは、最大長さ9文字の一意のニックネームで他のユーザーと区別されます。ニックネームで使用される可能性のあるものとできないものについては、プロトコル文法規則（セクション2.3.1）を参照してください。
-  std::string username;
-  std::string realname; // 63 自分で決めた
-  const int userFd;
-  RegisterState state;
-  unsigned int modeFlags;
+      _nickname; // 1.2.1 ユーザー
+                 // 各ユーザーは、最大長さ9文字の一意のニックネームで他のユーザーと区別されます。ニックネームで使用される可能性のあるものとできないものについては、プロトコル文法規則（セクション2.3.1）を参照してください。
+  std::string _username;
+  std::string _realname; // 63 自分で決めた
+  int _fd;
+  RegisterState _state;
+  unsigned int _modeFlags;
 };
 
 #endif
