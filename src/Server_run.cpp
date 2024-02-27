@@ -1,8 +1,8 @@
 #include "Server.hpp"
 
 void Server::run() {
-  const int timeout = -1; // 無限に待機
   struct pollfd server_fd_struct;
+  std::string message;
 
   server_fd_struct.fd = this->_sfd;
   server_fd_struct.events = POLLIN;
@@ -10,11 +10,9 @@ void Server::run() {
 
   while (true) {
     try {
-      int ret = poll(this->_pollFd.data(), this->_pollFd.size(), timeout);
-      if (ret < 0) {
-        throw std::runtime_error(std::strerror(errno));
-      } else if (ret == 0) {
-        continue; // timeout (無限待機のため発生しない)
+      int ret = Server::pollSockets();
+      if (ret == 0) { // timeoutの場合はここでは発生しないが、念のため
+        continue;
       }
 
       for (std::size_t i = 0; i < this->_pollFd.size(); i++) {
@@ -32,6 +30,19 @@ void Server::run() {
       continue;
     }
   }
+}
+
+int Server::pollSockets() {
+  int ret;
+  const int timeout = -1; // 無限に待機
+
+  ret = poll(this->_pollFd.data(), this->_pollFd.size(), timeout);
+  if (ret < 0) {
+    throw std::runtime_error(std::strerror(errno));
+  } else if (ret == 0) {
+    return (0);
+  }
+  return (ret);
 }
 
 void Server::acceptNewSocket() {

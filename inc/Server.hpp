@@ -44,7 +44,13 @@ private:
   int _sfd;
   struct sockaddr_in _addr;
   std::vector<struct pollfd> _pollFd;
+  std::map<const size_t, std::string> _fdToNickname; // client fd, nickname
+  std::map<int, User> _tmpUsers;                     // fd, user
+  std::map<std::string, User> _registerdUsers;       // nickname, user
+  std::map<std::string, Channel> _channels;          /// channelname, channel
+  std::set<std::string> _nickHistory;
 
+  // Server init
   void checkServerName(const std::string &serverName) const;
   void checkArgc(const int argc) const;
   void checkArgv(const char *argv[]);
@@ -52,15 +58,10 @@ private:
   void checkPassword(const std::string &password) const;
   void initSocket();
 
+  // Server run
+  int pollSockets();
   void acceptNewSocket();
   void readClientCommand(int fd);
-
-  std::map<const size_t, std::string> _fdToNickname; // client fd, nickname
-  std::map<int, User> _tmpUsers;                     // fd, user
-  std::map<std::string, User> _registerdUsers;       // nickname, user
-  std::map<std::string, Channel>
-      _channelNameToChannelMap; /// channelname, channel
-  std::set<std::string> _nickHistory;
 
   Server();
   Server(const Server &server);
