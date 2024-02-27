@@ -2,7 +2,7 @@
 
 std::string CommandHandler::PASS(const std::string &commandName,
                                  const std::vector<string> &params,
-                                 User &user, ) {
+                                 User &user) {
   if (user.getState() != User::NONE)
     return ERR_ALREADYREGISTRED("PASS");
   if (params.size() < 1)
