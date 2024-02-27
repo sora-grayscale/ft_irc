@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <exception>
+#include <fcntl.h>
 #include <iostream>
 #include <map>
 #include <netinet/in.h>
@@ -20,7 +21,7 @@
 #define SERVER_NAME "localhost"
 #define PASS_MAX_LEN 32
 #define SERVER_MAX_LEN 63
-#define RECEVE_MAX_LEN 10
+#define RECEVE_MAX_LEN 512
 
 class Server {
 public:

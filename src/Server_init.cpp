@@ -77,6 +77,16 @@ void Server::initSocket() {
     throw std::runtime_error(std::strerror(errno));
   }
 
+  // non blocking I/O
+  int flags = fcntl(this->_sfd, F_GETFL, 0);
+  if (flags == -1) {
+    throw std::runtime_error(std::strerror(errno));
+  }
+  flags |= O_NONBLOCK;
+  if (fcntl(this->_sfd, F_SETFL, flags) == -1) {
+    throw std::runtime_error(std::strerror(errno));
+  }
+
   memset(&this->_addr, 0, sizeof(struct sockaddr_in));
   this->_addr.sin_family = AF_INET;
   this->_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);

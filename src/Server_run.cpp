@@ -26,6 +26,7 @@ void Server::run() {
           }
         }
       }
+
     } catch (const std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       continue;
@@ -38,6 +39,16 @@ void Server::acceptNewSocket() {
   if (client_fd < 0) {
     throw std::runtime_error(std::strerror(errno));
   } else {
+
+    // non blocking I/O
+    int flags = fcntl(client_fd, F_GETFL, 0);
+    if (flags == -1) {
+      throw std::runtime_error(std::strerror(errno));
+    }
+    flags |= O_NONBLOCK;
+    if (fcntl(client_fd, F_SETFL, flags) == -1) {
+      throw std::runtime_error(std::strerror(errno));
+    }
 
     // add new user fd
     struct pollfd client_fd_struct;
@@ -59,7 +70,7 @@ void Server::readClientCommand(int fd) {
   count = recv(fd, buf, RECEVE_MAX_LEN, 0);
   if (count < 0) {
     if (errno == EAGAIN || errno == EWOULDBLOCK) {
-      return ;
+      return;
     }
     close(fd);
     this->_tmpUsers.erase(fd);
@@ -68,9 +79,6 @@ void Server::readClientCommand(int fd) {
     close(fd);
     this->_tmpUsers.erase(fd);
   } else {
-    if (512 < count) {
-      throw std::runtime_error("You can send up to 512 characters.");
-    }
     std::cout << buf << std::endl;
   }
 }

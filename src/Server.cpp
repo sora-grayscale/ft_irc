@@ -18,9 +18,7 @@ Server::~Server() {}
 
 Server::Server() {}
 
-Server::Server(const Server &server) {
-  (void)server;
-}
+Server::Server(const Server &server) { (void)server; }
 
 Server &Server::operator=(const Server &server) {
   (void)server;
