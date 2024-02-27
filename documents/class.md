@@ -194,6 +194,7 @@ private:
 class CommandHandler{
 public:
     void handleCommad(const std::string &command, User &user);
+    void handleCommad(const std::string &command, User &user, Channel &channel);
 
 private:
     void parseCommand(const std::string &commad);
