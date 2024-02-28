@@ -1,15 +1,17 @@
 #include "CommandHandler.hpp"
 
-std::string CommandHandler::PASS(const std::string &commandName,
-                                 const std::vector<string> &params,
-                                 User &user) {
+CommandHandler::CommandHandler(const Server &server) : _server(server) {}
+
+const std::string CommandHandler::PASS(const std::string &commandName,
+                                       const std::vector<std::string> &params,
+                                       User &user) {
   if (user.getState() != User::NONE)
-    return ERR_ALREADYREGISTRED("PASS");
-  if (params.size() < 1)
-    return ERR_NEEDMOREPARAMS();
-  if (params[0] != this->server.getPassword())
+    return Replies::ERR_ALREADYREGISTRED();
+  if (params.size() != 1)
+    return Replies::ERR_NEEDMOREPARAMS(commandName);
+  if (params.at(0) != this->_server.getPassword())
     return "";
-  setState(User::PASS);
+  user.setState(User::PASS);
   return "";
 }
 
