@@ -12,7 +12,8 @@ SERVER_SRC = $(SRCDIR)/main.cpp \
              src/Server_init.cpp \
              src/Server_run.cpp \
              src/Replies.cpp \
-             src/CommandHandler.cpp
+             src/CommandHandler.cpp \
+             src/User.cpp
 #             $(SRCDIR)/util.cpp \
 #             $(SRCDIR)/User.cpp \
 #             $(SRCDIR)/Server.cpp
