@@ -23,7 +23,7 @@ void Server::run() {
                 readClientCommand(this->_pollFd.at(i).fd);
             if (!receivedMessage.empty()) {
               CommandHandler commandhandler(*this);
-              commandhandler.parseMessage(receivedMessage);
+              commandhandler.handleCommand(receivedMessage);
               sendReply(this->_pollFd.at(i).fd, receivedMessage);
             }
           }
