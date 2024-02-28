@@ -39,6 +39,8 @@ public:
 
   void setMode(unsigned int mode, bool enable);
   bool hasMode(ModeFlags flag) const;
+  void setState(RegisterState state);
+  RegisterState getState() const;
 
 private:
   std::string
@@ -47,6 +49,7 @@ private:
   std::string _username;
   std::string _realname; // 63 自分で決めた
   int _fd;
+
   RegisterState _state;
   unsigned int _modeFlags;
 };

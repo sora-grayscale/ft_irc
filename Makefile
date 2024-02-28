@@ -12,10 +12,8 @@ SERVER_SRC = $(SRCDIR)/main.cpp \
              src/Server_init.cpp \
              src/Server_run.cpp \
              src/User.cpp \
+             src/Replies.cpp \
              src/CommandHandler.cpp
-#             $(SRCDIR)/util.cpp \
-#             $(SRCDIR)/User.cpp \
-#             $(SRCDIR)/Server.cpp
 
 OBJDIR := obj
 SERVER_OBJ = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SERVER_SRC))
