@@ -40,16 +40,6 @@ void Server::acceptNewSocket() {
     throw std::runtime_error(std::strerror(errno));
   } else {
 
-    // non blocking I/O
-    int flags = fcntl(client_fd, F_GETFL, 0);
-    if (flags == -1) {
-      throw std::runtime_error(std::strerror(errno));
-    }
-    flags |= O_NONBLOCK;
-    if (fcntl(client_fd, F_SETFL, flags) == -1) {
-      throw std::runtime_error(std::strerror(errno));
-    }
-
     // add new user fd
     struct pollfd client_fd_struct;
     client_fd_struct.fd = client_fd;

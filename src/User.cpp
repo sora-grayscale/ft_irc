@@ -1,11 +1,11 @@
 #include "User.hpp"
 #include <iostream>
 
-User::User() : _fd(-1) {}
+User::User()  {}
 
 User::User(const int fd) : _fd(fd) {}
 
-User::User(const std::string &nick, const std::string &realName) : _fd(0) {
+User::User(const std::string &nick, const std::string &realName) {
   std::cout << nick << std::endl;
   std::cout << realName << std::endl;
 }
