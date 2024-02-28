@@ -23,4 +23,4 @@ void User::setState(RegisterState state) {
   this->_state = static_cast<RegisterState>(this->_state | state);
 }
 
-RegisterState User::getState() const { return this->_state; }
+User::RegisterState User::getState() const { return this->_state; }
