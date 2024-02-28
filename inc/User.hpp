@@ -45,7 +45,7 @@ private:
                 // 各ユーザーは、最大長さ9文字の一意のニックネームで他のユーザーと区別されます。ニックネームで使用される可能性のあるものとできないものについては、プロトコル文法規則（セクション2.3.1）を参照してください。
   std::string _username;
   std::string _realname; // 63 自分で決めた
-  const int _userFd;
+  const int _fd;
   RegisterState _state;
   unsigned int _modeFlags;
 };
