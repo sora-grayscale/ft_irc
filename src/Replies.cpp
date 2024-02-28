@@ -1,7 +1,7 @@
 #include "Replies.hpp"
 
 // 461
-std::string Replies::ERR_ALREADYREGISTRED(const std::string command) {
+const std::string Replies::ERR_NEEDMOREPARAMS(const std::string &command) {
   std::string message;
 
   message += "461 ";
@@ -11,10 +11,10 @@ std::string Replies::ERR_ALREADYREGISTRED(const std::string command) {
 }
 
 // 462
-std::string Replies::ERR_NEEDMOREPARAMS() {
+const std::string Replies::ERR_ALREADYREGISTRED() {
   std::string message;
 
   message += "462 ";
-  message += ":You may not reregister";
-  return (massage);
+  message += ":Unauthorized command (already registered)";
+  return (message);
 }
