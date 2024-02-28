@@ -37,9 +37,4 @@
 //   return std::string(password, length);
 // }
 
-int main(int argc, const char *argv[]) {
-    Server server(argc, argv);
-}
-
-
-
+int main(int argc, const char *argv[]) { Server server(argc, argv); }

@@ -59,7 +59,16 @@ public:
         USER = 4,
         REGISTERD = PASS | NICK | USER
     };
-
+/*
+0 : 000 none
+1 : 001 pass
+2 : 010 nick
+3 : 011 pass&&nick
+4 : 100 user
+5 : 101 pass&&user
+6 : 110 存在しない
+7 : 111 全部
+*/
     enum ModeFlags {
         None    = 0,
         Away    = 1 << 0, // a
@@ -194,6 +203,7 @@ private:
 class CommandHandler{
 public:
     void handleCommad(const std::string &command, User &user);
+    void handleCommad(const std::string &command, User &user, Channel &channel);
 
 private:
     void parseCommand(const std::string &commad);
