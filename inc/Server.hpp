@@ -29,13 +29,14 @@ public:
   const std::string &getServerName() const;
   const std::string &getNickHistory() const;
   void setNickHistory(const std::string &nick);
+  const std::string &getPassword() const;
 
 private:
   std::string
       serverName; //    > 1.1 サーバー
                   //    サーバーは名前で一意に識別されます。この名前は、最大63文字（63）の文字です。サーバー名で使用される可能性のあるもの、および使用されないものについては、プロトコル文法ルール（セクション2.3.1）を参照してください。
 
-  std::string password; // 32 自分で決めた
+  std::string _password; // 32 自分で決めた
 
   short port; //
 
