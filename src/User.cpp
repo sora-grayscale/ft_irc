@@ -27,7 +27,7 @@ User::~User() {}
 void User::setMode(unsigned int mode, bool enable) {
   if (enable) {
     this->_modeFlags |= mode;
-  } else {;
+  } else {
     this->_modeFlags &= ~mode;
   }
 }
