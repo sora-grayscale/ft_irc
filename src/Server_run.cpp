@@ -20,7 +20,8 @@ void Server::run() {
           if (this->_pollFd.at(i).fd == this->_sfd) {
             acceptNewSocket();
           } else {
-            std::string receivedMessage = readClientCommand(this->_pollFd.at(i).fd);
+            std::string receivedMessage =
+                readClientCommand(this->_pollFd.at(i).fd);
             if (!receivedMessage.empty()) {
               commandhandler.parseMessage(receivedMessage);
             }

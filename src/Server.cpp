@@ -1,8 +1,6 @@
 #include "Server.hpp"
 
-const std::string &Server::getPassword() const {
-  return (this->_password);
-}
+const std::string &Server::getPassword() const { return (this->_password); }
 Server::Server(int argc, const char *argv[]) {
   try {
     Server::checkServerName(SERVER_NAME);

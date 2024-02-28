@@ -5,8 +5,8 @@ class Server;
 
 #include "Channel.hpp"
 #include "Replies.hpp"
-#include "User.hpp"
 #include "Server.hpp"
+#include "User.hpp"
 #include <sstream>
 #include <string>
 #include <vector>
@@ -19,7 +19,6 @@ public:
   void handleCommand(const std::string &command, User &user);
   void handleCommand(const std::string &command, User &user, Channel &channel);
   void parseMessage(const std::string &message);
-
 
 private:
   std::string _prefix;
