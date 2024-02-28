@@ -36,6 +36,7 @@ public:
   const std::string &getNickHistory() const;
   void setNickHistory(const std::string &nick);
   const std::string &getPassword() const;
+  void sendReply(int fd, const std::string &reply);
 
 private:
   std::string

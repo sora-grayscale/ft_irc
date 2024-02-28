@@ -1,7 +1,6 @@
 #include "Server.hpp"
 
 void Server::run() {
-  CommandHandler commandhandler(*this);
   struct pollfd server_fd_struct;
 
   server_fd_struct.fd = this->_sfd;
@@ -23,7 +22,9 @@ void Server::run() {
             std::string receivedMessage =
                 readClientCommand(this->_pollFd.at(i).fd);
             if (!receivedMessage.empty()) {
+              CommandHandler commandhandler(*this);
               commandhandler.parseMessage(receivedMessage);
+              sendReply(this->_pollFd.at(i).fd, receivedMessage);
             }
           }
         }
@@ -71,6 +72,7 @@ void Server::acceptNewSocket() {
 std::string Server::readClientCommand(int fd) {
   ssize_t count;
   char buf[RECEVE_MAX_LEN + 1];
+
   memset(buf, 0, RECEVE_MAX_LEN + 1);
   count = recv(fd, buf, RECEVE_MAX_LEN, 0);
   if (count < 0) {
@@ -88,3 +90,23 @@ std::string Server::readClientCommand(int fd) {
     return (buf);
   }
 }
+
+void Server::sendReply(int fd, const std::string &reply) {
+  ssize_t sent = 0;
+  ssize_t to_send = reply.size();
+
+  while (sent < to_send) {
+    ssize_t count = send(fd, reply.c_str() + sent, to_send - sent, 0);
+    if (count < 0) {
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        // ノンブロッキング操作で再試行が必要
+        continue;
+      } else {
+        // その他のエラー
+        throw std::runtime_error(std::strerror(errno));
+      }
+    }
+    sent += count;
+  }
+}
+

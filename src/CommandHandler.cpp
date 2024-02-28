@@ -7,33 +7,43 @@ void CommandHandler::parseMessage(const std::string &message) {
   if (message.at(0) == ':') {
     extractPrefix(iss);
   }
+  if (iss.eof()) {
+    return;
+  }
   extractCommand(iss);
+  while (!iss.eof()) {
+    extractParam(iss);
+  }
 }
 
 void CommandHandler::extractPrefix(std::istringstream &iss) {
   iss >> this->_prefix;
-  if (iss.eof()) {
-  }
-  if (iss.fail()) {
-    throw std::runtime_error(
-        "Failed to extract prefix due to a non-critical error.");
-  } else if (iss.bad()) {
+  if (iss.bad()) {
     throw std::runtime_error(
         "A critical error occurred while extracting prefix.");
   }
-  std::cout << this->_prefix << std::endl;
+//  std::cout << this->_prefix << std::endl;
 }
 
 void CommandHandler::extractCommand(std::istringstream &iss) {
   iss >> this->_command;
-  if (iss.fail()) {
-    throw std::runtime_error(
-        "Failed to extract command due to a non-critical error.");
-  } else if (iss.bad()) {
+  if (iss.bad()) {
     throw std::runtime_error(
         "A critical error occurred while extracting command.");
   }
-  std::cout << this->_command << std::endl;
+//  std::cout << this->_command << std::endl;
+}
+
+void CommandHandler::extractParam(std::istringstream &iss) {
+  std::string param;
+
+  iss >> param;
+  this->_params.push_back(param);
+  if (iss.bad()) {
+    throw std::runtime_error(
+        "A critical error occurred while extracting param.");
+  }
+//  std::cout << param << std::endl;
 }
 
 CommandHandler::CommandHandler(const Server &server) : _server(server) {}

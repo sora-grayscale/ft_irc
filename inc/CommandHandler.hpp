@@ -16,6 +16,7 @@ public:
   CommandHandler();
   CommandHandler(const Server &server);
   ~CommandHandler();
+
   void handleCommand(const std::string &command, User &user);
   void handleCommand(const std::string &command, User &user, Channel &channel);
   void parseMessage(const std::string &message);
@@ -28,8 +29,11 @@ private:
 
   void executeCommand(const std::string &commandName,
                       const std::vector<std::string> &params, User &user);
+
+  // parseMessage
   void extractPrefix(std::istringstream &iss);
   void extractCommand(std::istringstream &iss);
+  void extractParam(std::istringstream &iss);
 
   // command
   const std::string PASS(const std::string &commandName,
