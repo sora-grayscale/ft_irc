@@ -9,9 +9,11 @@ DEPFLAGS = -MMD -MP -MF
 SRCDIR := src
 SERVER_SRC = $(SRCDIR)/main.cpp \
              src/Server.cpp \
-             src/User.cpp \
+             src/Server_init.cpp \
+             src/Server_run.cpp \
              src/Replies.cpp \
-             src/CommandHandler.cpp
+             src/CommandHandler.cpp \
+             src/User.cpp
 #             $(SRCDIR)/util.cpp \
 #             $(SRCDIR)/User.cpp \
 #             $(SRCDIR)/Server.cpp
@@ -37,10 +39,10 @@ all: $(NAME)
 # #	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server 8080 password
 
 run: all
-	@./$(NAME) 8080 password
+	@./$(NAME) 6665 password
 
-run_debug: all
-	@./$(NAME_DEBUG) 8080 password
+run_debug: debug
+	@./$(NAME_DEBUG) 6665 password
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) "$(@:%.o=%.d)" -I$(INC) -c -o $@ $<

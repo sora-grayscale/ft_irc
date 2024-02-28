@@ -9,7 +9,8 @@
 
 class CommandHandler {
 public:
-  void handleCommad(const std::string &command, User &user);
+  void handleCommand(const std::string &command, User &user);
+  void handleCommand(const std::string &command, User &user, Channel &channel);
 
   CommandHandler(const Server &server);
   ~CommandHandler();
