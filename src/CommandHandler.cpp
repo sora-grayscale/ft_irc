@@ -1,6 +1,6 @@
 #include "CommandHandler.hpp"
 
-CommandHandler::CommandHandler(const Server &server) : _server(server) {}
+CommandHandler::CommandHandler(Server &server) : _server(server) {}
 std::string CommandHandler::PASS(const std::string &commandName,
                                  const std::vector<std::string> &params,
                                  User &user) {
@@ -78,6 +78,8 @@ std::string CommandHandler::USER(const std::string &commandName,
 
   // 登録済みのmapに移動させる
   if (user.getState() == User::REGISTERD) {
+    this->_server.eraseTmpMap(user.getFd());
+    this->_server.addRegisterMap(user.getNickName(), user);
   }
 
   return "";

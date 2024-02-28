@@ -12,10 +12,10 @@ public:
   void handleCommand(const std::string &command, User &user);
   void handleCommand(const std::string &command, User &user, Channel &channel);
 
-  CommandHandler(const Server &server);
+  CommandHandler(Server &server);
   ~CommandHandler();
 private:
-  const Server &_server;
+  Server &_server;
 
   void parseCommand(const std::string &commad);
   void executeCommand(const std::string &commandName,

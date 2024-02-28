@@ -33,9 +33,10 @@ public:
   void setNickName(const std::string &nickname);
   void setRealName(const std::string &realname);
   void setUserName(const std::string &username);
-  const std::string &getNickName(const std::string &nickname) const;
-  const std::string &getRealName(const std::string &realname) const;
-  const std::string &getUserName(const std::string &username) const;
+  const std::string &getNickName() const;
+  const std::string &getRealName() const;
+  const std::string &getUserName() const;
+  const int &getFd()const;
 
   void setMode(unsigned int mode, bool enable);
   bool hasMode(ModeFlags flag) const;

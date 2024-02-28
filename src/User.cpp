@@ -27,7 +27,7 @@ User::~User() {}
 void User::setMode(unsigned int mode, bool enable) {
   if (enable) {
     this->_modeFlags |= mode;
-  } else {
+  } else {;
     this->_modeFlags &= ~mode;
   }
 }
@@ -40,6 +40,12 @@ void User::setState(RegisterState state) {
 }
 
 User::RegisterState User::getState() const { return this->_state; }
+
+const int &User::getFd() const { return this->_fd; }
+
+const std::string &User::getNickName() const { return this->_nickname; }
+const std::string &User::getRealName() const { return this->_realname; }
+const std::string &User::getUserName() const { return this->_username; }
 
 void User::setNickName(const std::string &nickname) {
   this->_nickname = nickname;
