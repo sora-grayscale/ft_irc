@@ -34,6 +34,7 @@ public:
   const std::string &getServerName() const;
   const std::string &getNickHistory() const;
   void setNickHistory(const std::string &nick);
+  const std::string &getPassword() const;
 
 private:
   std::string
