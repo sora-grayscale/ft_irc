@@ -22,9 +22,9 @@ private:
                       const std::vector<std::string> &params, User &user);
   // command
   std::string PASS(const std::string &commandName,
-                   const std::vector<string> &params, User &user);
+                   const std::vector<std::string> &params, User &user);
   std::string USER(const std::string &commandName,
-                   const std::vector<string> &params, User &user);
+                   const std::vector<std::string> &params, User &user);
 };
 
 #endif

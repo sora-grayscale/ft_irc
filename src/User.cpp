@@ -40,3 +40,14 @@ void User::setState(RegisterState state) {
 }
 
 User::RegisterState User::getState() const { return this->_state; }
+
+void User::setNickName(const std::string &nickname) {
+  this->_nickname = nickname;
+}
+void User::setRealName(const std::string &realname) {
+  this->_realname = realname;
+}
+void User::setUserName(const std::string &username)
+{
+  this->_username = username;
+}

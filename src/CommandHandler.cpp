@@ -2,12 +2,12 @@
 
 CommandHandler::CommandHandler(const Server &server) : _server(server) {}
 std::string CommandHandler::PASS(const std::string &commandName,
-                                 const std::vector<string> &params,
+                                 const std::vector<std::string> &params,
                                  User &user) {
   if (params.size() < 1)
-    return ERR_NEEDMOREPARAMS();
+    return Replies::ERR_NEEDMOREPARAMS(commandName);
   if (user.getState() != User::NONE)
-    return ERR_ALREADYREGISTRED("PASS");
+    return Replies::ERR_ALREADYREGISTRED();
   if (params.at(0) != this->_server.getPassword())
     return "";
   user.setState(User::PASS);
@@ -15,20 +15,19 @@ std::string CommandHandler::PASS(const std::string &commandName,
 }
 
 std::string CommandHandler::USER(const std::string &commandName,
-                                 const std::vector<string> &params,
+                                 const std::vector<std::string> &params,
                                  User &user) {
   const int REAL_NAME_MAX_LEN = 63;
 
-  RegisterState pastState = user.getState();
   // paramsを確認
   if (params.size() < 4)
-    return ERR_NEEDMOREPARAMS();
+    return Replies::ERR_NEEDMOREPARAMS(commandName);
   // statusを確認
   if (user.getState() != User::NONE)
     return "";
   // stateが4,5,7だったら弾く(4以上)
   if (user.getState() >= User::USER)
-    return ERR_ALREADYREGISTRED("USER");
+    return Replies::ERR_ALREADYREGISTRED();
 
   // user処理
   // params[0]のバリデート
@@ -60,7 +59,7 @@ std::string CommandHandler::USER(const std::string &commandName,
   // params[3]以降のバリデートrealname
   std::string realname;
   for (std::size_t i = 3; i < params.size(); ++i) {
-    if (i == 3 && params[3].at(0) == ":")
+    if (i == 3 && params[3].at(0) == ':')
       realname = params[3].substr(1);
     else if (i != params.size() - 1) {
       realname += " ";
@@ -73,12 +72,12 @@ std::string CommandHandler::USER(const std::string &commandName,
 
   // 全部ok setをする
   user.setUserName(params[0]);
-  user.setMode(mode);
+  user.setMode(mode, true);
   user.setRealName(realname);
-  setState(User::USER);
+  user.setState(User::USER);
 
   // 登録済みのmapに移動させる
-  if (user.getState == User::REGISTERD) {
+  if (user.getState() == User::REGISTERD) {
   }
 
   return "";
