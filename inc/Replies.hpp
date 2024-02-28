@@ -1,12 +1,14 @@
 #ifndef REPLIES_HPP
 #define REPLIES_HPP
 
+#include <string>
+
 class Replies {
 public:
   //461
-  static std::string ERR_ALREADYREGISTRED(const std::string command);
+  static const std::string ERR_NEEDMOREPARAMS(const std::string &command);
   //462
-  static std::string ERR_NEEDMOREPARAMS();
+  static const std::string ERR_ALREADYREGISTRED();
 };
 
 #endif // REPLIES
