@@ -1,8 +1,8 @@
 #include "Server.hpp"
 
 void Server::run() {
+  CommandHandler commandhandler;
   struct pollfd server_fd_struct;
-  std::string message;
 
   server_fd_struct.fd = this->_sfd;
   server_fd_struct.events = POLLIN;
@@ -20,7 +20,10 @@ void Server::run() {
           if (this->_pollFd.at(i).fd == this->_sfd) {
             acceptNewSocket();
           } else {
-            readClientCommand(this->_pollFd.at(i).fd);
+            std::string receivedMessage = readClientCommand(this->_pollFd.at(i).fd);
+            if (!receivedMessage.empty()) {
+              commandhandler.parseMessage(receivedMessage);
+            }
           }
         }
       }
@@ -74,14 +77,14 @@ void Server::acceptNewSocket() {
   }
 }
 
-void Server::readClientCommand(int fd) {
+std::string Server::readClientCommand(int fd) {
   ssize_t count;
   char buf[RECEVE_MAX_LEN + 1];
   memset(buf, 0, RECEVE_MAX_LEN + 1);
   count = recv(fd, buf, RECEVE_MAX_LEN, 0);
   if (count < 0) {
     if (errno == EAGAIN || errno == EWOULDBLOCK) {
-      return;
+      return ("");
     }
     close(fd);
     this->_tmpUsers.erase(fd);
@@ -89,7 +92,8 @@ void Server::readClientCommand(int fd) {
   } else if (count == 0) { // クライアントが切断された場合
     close(fd);
     this->_tmpUsers.erase(fd);
+    return ("");
   } else {
-    std::cout << buf << std::endl;
+    return (buf);
   }
 }

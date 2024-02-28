@@ -2,6 +2,7 @@
 #define SERVER_HPP
 
 #include "Channel.hpp"
+#include "CommandHandler.hpp"
 #include "User.hpp"
 #include <cerrno>
 #include <cstdlib>
@@ -61,7 +62,7 @@ private:
   // Server run
   int pollSockets();
   void acceptNewSocket();
-  void readClientCommand(int fd);
+  std::string readClientCommand(int fd);
 
   Server();
   Server(const Server &server);
