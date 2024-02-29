@@ -71,10 +71,19 @@ std::string CommandHandler::USER(const std::string &commandName,
   }
 
   // 全部ok setをする
-  user.setUserName(params[0]);
-  user.setMode(mode, true);
+  user.setUserName(this->_params.at(0));
+  if ((mode & (1 << 2)) != 0) {
+    user.setMode(User::Wallops, true);
+  } else {
+    user.setMode(User::Wallops, false);
+  }
+  if ((mode & (1 << 3)) != 0) {
+    user.setMode(User::Invisible, true);
+  } else {
+    user.setMode(User::Invisible, false);
+  }
   user.setRealName(realname);
-  user.setState(User::USER);
+  user.setState(User::USER, true);
 
   // 登録済みのmapに移動させる
   if (user.getState() == User::REGISTERD) {
