@@ -1,5 +1,15 @@
 #include "Replies.hpp"
 
+// 421
+const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
+  std::string message;
+
+  message += "421 ";
+  message += command;
+  message += " :Unknown command";
+  return (message);
+}
+
 // 461
 const std::string Replies::ERR_NEEDMOREPARAMS(const std::string &command) {
   std::string message;

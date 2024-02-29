@@ -1,5 +1,4 @@
 #include "Server.hpp"
-
 void Server::checkServerName(const std::string &serverName) const {
   const size_t serverMaxLen = SERVER_MAX_LEN;
 

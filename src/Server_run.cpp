@@ -1,7 +1,6 @@
 #include "Server.hpp"
 
 void Server::run() {
-  const int timeout = -1; // 無限に待機
   struct pollfd server_fd_struct;
 
   server_fd_struct.fd = this->_sfd;
@@ -10,11 +9,9 @@ void Server::run() {
 
   while (true) {
     try {
-      int ret = poll(this->_pollFd.data(), this->_pollFd.size(), timeout);
-      if (ret < 0) {
-        throw std::runtime_error(std::strerror(errno));
-      } else if (ret == 0) {
-        continue; // timeout (無限待機のため発生しない)
+      int ret = Server::pollSockets();
+      if (ret == 0) { // timeoutの場合はここでは発生しないが、念のため
+        continue;
       }
 
       for (std::size_t i = 0; i < this->_pollFd.size(); i++) {
@@ -22,7 +19,13 @@ void Server::run() {
           if (this->_pollFd.at(i).fd == this->_sfd) {
             acceptNewSocket();
           } else {
-            readClientCommand(this->_pollFd.at(i).fd);
+            std::string receivedMessage =
+                readClientCommand(this->_pollFd.at(i).fd);
+            if (!receivedMessage.empty()) {
+              CommandHandler commandhandler(*this);
+              commandhandler.handleCommand(receivedMessage);
+              sendReply(this->_pollFd.at(i).fd, receivedMessage);
+            }
           }
         }
       }
@@ -32,6 +35,19 @@ void Server::run() {
       continue;
     }
   }
+}
+
+int Server::pollSockets() {
+  int ret;
+  const int timeout = -1; // 無限に待機
+
+  ret = poll(this->_pollFd.data(), this->_pollFd.size(), timeout);
+  if (ret < 0) {
+    throw std::runtime_error(std::strerror(errno));
+  } else if (ret == 0) {
+    return (0);
+  }
+  return (ret);
 }
 
 void Server::acceptNewSocket() {
@@ -53,14 +69,15 @@ void Server::acceptNewSocket() {
   }
 }
 
-void Server::readClientCommand(int fd) {
+std::string Server::readClientCommand(int fd) {
   ssize_t count;
   char buf[RECEVE_MAX_LEN + 1];
+
   memset(buf, 0, RECEVE_MAX_LEN + 1);
   count = recv(fd, buf, RECEVE_MAX_LEN, 0);
   if (count < 0) {
     if (errno == EAGAIN || errno == EWOULDBLOCK) {
-      return;
+      return ("");
     }
     close(fd);
     this->_tmpUsers.erase(fd);
@@ -68,7 +85,28 @@ void Server::readClientCommand(int fd) {
   } else if (count == 0) { // クライアントが切断された場合
     close(fd);
     this->_tmpUsers.erase(fd);
+    return ("");
   } else {
-    std::cout << buf << std::endl;
+    return (buf);
   }
 }
+
+void Server::sendReply(int fd, const std::string &reply) {
+  ssize_t sent = 0;
+  ssize_t to_send = reply.size();
+
+  while (sent < to_send) {
+    ssize_t count = send(fd, reply.c_str() + sent, to_send - sent, 0);
+    if (count < 0) {
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        // ノンブロッキング操作で再試行が必要
+        continue;
+      } else {
+        // その他のエラー
+        throw std::runtime_error(std::strerror(errno));
+      }
+    }
+    sent += count;
+  }
+}
+

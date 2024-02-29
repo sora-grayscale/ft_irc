@@ -1,6 +1,8 @@
 #include "CommandHandler.hpp"
+#include <iostream>
 
 CommandHandler::CommandHandler(Server &server) : _server(server) {}
+CommandHandler::~CommandHandler() {}
 
 const std::string CommandHandler::PASS(User &user) {
   if (this->_params.size() < 1)
@@ -13,6 +15,10 @@ const std::string CommandHandler::PASS(User &user) {
   }
   user.setState(User::PASS, true);
   return "";
+}
+
+void CommandHandler::handleCommand(const std::string &message) {
+  parseMessage(message);
 }
 
 const std::string CommandHandler::USER(User &user) {

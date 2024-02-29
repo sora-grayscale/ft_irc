@@ -1,7 +1,7 @@
 #include "User.hpp"
 #include <iostream>
 
-User::User()  {}
+User::User() {}
 
 User::User(const int fd) : _fd(fd) {}
 

@@ -1,28 +1,45 @@
 #ifndef COMMANDHANDLER_HPP
 #define COMMANDHANDLER_HPP
 
+class Server;
+
+#include "Channel.hpp"
 #include "Replies.hpp"
 #include "Server.hpp"
 #include "User.hpp"
+#include <sstream>
 #include <string>
 #include <vector>
 #include <sstream>
 
 class CommandHandler {
 public:
-  void handleCommand(const std::string &command, User &user);
-  void handleCommand(const std::string &command, User &user, Channel &channel);
-
   CommandHandler(Server &server);
   ~CommandHandler();
-  Server &_server;
+  std::string _prefix;
+  std::string _command;
+  std::vector<std::string> _params;
+  void handleCommand(const std::string &message);
+
+private:
+  CommandHandler();
+  const Server &_server;
+
+
   std::string _prefix;
   std::string _command;
   std::vector<std::string> _params;
 
-  void parseCommand(const std::string &commad);
-  void executeCommand(const std::string &commandName,
-                      const std::vector<std::string> &params, User &user);
+
+  // parseMessage
+  void parseMessage(const std::string &message);
+  void extractPrefix(std::istringstream &iss);
+  void extractCommand(std::istringstream &iss);
+  void extractParam(std::istringstream &iss);
+
+  // executeCommand
+  void executeCommand(User &user);
+
   // command
 
   // command
