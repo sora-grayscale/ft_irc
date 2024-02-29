@@ -42,6 +42,7 @@ private:
   // command
   const std::string PASS(User &user);
   const std::string USER(User &user);
+  const std::string NICK(User &user);
 
 };
 

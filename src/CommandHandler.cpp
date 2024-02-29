@@ -94,3 +94,78 @@ const std::string CommandHandler::USER(User &user) {
 
   return "";
 }
+
+// -----------------------------------------------------------------
+bool isSpecialChar(const char c) {
+  const std::string special = "[]\\`_^{|}";
+  return special.find(c) != std::string::npos;
+}
+
+bool validateNick(const std::string str) {
+  for (std::size_t i = 0; i < str.size(); ++i) {
+    char c = str[i];
+    if (i == 0) {
+      if (!std::isalpha(static_cast<unsigned char>(c)) && !isSpecialChar(c))
+        return 0;
+    } else if (!std::isalnum(static_cast<unsigned char>(c)) &&
+               !isSpecialChar(c) && c != '-') {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+std::string convertChar(const std::string &str) {
+  std::string convert = str;
+
+  for (std::size_t i = 0; i < convert.size(); ++i) {
+    switch (convert[i]) {
+    case '{':
+      convert[i] = '[';
+      break;
+    case '}':
+      convert[i] = ']';
+      break;
+    case '|':
+      convert[i] = '\\';
+      break;
+    case '^':
+      convert[i] = '~';
+      break;
+    default:
+      break;
+    }
+  }
+  return convert;
+}
+
+const std::string CommandHandler::NICK(User &user) {
+  if (this->_params.size() < 1)
+    return Replies::ERR_NONICKNAMEGIVEN();
+  // state の確認
+  if ((user.getState() & User::PASS) != 0)
+    return "";
+  if (user.hasMode(User::Restricted))
+    return Replies::ERR_RESTRICTED();
+  // nick paramのバリデーション
+  if (this->_params.at(0).size() > 9 || !validateNick(this->_params.at(0)))
+    return Replies::ERR_ERRONEUSNICKNAME(this->_params.at(0));
+  // historyに存在するかどうか,this->serverにnickHistoryのsetが存在する
+  if (this->_server.isNick(this->_params.at(0)) != 0)
+    return Replies::ERR_NICKNAMEINUSE(this->_params.at(0));
+
+  // 変換 { →[, } → ], | → \, ^ → ~
+  std::string nick = convertChar(this->_params.at(0));
+
+  // 初期登録かどうかの判別
+  if (user.getState() != User::REGISTERD) {
+    user.setState(User::NICK, true);
+    if (user.getState() == User::REGISTERD) {
+      this->_server.eraseTmpMap(user.getFd());
+      this->_server.addRegisterMap(user.getNickName(), user);
+    }
+  }
+  // set
+  user.setNickName(nick);
+  return "";
+}
