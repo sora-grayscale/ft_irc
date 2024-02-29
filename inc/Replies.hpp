@@ -5,10 +5,12 @@
 
 class Replies {
 public:
-  //461
+  // 461
   static const std::string ERR_NEEDMOREPARAMS(const std::string &command);
-  //462
+  // 462
   static const std::string ERR_ALREADYREGISTRED();
+  // 464
+  static const std::string ERR_PASSWDMISMATCH();
 };
 
 #endif // REPLIES

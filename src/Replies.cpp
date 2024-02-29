@@ -18,3 +18,12 @@ const std::string Replies::ERR_ALREADYREGISTRED() {
   message += ":Unauthorized command (already registered)";
   return (message);
 }
+
+// 464
+const std::string Replies::ERR_PASSWDMISMATCH() {
+  std::string message;
+
+  message += "464 ";
+  message += ":Password incorrect";
+  return (message);
+}
