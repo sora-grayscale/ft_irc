@@ -7,16 +7,14 @@ CXXFLAGS_DEBUG = $(CXXFLAGS) -g -fsanitize=address -fsanitize=leak -fsanitize=un
 DEPFLAGS = -MMD -MP -MF
 
 SRCDIR := src
-SERVER_SRC = $(SRCDIR)/main.cpp \
-             src/Server.cpp \
-             src/Server_init.cpp \
-             src/Server_run.cpp \
-             src/Replies.cpp \
-             src/CommandHandler.cpp \
-             src/User.cpp
-#             $(SRCDIR)/util.cpp \
-#             $(SRCDIR)/User.cpp \
-#             $(SRCDIR)/Server.cpp
+SERVER_SRC =  src/CommandHandler.cpp \
+              src/CommandHandler_parseMessage.cpp \
+              src/main.cpp \
+              src/Replies.cpp \
+              src/Server.cpp \
+              src/Server_init.cpp \
+              src/Server_run.cpp \
+              src/User.cpp
 
 OBJDIR := obj
 SERVER_OBJ = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SERVER_SRC))

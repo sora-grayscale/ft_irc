@@ -1,6 +1,13 @@
 #include "CommandHandler.hpp"
+#include <iostream>
 
 CommandHandler::CommandHandler(const Server &server) : _server(server) {}
+
+CommandHandler::~CommandHandler() {}
+
+void CommandHandler::handleCommand(const std::string &message) {
+  parseMessage(message);
+}
 
 const std::string CommandHandler::PASS(const std::string &commandName,
                                        const std::vector<std::string> &params,
@@ -14,4 +21,3 @@ const std::string CommandHandler::PASS(const std::string &commandName,
   user.setState(User::PASS);
   return "";
 }
-
