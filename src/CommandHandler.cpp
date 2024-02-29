@@ -52,7 +52,6 @@ const std::string CommandHandler::USER(User &user) {
 
   // params[3]以降のバリデートrealname
   std::string realname;
-  std::string realname;  
   for (std::size_t i = 3; i < this->_params.size(); ++i) {  
     if (i == 3 && this->_params.at(3).at(0) == ':')  
       realname = this->_params.at(3).substr(1);  
