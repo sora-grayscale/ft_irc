@@ -37,3 +37,4 @@ const std::string Replies::ERR_PASSWDMISMATCH() {
   message += ":Password incorrect";
   return (message);
 }
+

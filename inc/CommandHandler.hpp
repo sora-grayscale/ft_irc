@@ -16,14 +16,11 @@ class CommandHandler {
 public:
   CommandHandler(Server &server);
   ~CommandHandler();
-  std::string _prefix;
-  std::string _command;
-  std::vector<std::string> _params;
   void handleCommand(const std::string &message);
 
 private:
   CommandHandler();
-  const Server &_server;
+  Server &_server;
 
 
   std::string _prefix;
