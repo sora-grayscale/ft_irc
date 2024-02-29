@@ -10,17 +10,18 @@ class Server;
 #include <sstream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 class CommandHandler {
 public:
-  CommandHandler();
-  CommandHandler(const Server &server);
+  CommandHandler(Server &server);
   ~CommandHandler();
-
   void handleCommand(const std::string &message);
 
 private:
-  const Server &_server;
+  CommandHandler();
+  Server &_server;
+
 
   std::string _prefix;
   std::string _command;
@@ -37,8 +38,11 @@ private:
   void executeCommand(User &user);
 
   // command
-  const std::string PASS(const std::string &commandName,
-                         const std::vector<std::string> &params, User &user);
+
+  // command
+  const std::string PASS(User &user);
+  const std::string USER(User &user);
+
 };
 
 #endif
