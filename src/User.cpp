@@ -35,9 +35,13 @@ bool User::hasMode(ModeFlags flag) const {
   return (this->_modeFlags & flag) != 0;
 }
 
-void User::setState(RegisterState state) {
-  this->_state = static_cast<RegisterState>(this->_state | state);
-}
+void User::setState(RegisterState state, bool enable) {
+  if (enable) {  
+    this->_state = static_cast<RegisterState>(this->_state | state);  
+  } else {  
+    this->_state = static_cast<RegisterState>(this->_state & ~state);  
+  }  
+ }  
 
 User::RegisterState User::getState() const { return this->_state; }
 

@@ -40,7 +40,7 @@ public:
 
   void setMode(unsigned int mode, bool enable);
   bool hasMode(ModeFlags flag) const;
-  void setState(RegisterState state);
+  void setState(RegisterState state, bool eneble);
   RegisterState getState() const;
 
 private:

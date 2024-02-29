@@ -6,6 +6,7 @@
 #include "User.hpp"
 #include <string>
 #include <vector>
+#include <sstream>
 
 class CommandHandler {
 public:
@@ -14,17 +15,22 @@ public:
 
   CommandHandler(Server &server);
   ~CommandHandler();
-private:
+  Server &_server;
+  std::string _prefix;
+  std::string _command;
+  std::vector<std::string> _params;
+
   Server &_server;
 
   void parseCommand(const std::string &commad);
   void executeCommand(const std::string &commandName,
                       const std::vector<std::string> &params, User &user);
   // command
-  std::string PASS(const std::string &commandName,
-                   const std::vector<std::string> &params, User &user);
-  std::string USER(const std::string &commandName,
-                   const std::vector<std::string> &params, User &user);
+
+  // command
+  const std::string PASS(User &user);
+  const std::string USER(User &user);
+
 };
 
 #endif

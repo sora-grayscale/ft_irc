@@ -36,7 +36,7 @@ public:
   void setNickHistory(const std::string &nick);
   const std::string &getPassword() const;
   void eraseTmpMap(const int fd);
-  void addRegisterMap(const std::string &nick, const User user);
+  void addRegisterMap(const std::string &nick, const User &user);
 
 private:
   std::string

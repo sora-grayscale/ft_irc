@@ -30,7 +30,7 @@ Server &Server::operator=(const Server &server) {
 
 void Server::eraseTmpMap(const int fd) { this->_tmpUsers.erase(fd); }
 
-void Server::addRegisterMap(const std::string &nick, const User user)
+void Server::addRegisterMap(const std::string &nick, const User &user)
 {
     this->_registerdUsers[nick] = user; // fd, user
 }
