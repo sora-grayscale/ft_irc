@@ -16,6 +16,10 @@ public:
   ~CommandHandler();
 private:
   Server &_server;
+  std::string _prefix;
+  std::string _command;
+  std::vector<std::string> _params;
+
 
   void parseCommand(const std::string &commad);
   void executeCommand(const std::string &commandName,
