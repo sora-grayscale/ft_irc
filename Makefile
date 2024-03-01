@@ -8,6 +8,7 @@ DEPFLAGS = -MMD -MP -MF
 
 SRCDIR := src
 SERVER_SRC =  src/CommandHandler.cpp \
+              src/CommandHandler_handleCommand.cpp \
               src/CommandHandler_parseMessage.cpp \
               src/main.cpp \
               src/Replies.cpp \

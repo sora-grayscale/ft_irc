@@ -36,12 +36,12 @@ bool User::hasMode(ModeFlags flag) const {
 }
 
 void User::setState(RegisterState state, bool enable) {
-  if (enable) {  
-    this->_state = static_cast<RegisterState>(this->_state | state);  
-  } else {  
-    this->_state = static_cast<RegisterState>(this->_state & ~state);  
-  }  
- }  
+  if (enable) {
+    this->_state = static_cast<RegisterState>(this->_state | state);
+  } else {
+    this->_state = static_cast<RegisterState>(this->_state & ~state);
+  }
+}
 
 User::RegisterState User::getState() const { return this->_state; }
 
@@ -57,7 +57,6 @@ void User::setNickName(const std::string &nickname) {
 void User::setRealName(const std::string &realname) {
   this->_realname = realname;
 }
-void User::setUserName(const std::string &username)
-{
+void User::setUserName(const std::string &username) {
   this->_username = username;
 }
