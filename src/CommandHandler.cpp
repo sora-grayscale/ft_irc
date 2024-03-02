@@ -189,3 +189,32 @@ void CommandHandler::OPER(User &user) {
   this->_server.sendReply(user.getFd(), Replies::RPL_YOUREOPER());
 }
 
+const std::string CommandHandler::getUserPrefix(const User &user)const {
+  std::string message;
+
+  message += user.getNickName();
+  message += "!";
+  message += user.getUserName();
+  message += "@";
+  message += this->_server.getServerName();
+  return message;
+}
+
+void CommandHandler::QUIT(User &user) {
+  std::string message;
+
+  message += ":";
+  message += getUserPrefix(user);
+  message += " QUIT :";
+  if (!this->_params.empty()) {
+    for (std::size_t i = 0; i < this->_params.size(); ++i) {
+      if (i == 0) {
+        message += this->_params.at(i);
+      } else {
+        message += " ";
+        message += this->_params.at(i);
+      }
+    }
+    // これを今のuserがいるチャンネルに送信する
+  }
+}

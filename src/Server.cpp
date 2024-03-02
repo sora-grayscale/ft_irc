@@ -42,3 +42,4 @@ bool Server::isNick(const std::string &nick)
   return false;
 }
 
+const std::string &Server::getServerName() const { return this->_serverName; }
