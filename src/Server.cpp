@@ -30,7 +30,7 @@ void Server::addRegisterMap(const std::string &nick, const User &user) {
   this->_registerdUsers[nick] = user; // fd, user
 }
 
-bool Server::isNick(const std::string nick)
+bool Server::isNick(const std::string &nick)
 {
   if (this->_nickHistory.find(nick) != this->_nickHistory.end())
     return true;
