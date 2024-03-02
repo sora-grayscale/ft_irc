@@ -38,6 +38,9 @@ public:
   const std::string &getPassword() const;
   void eraseTmpMap(const int fd);
   void addRegisterMap(const int fd, const User &user);
+  void sendReply(int fd, const std::string &reply);
+  bool isNick(const std::string &nick);
+
 
 private:
   std::string
