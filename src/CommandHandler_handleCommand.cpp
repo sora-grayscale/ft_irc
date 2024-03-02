@@ -38,6 +38,10 @@ void CommandHandler::executeCommand(User &user, const int fd) {
   } else if (this->_command == "USER") {
     this->_reply = USER(user);
     this->_server.sendReply(fd, this->_reply);
+  } else if (this->_command == "USER") {
+  } else if (this->_command == "NICK") {
+    this->_reply = NICK(user);
+    this->_server.sendReply(fd, this->_reply);
   } else {
     this->_reply = Replies::ERR_UNKNOWNCOMMAND(this->_command);
     this->_server.sendReply(fd, this->_reply);

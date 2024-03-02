@@ -4,7 +4,7 @@ CommandHandler::CommandHandler(Server &server) : _server(server) {}
 CommandHandler::~CommandHandler() {}
 
 const std::string CommandHandler::PASS(User &user) {
-  if (this->_params.size() < 1)
+  if (this->_params.at(0).empty())
     return Replies::ERR_NEEDMOREPARAMS(this->_command);
   if (user.getState() != User::NONE && user.getState() != User::PASS)
     return Replies::ERR_ALREADYREGISTRED();
@@ -22,7 +22,7 @@ const std::string CommandHandler::USER(User &user) {
   if (this->_params.size() < 4)
     return Replies::ERR_NEEDMOREPARAMS(this->_command);
   // statusを確認
-  if (user.getState() != User::NONE)
+  if (user.getState() == User::NONE)
     return "";
   // stateが4,5,7だったら弾く(4以上)
   if ((user.getState() & User::USER) != 0)
@@ -206,7 +206,7 @@ void CommandHandler::QUIT(User &user) {
   message += ":";
   message += getUserPrefix(user);
   message += " QUIT :";
-  if (!this->_params.empty()) {
+  if (!this->_params.at(0).empty()) {
     for (std::size_t i = 0; i < this->_params.size(); ++i) {
       if (i == 0) {
         message += this->_params.at(i);
