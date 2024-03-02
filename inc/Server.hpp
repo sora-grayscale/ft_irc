@@ -34,15 +34,21 @@ public:
 
   void run();
 
-  void changeNickname(const std::string &before, const std::string &after);
+  // getter
   const std::string &getServerName() const;
   const std::string &getNickHistory() const;
-  void setNickHistory(const std::string &nick);
   const std::string &getPassword() const;
+
+  // setter
+  void changeNickname(const std::string &before, const std::string &after);
+  void setNickHistory(const std::string &nick);
   void eraseTmpMap(const int fd);
   void addRegisterMap(const int fd, const User &user);
+
   bool isNick(const std::string &nick);
 
+  void sendReply(const int fd, const std::string &reply);
+  User &findUser(const int fd);
 
 private:
   std::string
@@ -71,8 +77,6 @@ private:
   int pollSockets();
   void acceptNewSocket();
   std::string readClientCommand(int fd);
-  void sendReply(int fd, const std::string &reply);
-  User &findUser(const int fd);
 
   Server();
   Server(const Server &server);

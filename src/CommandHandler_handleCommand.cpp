@@ -1,13 +1,14 @@
 #include "CommandHandler.hpp"
 
-const std::string CommandHandler::handleCommand(const std::string &message,
-                                                User &user) {
+void CommandHandler::handleCommand(const std::string &message, const int fd) {
+  User &user = this->_server.findUser(fd);
   parseMessage(message);
   if (!checkRegisterdState(user)) {
-    return (this->_reply);
+    this->_server.sendReply(fd, this->_reply);
+    return;
   }
-  executeCommand(user);
-  return (this->_reply);
+  executeCommand(user, fd);
+  return;
 }
 
 // The `parseMessage` function is implemented in a separate file.
@@ -30,12 +31,15 @@ bool CommandHandler::checkRegisterdState(const User &user) {
   return (true);
 }
 
-void CommandHandler::executeCommand(User &user) {
+void CommandHandler::executeCommand(User &user, const int fd) {
   if (this->_command == "PASS") {
     this->_reply = PASS(user);
+    this->_server.sendReply(fd, this->_reply);
   } else if (this->_command == "USER") {
     this->_reply = USER(user);
+    this->_server.sendReply(fd, this->_reply);
   } else {
     this->_reply = Replies::ERR_UNKNOWNCOMMAND(this->_command);
+    this->_server.sendReply(fd, this->_reply);
   }
 }

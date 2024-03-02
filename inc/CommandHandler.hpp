@@ -15,7 +15,7 @@ class CommandHandler {
 public:
   CommandHandler(Server &server);
   ~CommandHandler();
-  const std::string handleCommand(const std::string &message, User &user);
+  void handleCommand(const std::string &message, const int fd);
 
 private:
   CommandHandler();
@@ -36,7 +36,7 @@ private:
   bool checkRegisterdState(const User &user);
 
   // executeCommand
-  void executeCommand(User &user);
+  void executeCommand(User &user, const int fd);
 
   // command
   const std::string PASS(User &user);
