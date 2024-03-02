@@ -43,6 +43,11 @@ private:
   const std::string PASS(User &user);
   const std::string USER(User &user);
   const std::string NICK(User &user);
+  
+  // nick method
+  void convertChar(std::string &str);
+  bool isSpecialChar(const char c);
+  bool validateNick(const std::string &str);
 
 };
 
