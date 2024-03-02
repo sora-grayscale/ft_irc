@@ -36,7 +36,7 @@ private:
   bool checkRegisterdState(const User &user);
 
   // executeCommand
-  void executeCommand(User &user, const int fd);
+  void executeCommand(User &user);
 
   // command
   const std::string PASS(User &user);
