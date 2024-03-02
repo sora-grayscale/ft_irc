@@ -17,7 +17,6 @@ const std::string CommandHandler::PASS(User &user) {
 }
 
 const std::string CommandHandler::USER(User &user) {
-  const int REAL_NAME_MAX_LEN = 63;
 
   // paramsを確認
   if (this->_params.size() < 4)
@@ -133,7 +132,7 @@ void CommandHandler::convertChar(std::string &str) {
 
 const std::string CommandHandler::NICK(User &user) {
   // ok
-  if (this->_params.size() < 1)
+  if (this->_params.at(0).empty())
     return Replies::ERR_NONICKNAMEGIVEN();
 
   // state の確認
@@ -168,3 +167,21 @@ const std::string CommandHandler::NICK(User &user) {
   user.setNickName(this->_params.at(0));
   return "";
 }
+
+void CommandHandler::OPER(User &user) {
+  // Replies::ERR_NEEDMOREPARAMS(this->_command);
+  if (this->_params.size() < 2)
+    ;
+
+  // Replies::ERR_PASSWDMISMATCH();
+  if (this->_params.at(1) != OPER_PASSWORD)
+    ;
+
+  // Replies::ERR_NOOPERHOST();
+  if (this->_params.at(0) != OPER_USER)
+    ;
+
+  // Replies::RPL_YOUREOPER();
+  user.setMode(User::Operator ,true);
+}
+

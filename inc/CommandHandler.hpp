@@ -42,6 +42,7 @@ private:
   const std::string PASS(User &user);
   const std::string USER(User &user);
   const std::string NICK(User &user);
+  void OPER(User &user);
   
   // nick method
   void convertChar(std::string &str);
