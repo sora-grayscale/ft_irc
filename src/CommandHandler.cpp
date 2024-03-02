@@ -96,7 +96,7 @@ const std::string CommandHandler::USER(User &user) {
 }
 
 // -----------------------------------------------------------------
-bool isSpecialChar(const char c) {
+bool CommandHandler::isSpecialChar(const char c) {
   const std::string special = "[]\\`_^{|}";
   return special.find(c) != std::string::npos;
 }
