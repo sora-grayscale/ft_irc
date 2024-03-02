@@ -215,6 +215,6 @@ void CommandHandler::QUIT(User &user) {
         message += this->_params.at(i);
       }
     }
-    // これを今のuserがいるチャンネルに送信する
   }
+  // これを今のuserがいるチャンネルに送信する
 }
