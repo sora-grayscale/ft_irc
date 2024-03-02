@@ -189,7 +189,7 @@ void CommandHandler::OPER(User &user) {
   this->_server.sendReply(user.getFd(), Replies::RPL_YOUREOPER());
 }
 
-const std::string CommandHandler::getUserPrefix(const User &user)const {
+const std::string CommandHandler::getUserPrefix(const User &user) const {
   std::string message;
 
   message += user.getNickName();
