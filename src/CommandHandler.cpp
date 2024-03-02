@@ -115,28 +115,25 @@ bool CommandHandler::validateNick(const std::string &str) {
   return (true);
 }
 
-std::string convertChar(const std::string &str) {
-  std::string convert = str;
-
-  for (std::size_t i = 0; i < convert.size(); ++i) {
-    switch (convert[i]) {
+void CommandHandler::convertChar(std::string &str) {
+  for (std::size_t i = 0; i < str.size(); ++i) {
+    switch (str.at(i)) {
     case '{':
-      convert[i] = '[';
+      str.at(i) = '[';
       break;
     case '}':
-      convert[i] = ']';
+      str.at(i) = ']';
       break;
     case '|':
-      convert[i] = '\\';
+      str.at(i) = '\\';
       break;
     case '^':
-      convert[i] = '~';
+      str.at(i) = '~';
       break;
     default:
       break;
     }
   }
-  return convert;
 }
 
 const std::string CommandHandler::NICK(User &user) {
