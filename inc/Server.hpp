@@ -39,6 +39,7 @@ public:
   void eraseTmpMap(const int fd);
   void addRegisterMap(const std::string &nick, const User &user);
   void sendReply(int fd, const std::string &reply);
+  bool isNick(const std::string &nick);
 
 
 private:
