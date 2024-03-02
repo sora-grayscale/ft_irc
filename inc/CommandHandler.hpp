@@ -43,13 +43,11 @@ private:
   const std::string USER(User &user);
   const std::string NICK(User &user);
   void OPER(User &user);
-  void QUIT(User &user);
 
   // nick method
   void convertChar(std::string &str);
   bool isSpecialChar(const char c);
   bool validateNick(const std::string &str);
-  const std::string getUserPrefix(const User &user) const;
 };
 
 #endif
