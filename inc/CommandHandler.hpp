@@ -10,23 +10,21 @@ class Server;
 #include <sstream>
 #include <string>
 #include <vector>
-#include <sstream>
 
 class CommandHandler {
 public:
   CommandHandler(Server &server);
   ~CommandHandler();
-  void handleCommand(const std::string &message);
+  const std::string handleCommand(const std::string &message, User &user);
 
 private:
   CommandHandler();
   Server &_server;
 
-
   std::string _prefix;
   std::string _command;
   std::vector<std::string> _params;
-
+  std::string _reply;
 
   // parseMessage
   void parseMessage(const std::string &message);
@@ -34,10 +32,11 @@ private:
   void extractCommand(std::istringstream &iss);
   void extractParam(std::istringstream &iss);
 
+  // checkRegisterdState
+  bool checkRegisterdState(const User &user);
+
   // executeCommand
   void executeCommand(User &user);
-
-  // command
 
   // command
   const std::string PASS(User &user);
@@ -48,7 +47,6 @@ private:
   void convertChar(std::string &str);
   bool isSpecialChar(const char c);
   bool validateNick(const std::string &str);
-
 };
 
 #endif

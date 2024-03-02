@@ -10,6 +10,16 @@ const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
   return (message);
 }
 
+
+// 451
+const std::string Replies::ERR_NOTREGISTERED() {
+  std::string message;
+
+  message += "451 ";
+  message += ":You have not registered";
+  return (message);
+}
+
 // 431
 const std::string Replies::ERR_NONICKNAMEGIVEN() {
   std::string message;
@@ -102,4 +112,3 @@ const std::string Replies::ERR_PASSWDMISMATCH() {
   message += ":Password incorrect";
   return (message);
 }
-

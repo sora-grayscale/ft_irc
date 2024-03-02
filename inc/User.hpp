@@ -36,7 +36,7 @@ public:
   const std::string &getNickName() const;
   const std::string &getRealName() const;
   const std::string &getUserName() const;
-  const int &getFd()const;
+  const int &getFd() const;
 
   void setMode(unsigned int mode, bool enable);
   bool hasMode(ModeFlags flag) const;

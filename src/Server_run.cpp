@@ -23,8 +23,9 @@ void Server::run() {
                 readClientCommand(this->_pollFd.at(i).fd);
             if (!receivedMessage.empty()) {
               CommandHandler commandhandler(*this);
-              commandhandler.handleCommand(receivedMessage);
-              sendReply(this->_pollFd.at(i).fd, receivedMessage);
+              std::string reply = commandhandler.handleCommand(
+                  receivedMessage, findUser(this->_pollFd.at(i).fd));
+              sendReply(this->_pollFd.at(i).fd, reply);
             }
           }
         }
@@ -110,3 +111,14 @@ void Server::sendReply(int fd, const std::string &reply) {
   }
 }
 
+User &Server::findUser(const int fd) {
+  std::map<int, User>::const_iterator tIt = this->_tmpUsers.find(fd);
+  if (tIt != this->_tmpUsers.end()) {
+    return (this->_tmpUsers.at(fd));
+  }
+  std::map<int, User>::const_iterator rIt = this->_registerdUsers.find(fd);
+  if (rIt != this->_registerdUsers.end()) {
+    return (this->_registerdUsers.at(fd));
+  }
+  throw std::runtime_error("Not found User");
+}

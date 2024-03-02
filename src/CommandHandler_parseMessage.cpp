@@ -41,4 +41,3 @@ void CommandHandler::extractParam(std::istringstream &iss) {
         "A critical error occurred while extracting param.");
   }
 }
-

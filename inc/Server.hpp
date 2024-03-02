@@ -37,8 +37,7 @@ public:
   void setNickHistory(const std::string &nick);
   const std::string &getPassword() const;
   void eraseTmpMap(const int fd);
-  void addRegisterMap(const std::string &nick, const User &user);
-  void sendReply(int fd, const std::string &reply);
+  void addRegisterMap(const int fd, const User &user);
   bool isNick(const std::string &nick);
 
 
@@ -53,7 +52,7 @@ private:
   std::vector<struct pollfd> _pollFd;
   std::map<const size_t, std::string> _fdToNickname; // client fd, nickname
   std::map<int, User> _tmpUsers;                     // fd, user
-  std::map<std::string, User> _registerdUsers;       // nickname, user
+  std::map<int, User> _registerdUsers;               // fd, user
   std::map<std::string, Channel> _channels;          /// channelname, channel
   std::set<std::string> _nickHistory;
 
@@ -69,6 +68,8 @@ private:
   int pollSockets();
   void acceptNewSocket();
   std::string readClientCommand(int fd);
+  void sendReply(int fd, const std::string &reply);
+  User &findUser(const int fd);
 
   Server();
   Server(const Server &server);

@@ -26,8 +26,8 @@ Server &Server::operator=(const Server &server) {
 
 void Server::eraseTmpMap(const int fd) { this->_tmpUsers.erase(fd); }
 
-void Server::addRegisterMap(const std::string &nick, const User &user) {
-  this->_registerdUsers[nick] = user; // fd, user
+void Server::addRegisterMap(const int fd, const User &user) {
+  this->_registerdUsers[fd] = user; // fd, user
 }
 
 bool Server::isNick(const std::string &nick)
