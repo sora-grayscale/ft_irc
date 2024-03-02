@@ -137,22 +137,29 @@ void CommandHandler::convertChar(std::string &str) {
 }
 
 const std::string CommandHandler::NICK(User &user) {
+  // ok
   if (this->_params.size() < 1)
     return Replies::ERR_NONICKNAMEGIVEN();
+
   // state の確認
-  if ((user.getState() & User::PASS) != 0)
+  if ((user.getState() & User::PASS) == 0)
     return "";
-  if (user.hasMode(User::Restricted))
-    return Replies::ERR_RESTRICTED();
+
+  // ok
   // nick paramのバリデーション
   if (this->_params.at(0).size() > 9 || !validateNick(this->_params.at(0)))
     return Replies::ERR_ERRONEUSNICKNAME(this->_params.at(0));
+
+  // ok
+  // 変換 { →[, } → ], | → \, ^ → ~
+  convertChar(this->_params.at(0));
+
   // historyに存在するかどうか,this->serverにnickHistoryのsetが存在する
   if (this->_server.isNick(this->_params.at(0)) != 0)
     return Replies::ERR_NICKNAMEINUSE(this->_params.at(0));
 
-  // 変換 { →[, } → ], | → \, ^ → ~
-  std::string nick = convertChar(this->_params.at(0));
+  if (user.hasMode(User::Restricted))
+    return Replies::ERR_RESTRICTED();
 
   // 初期登録かどうかの判別
   if (user.getState() != User::REGISTERD) {
@@ -163,6 +170,6 @@ const std::string CommandHandler::NICK(User &user) {
     }
   }
   // set
-  user.setNickName(nick);
+  user.setNickName(this->_params.at(0));
   return "";
 }
