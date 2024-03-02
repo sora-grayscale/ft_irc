@@ -101,18 +101,18 @@ bool CommandHandler::isSpecialChar(const char c) {
   return special.find(c) != std::string::npos;
 }
 
-bool validateNick(const std::string str) {
+bool CommandHandler::validateNick(const std::string &str) {
   for (std::size_t i = 0; i < str.size(); ++i) {
-    char c = str[i];
+    char c = str.at(i);
     if (i == 0) {
       if (!std::isalpha(static_cast<unsigned char>(c)) && !isSpecialChar(c))
-        return 0;
+        return (false);
     } else if (!std::isalnum(static_cast<unsigned char>(c)) &&
                !isSpecialChar(c) && c != '-') {
-      return 0;
+      return (false);
     }
   }
-  return 1;
+  return (true);
 }
 
 std::string convertChar(const std::string &str) {
