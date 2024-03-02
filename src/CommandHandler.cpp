@@ -161,7 +161,7 @@ const std::string CommandHandler::NICK(User &user) {
     user.setState(User::NICK, true);
     if (user.getState() == User::REGISTERD) {
       this->_server.eraseTmpMap(user.getFd());
-      this->_server.addRegisterMap(user.getNickName(), user);
+      this->_server.addRegisterMap(user.getFd(), user);
     }
   }
   // set
