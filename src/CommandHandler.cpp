@@ -169,19 +169,22 @@ const std::string CommandHandler::NICK(User &user) {
 }
 
 void CommandHandler::OPER(User &user) {
-  // Replies::ERR_NEEDMOREPARAMS(this->_command);
-  if (this->_params.size() < 2)
-    ;
+  if (this->_params.size() < 2) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return ;
+  }
 
-  // Replies::ERR_PASSWDMISMATCH();
-  if (this->_params.at(1) != OPER_PASSWORD)
-    ;
+  if (this->_params.at(1) != OPER_PASSWORD) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_PASSWDMISMATCH());
+    return ;
+  }
 
-  // Replies::ERR_NOOPERHOST();
-  if (this->_params.at(0) != OPER_USER)
-    ;
+  if (this->_params.at(0) != OPER_USER) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NOOPERHOST());
+    return ;
+  }
 
-  // Replies::RPL_YOUREOPER();
   user.setMode(User::Operator ,true);
+  this->_server.sendReply(user.getFd(), Replies::RPL_YOUREOPER());
 }
 
