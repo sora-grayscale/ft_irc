@@ -23,9 +23,8 @@ void Server::run() {
                 readClientCommand(this->_pollFd.at(i).fd);
             if (!receivedMessage.empty()) {
               CommandHandler commandhandler(*this);
-              std::string reply = commandhandler.handleCommand(
-                  receivedMessage, findUser(this->_pollFd.at(i).fd));
-              sendReply(this->_pollFd.at(i).fd, reply);
+              commandhandler.handleCommand(receivedMessage,
+                                           this->_pollFd.at(i).fd);
             }
           }
         }
@@ -92,7 +91,7 @@ std::string Server::readClientCommand(int fd) {
   }
 }
 
-void Server::sendReply(int fd, const std::string &reply) {
+void Server::sendReply(const int fd, const std::string &reply) {
   ssize_t sent = 0;
   ssize_t to_send = reply.size();
 
