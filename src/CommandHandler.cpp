@@ -166,5 +166,6 @@ const std::string CommandHandler::NICK(User &user) {
   }
   // set
   user.setNickName(this->_params.at(0));
+  this->_server.setNickHistory(user.getNickName());
   return "";
 }
