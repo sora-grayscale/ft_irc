@@ -45,3 +45,5 @@ bool Server::isNick(const std::string &nick)
 void Server::setNickHistory(const std::string &nick) {
   this->_nickHistory.insert(nick);
 }
+
+const std::string &Server::getServerName() const { return this->_serverName; }

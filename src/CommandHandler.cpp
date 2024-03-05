@@ -4,7 +4,7 @@ CommandHandler::CommandHandler(Server &server) : _server(server) {}
 CommandHandler::~CommandHandler() {}
 
 const std::string CommandHandler::PASS(User &user) {
-  if (this->_params.size() < 1)
+  if (this->_params.at(0).empty())
     return Replies::ERR_NEEDMOREPARAMS(this->_command);
   if (user.getState() != User::NONE && user.getState() != User::PASS)
     return Replies::ERR_ALREADYREGISTRED();
@@ -17,13 +17,12 @@ const std::string CommandHandler::PASS(User &user) {
 }
 
 const std::string CommandHandler::USER(User &user) {
-  const int REAL_NAME_MAX_LEN = 63;
 
   // paramsを確認
   if (this->_params.size() < 4)
     return Replies::ERR_NEEDMOREPARAMS(this->_command);
   // statusを確認
-  if (user.getState() != User::NONE)
+  if (user.getState() == User::NONE)
     return "";
   // stateが4,5,7だったら弾く(4以上)
   if ((user.getState() & User::USER) != 0)
@@ -133,7 +132,7 @@ void CommandHandler::convertChar(std::string &str) {
 
 const std::string CommandHandler::NICK(User &user) {
   // ok
-  if (this->_params.size() < 1)
+  if (this->_params.at(0).empty())
     return Replies::ERR_NONICKNAMEGIVEN();
 
   // state の確認
@@ -169,3 +168,25 @@ const std::string CommandHandler::NICK(User &user) {
   this->_server.setNickHistory(user.getNickName());
   return "";
 }
+
+void CommandHandler::OPER(User &user) {
+  if (this->_params.size() < 2) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return;
+  }
+
+  if (this->_params.at(1) != OPER_PASSWORD) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_PASSWDMISMATCH());
+    return;
+  }
+
+  if (this->_params.at(0) != OPER_USER) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NOOPERHOST());
+    return;
+  }
+
+  user.setMode(User::Operator, true);
+  this->_server.sendReply(user.getFd(), Replies::RPL_YOUREOPER());
+}
+

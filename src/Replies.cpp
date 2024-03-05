@@ -112,3 +112,22 @@ const std::string Replies::ERR_PASSWDMISMATCH() {
   message += ":Password incorrect";
   return (message);
 }
+
+// 381
+const std::string Replies::RPL_YOUREOPER() {
+  std::string message;
+
+  message += "381 ";
+  message += ":You are now an IRC operator";
+  return (message);
+}
+
+// 491
+const std::string Replies::ERR_NOOPERHOST() {
+  std::string message;
+
+  message += "491 ";
+  message += ":No O-lines for your host";
+  return (message);
+}
+

@@ -23,6 +23,9 @@
 #define PASS_MAX_LEN 32
 #define SERVER_MAX_LEN 63
 #define RECEVE_MAX_LEN 512
+#define REAL_NAME_MAX_LEN 63
+#define OPER_PASSWORD "password"
+#define OPER_USER "operatuser"
 
 class Server {
 public:
