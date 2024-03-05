@@ -131,3 +131,38 @@ const std::string Replies::ERR_NOOPERHOST() {
   return (message);
 }
 
+// 375
+const std::string RPL_MOTDSTART() {
+  std::string message;
+
+  message += "375";
+  message += " :- Message of the day - "
+  return (message);
+}
+
+// 372
+const std::string RPL_MOTD() {
+  std::string message;
+
+  message += "372";
+  message += " :Today's message!!";
+  return (message);
+}
+
+// 376
+const std::string RPL_ENDOFMOTD() {
+  std::string message;
+
+  message += "376";
+  message += ":End of MOTD command";
+  return (message);
+}
+
+// 422
+const std::string ERR_NOMOTD() {
+  std::string message;
+
+  message += "422";
+  message += ":MOTD File is missing";
+  return (message);
+}

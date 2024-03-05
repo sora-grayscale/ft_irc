@@ -190,3 +190,15 @@ void CommandHandler::OPER(User &user) {
   this->_server.sendReply(user.getFd(), Replies::RPL_YOUREOPER());
 }
 
+void CommandHandler::MOTD(User &user){
+  if (this->_params.at(0).empty()) {
+    return ;
+  }
+  if (this->_params.at(0) != this->_server.getServerName()) {
+    return ;
+  }
+  this->_server.sendReply(user.getFd(), Replies::RPL_MOTDSTART());
+  this->_server.sendReply(user.getFd(), Replies::RPL_MOTD());
+  this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFMOTD());
+}
+

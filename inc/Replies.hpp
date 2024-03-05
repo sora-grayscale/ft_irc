@@ -37,6 +37,19 @@ public:
   static const std::string ERR_ALREADYREGISTRED();
   // 464
   static const std::string ERR_PASSWDMISMATCH();
+
+
+  // 375
+  static const std::string RPL_MOTDSTART();
+
+  // 372
+  static const std::string RPL_MOTD();
+
+  // 376
+  static const std::string RPL_ENDOFMOTD();
+
+  // 422
+  static const std::string ERR_NOMOTD();
 };
 
 #endif // REPLIES
