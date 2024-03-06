@@ -203,15 +203,19 @@ void CommandHandler::MOTD(User &user){
 }
 
 void CommandHandler::LUSERS(User &user) {
-  (void)user;
   int users = this->_server.numOfUser();
   int services = 0;
   int operators = this->_server.numOfOpeUser();
   int unknown = 0;
+  int channnels = this->_server.numOfChannel();
   int clients = users;
   int servers = 1;
 
-  std::cout << users << services << operators << unknown << clients << servers
-            << std::endl;
+  this->_server.sendReply(user.getFd(),
+                          Replies::RPL_LUSERCLIENT(users, services, servers));
+  this->_server.sendReply(user.getFd(), Replies::RPL_LUSEROP(operators));
+  this->_server.sendReply(user.getFd(), Replies::RPL_LUSERUNKNOWN(unknown));
+  this->_server.sendReply(user.getFd(), Replies::RPL_LUSERCHANNELS(channnels));
+  this->_server.sendReply(user.getFd(), Replies::RPL_LUSERME(clients, servers));
 }
 

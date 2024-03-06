@@ -154,7 +154,7 @@ const std::string Replies::RPL_ENDOFMOTD() {
   std::string message;
 
   message += "376";
-  message += ":End of MOTD command";
+  message += " :End of MOTD command";
   return (message);
 }
 
@@ -163,6 +163,84 @@ const std::string Replies::ERR_NOMOTD() {
   std::string message;
 
   message += "422";
-  message += ":MOTD File is missing";
+  message += " :MOTD File is missing";
   return (message);
 }
+
+// 251
+const std::string Replies::RPL_LUSERCLIENT(const int &users,
+                                           const int &services,
+                                           const int &servers) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "251";
+  ss << " :There are ";
+  ss << users;
+  ss << " users and ";
+  ss << services;
+  ss << " services on ";
+  ss << servers;
+  ss << " servers";
+  message = ss.str();
+  return (message);
+}
+// 252
+const std::string Replies::RPL_LUSEROP(const int &operators) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "252 ";
+  ss << operators;
+  ss << " :operator(s) online";
+  message = ss.str();
+  return (message);
+}
+
+// 253
+const std::string Replies::RPL_LUSERUNKNOWN(const int & unknown) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "253";
+  ss << unknown;
+  ss << " :unknown connection(s))";
+  message = ss.str();
+  return (message);
+}
+
+// 254
+const std::string Replies::RPL_LUSERCHANNELS(const int &channels) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "254";
+  ss << channels;
+  ss << " :channels formed";
+  return (message);
+}
+
+// 255
+const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "255";
+  ss << " :I have ";
+  ss << clients;
+  ss << " clients and ";
+  ss << servers;
+  ss << " servers";
+  return (message);
+}
+
+// 402
+const std::string Replies::ERR_NOSUCHSERVER(const std::string serverName) {
+  std::string message;
+
+  message += "402";
+  message += serverName;
+  message += " :No such server";
+  return (message);
+}
+

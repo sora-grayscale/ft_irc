@@ -47,6 +47,7 @@ public:
 
   bool isNick(const std::string &nick);
   int numOfUser();
+  int numOfChannel();
   int numOfOpeUser();
 
   void sendReply(const int fd, const std::string &reply);
