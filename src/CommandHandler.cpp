@@ -202,3 +202,16 @@ void CommandHandler::MOTD(User &user){
   this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFMOTD());
 }
 
+void CommandHandler::LUSERS(User &user) {
+  (void)user;
+  int users = this->_server.numOfUser();
+  int services = 0;
+  int operators = this->_server.numOfOpeUser();
+  int unknown = 0;
+  int clients = users;
+  int servers = 1;
+
+  std::cout << users << services << operators << unknown << clients << servers
+            << std::endl;
+}
+

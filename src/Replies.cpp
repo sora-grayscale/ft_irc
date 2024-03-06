@@ -132,16 +132,16 @@ const std::string Replies::ERR_NOOPERHOST() {
 }
 
 // 375
-const std::string RPL_MOTDSTART() {
+const std::string Replies::RPL_MOTDSTART() {
   std::string message;
 
   message += "375";
-  message += " :- Message of the day - "
+  message += " :- Message of the day - ";
   return (message);
 }
 
 // 372
-const std::string RPL_MOTD() {
+const std::string Replies::RPL_MOTD() {
   std::string message;
 
   message += "372";
@@ -150,7 +150,7 @@ const std::string RPL_MOTD() {
 }
 
 // 376
-const std::string RPL_ENDOFMOTD() {
+const std::string Replies::RPL_ENDOFMOTD() {
   std::string message;
 
   message += "376";
@@ -159,7 +159,7 @@ const std::string RPL_ENDOFMOTD() {
 }
 
 // 422
-const std::string ERR_NOMOTD() {
+const std::string Replies::ERR_NOMOTD() {
   std::string message;
 
   message += "422";
