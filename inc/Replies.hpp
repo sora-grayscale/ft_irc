@@ -65,6 +65,11 @@ public:
   static const std::string RPL_LUSERME(const int &clients, const int &servers);
   // 402
   static const std::string ERR_NOSUCHSERVER(const std::string serverName);
+
+  // 351
+  static const std::string RPL_VERSION(const std::string &version,
+                                                const std::string &debuglevel,
+                                                const std::string &server);
 };
 
 #endif // REPLIES

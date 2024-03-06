@@ -219,3 +219,15 @@ void CommandHandler::LUSERS(User &user) {
   this->_server.sendReply(user.getFd(), Replies::RPL_LUSERME(clients, servers));
 }
 
+void CommandHandler::VERSION(User &user) {
+  const std::string SERVER_VERSION = "2.0";
+  const std::string DEBUG_LEVEL = "normal";
+
+  if (this->_params.at(0).empty() ||
+      this->_params.at(0) == this->_server.getServerName())
+    this->_server.sendReply(
+        user.getFd(), Replies::RPL_VERSION(SERVER_VERSION, DEBUG_LEVEL,
+                                           this->_server.getServerName()));
+  else
+    this->_server.sendReply(user.getFd(), Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+}

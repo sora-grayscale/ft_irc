@@ -217,6 +217,7 @@ const std::string Replies::RPL_LUSERCHANNELS(const int &channels) {
   ss << "254";
   ss << channels;
   ss << " :channels formed";
+  message = ss.str();
   return (message);
 }
 
@@ -231,6 +232,7 @@ const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
   ss << " clients and ";
   ss << servers;
   ss << " servers";
+  message = ss.str();
   return (message);
 }
 
@@ -241,6 +243,22 @@ const std::string Replies::ERR_NOSUCHSERVER(const std::string serverName) {
   message += "402";
   message += serverName;
   message += " :No such server";
+  return (message);
+}
+
+// 351
+const std::string Replies::RPL_VERSION(const std::string &version, const std::string &debuglevel, const std::string &server)
+{
+  std::string message;
+
+  message += "351 ";
+  message += version;
+  message += ".";
+  message += debuglevel;
+  message += " ";
+  message += server;
+  message += " :";
+  message += "this is my server version";
   return (message);
 }
 
