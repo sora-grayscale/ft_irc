@@ -62,3 +62,5 @@ int Server::numOfOpeUser() {
   }
   return results;
 }
+
+int Server::numOfChannel() { return static_cast<int>(this->_channels.size()); }
