@@ -131,3 +131,134 @@ const std::string Replies::ERR_NOOPERHOST() {
   return (message);
 }
 
+// 375
+const std::string Replies::RPL_MOTDSTART() {
+  std::string message;
+
+  message += "375";
+  message += " :- Message of the day - ";
+  return (message);
+}
+
+// 372
+const std::string Replies::RPL_MOTD() {
+  std::string message;
+
+  message += "372";
+  message += " :Today's message!!";
+  return (message);
+}
+
+// 376
+const std::string Replies::RPL_ENDOFMOTD() {
+  std::string message;
+
+  message += "376";
+  message += " :End of MOTD command";
+  return (message);
+}
+
+// 422
+const std::string Replies::ERR_NOMOTD() {
+  std::string message;
+
+  message += "422";
+  message += " :MOTD File is missing";
+  return (message);
+}
+
+// 251
+const std::string Replies::RPL_LUSERCLIENT(const int &users,
+                                           const int &services,
+                                           const int &servers) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "251";
+  ss << " :There are ";
+  ss << users;
+  ss << " users and ";
+  ss << services;
+  ss << " services on ";
+  ss << servers;
+  ss << " servers";
+  message = ss.str();
+  return (message);
+}
+// 252
+const std::string Replies::RPL_LUSEROP(const int &operators) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "252 ";
+  ss << operators;
+  ss << " :operator(s) online";
+  message = ss.str();
+  return (message);
+}
+
+// 253
+const std::string Replies::RPL_LUSERUNKNOWN(const int & unknown) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "253";
+  ss << unknown;
+  ss << " :unknown connection(s))";
+  message = ss.str();
+  return (message);
+}
+
+// 254
+const std::string Replies::RPL_LUSERCHANNELS(const int &channels) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "254";
+  ss << channels;
+  ss << " :channels formed";
+  message = ss.str();
+  return (message);
+}
+
+// 255
+const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
+  std::stringstream ss;
+  std::string message;
+
+  ss << "255";
+  ss << " :I have ";
+  ss << clients;
+  ss << " clients and ";
+  ss << servers;
+  ss << " servers";
+  message = ss.str();
+  return (message);
+}
+
+// 402
+const std::string Replies::ERR_NOSUCHSERVER(const std::string serverName) {
+  std::string message;
+
+  message += "402";
+  message += serverName;
+  message += " :No such server";
+  return (message);
+}
+
+// 351
+const std::string Replies::RPL_VERSION(const std::string &version, const std::string &debuglevel, const std::string &server)
+{
+  std::string message;
+
+  message += "351 ";
+  message += version;
+  message += ".";
+  message += debuglevel;
+  message += " ";
+  message += server;
+  message += " :";
+  message += "this is my server version";
+  return (message);
+}
+

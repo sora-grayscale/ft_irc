@@ -2,6 +2,7 @@
 #define REPLIES_HPP
 
 #include <string>
+#include <sstream>
 
 class Replies {
 public:
@@ -37,6 +38,38 @@ public:
   static const std::string ERR_ALREADYREGISTRED();
   // 464
   static const std::string ERR_PASSWDMISMATCH();
+
+
+  // 375
+  static const std::string RPL_MOTDSTART();
+
+  // 372
+  static const std::string RPL_MOTD();
+
+  // 376
+  static const std::string RPL_ENDOFMOTD();
+
+  // 422
+  static const std::string ERR_NOMOTD();
+
+  // 251
+  static const std::string
+  RPL_LUSERCLIENT(const int &users, const int &services, const int &servers);
+  // 252
+  static const std::string RPL_LUSEROP(const int &operators);
+  // 253
+  static const std::string RPL_LUSERUNKNOWN(const int &unknown);
+  // 254
+  static const std::string RPL_LUSERCHANNELS(const int &channels);
+  // 255
+  static const std::string RPL_LUSERME(const int &clients, const int &servers);
+  // 402
+  static const std::string ERR_NOSUCHSERVER(const std::string serverName);
+
+  // 351
+  static const std::string RPL_VERSION(const std::string &version,
+                                                const std::string &debuglevel,
+                                                const std::string &server);
 };
 
 #endif // REPLIES

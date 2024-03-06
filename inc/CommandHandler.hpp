@@ -43,6 +43,9 @@ private:
   const std::string USER(User &user);
   const std::string NICK(User &user);
   void OPER(User &user);
+  void MOTD(User &user);
+  void LUSERS(User &user);
+  void VERSION(User &user);
 
   // nick method
   void convertChar(std::string &str);
