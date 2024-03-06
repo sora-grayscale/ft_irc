@@ -26,7 +26,7 @@ public:
   // 381
   static const std::string RPL_YOUREOPER();
   // 402
-  static const std::string ERR_NOSUCHSERVER(const std::string serverName);
+  static const std::string ERR_NOSUCHSERVER(const std::string &serverName);
   // 421
   static const std::string ERR_UNKNOWNCOMMAND(const std::string &command);
   // 422

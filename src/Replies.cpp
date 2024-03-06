@@ -96,7 +96,7 @@ const std::string Replies::RPL_YOUREOPER() {
 }
 
 // 402
-const std::string Replies::ERR_NOSUCHSERVER(const std::string serverName) {
+const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
   std::string message;
   message += "402";
   message += serverName;
@@ -104,9 +104,11 @@ const std::string Replies::ERR_NOSUCHSERVER(const std::string serverName) {
   return (message);
 }
 
+
 // 421
 const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
   std::string message;
+
   message += "421 ";
   message += command;
   message += " :Unknown command";
@@ -117,6 +119,7 @@ const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
 const std::string Replies::ERR_NOMOTD() {
   std::string message;
   message += "422";
+
   message += " :MOTD File is missing";
   return (message);
 }
