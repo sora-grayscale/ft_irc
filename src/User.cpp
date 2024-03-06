@@ -3,7 +3,7 @@
 
 User::User() {}
 
-User::User(const int fd) : _fd(fd) {}
+User::User(const int fd) : _fd(fd) ,_state(User::NONE){}
 
 User::User(const std::string &nick, const std::string &realName) {
   std::cout << nick << std::endl;
