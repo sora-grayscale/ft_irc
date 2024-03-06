@@ -131,3 +131,47 @@ const std::string Replies::ERR_NOOPERHOST() {
   return (message);
 }
 
+// 375
+const std::string Replies::RPL_MOTDSTART() {
+  std::string message;
+
+  message += "375";
+  message += " :- Message of the day - ";
+  return (message);
+}
+
+// 372
+const std::string Replies::RPL_MOTD() {
+  std::string message;
+
+  message += "372";
+  message += " :Today's message!!";
+  return (message);
+}
+
+// 376
+const std::string Replies::RPL_ENDOFMOTD() {
+  std::string message;
+
+  message += "376";
+  message += ":End of MOTD command";
+  return (message);
+}
+
+// 422
+const std::string Replies::ERR_NOMOTD() {
+  std::string message;
+
+  message += "422";
+  message += ":MOTD File is missing";
+  return (message);
+}
+// 421
+const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
+  std::string message;
+
+  message += "402 ";
+  message += serverName;
+  message += " :No such server";
+  return (message);
+}

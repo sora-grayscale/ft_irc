@@ -9,6 +9,9 @@ public:
   static const std::string RPL_YOUREOPER();
   // 491
   static const std::string ERR_NOOPERHOST();
+  
+  //402
+  static const std::string ERR_NOSUCHSERVER(const std::string &serverName);
 
   // 421
   static const std::string ERR_UNKNOWNCOMMAND(const std::string &command);
@@ -37,6 +40,19 @@ public:
   static const std::string ERR_ALREADYREGISTRED();
   // 464
   static const std::string ERR_PASSWDMISMATCH();
+
+
+  // 375
+  static const std::string RPL_MOTDSTART();
+
+  // 372
+  static const std::string RPL_MOTD();
+
+  // 376
+  static const std::string RPL_ENDOFMOTD();
+
+  // 422
+  static const std::string ERR_NOMOTD();
 };
 
 #endif // REPLIES
