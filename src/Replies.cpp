@@ -166,3 +166,12 @@ const std::string Replies::ERR_NOMOTD() {
   message += ":MOTD File is missing";
   return (message);
 }
+// 421
+const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
+  std::string message;
+
+  message += "402 ";
+  message += serverName;
+  message += " :No such server";
+  return (message);
+}
