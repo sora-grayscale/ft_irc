@@ -42,3 +42,13 @@ bool Server::isNick(const std::string &nick)
   return false;
 }
 
+bool Server::isExistChannel(const std::string &channelName) {
+  if (this->_channels.find(channelName) != this->_channels.end()) {
+    return (true);
+  }
+  return (false);
+}
+
+Channel &Server::getChannel(const std::string &channelName) {
+  return (this->_channels.at(channelName));
+}

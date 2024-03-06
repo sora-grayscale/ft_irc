@@ -3,12 +3,7 @@
 
 User::User() {}
 
-User::User(const int fd) : _fd(fd) {}
-
-User::User(const std::string &nick, const std::string &realName) {
-  std::cout << nick << std::endl;
-  std::cout << realName << std::endl;
-}
+User::User(const int fd) : _fd(fd), _joinedChannelCount(0) {}
 
 User &User::operator=(const User &user) {
   if (this != &user) {
@@ -45,12 +40,6 @@ void User::setState(RegisterState state, bool enable) {
 
 User::RegisterState User::getState() const { return this->_state; }
 
-const int &User::getFd() const { return this->_fd; }
-
-const std::string &User::getNickName() const { return this->_nickname; }
-const std::string &User::getRealName() const { return this->_realname; }
-const std::string &User::getUserName() const { return this->_username; }
-
 void User::setNickName(const std::string &nickname) {
   this->_nickname = nickname;
 }
@@ -59,4 +48,14 @@ void User::setRealName(const std::string &realname) {
 }
 void User::setUserName(const std::string &username) {
   this->_username = username;
+}
+
+const std::string &User::getNickName() const { return this->_nickname; }
+const std::string &User::getRealName() const { return this->_realname; }
+const std::string &User::getUserName() const { return this->_username; }
+
+const int &User::getFd() const { return this->_fd; }
+
+int User::getJoinedChannelCount() const {
+  return (this->_joinedChannelCount);
 }

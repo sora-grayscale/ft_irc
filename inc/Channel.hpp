@@ -36,10 +36,9 @@ public:
     InvitationMask = 1 << 16  // I 特別扱いが必要
   };
 
+  // user
   void addUser(User &user);
   void removeUser(User &user);
-
-  void setTopic(const std::string &topic);
 
   // user status
   void setUserStatus(const std::string &nickname, UserStatusFlags status,
@@ -48,6 +47,9 @@ public:
                      UserStatusFlags status); // 上とほぼ一緒
   void removeUserStatus(const std::string &nickname, UserStatusFlags status);
   bool hasUserStatus(const std::string &nickname, UserStatusFlags status) const;
+
+  // topic
+  void setTopic(const std::string &topic);
 
   // channel mode
   void setChannelMode(const ChannelModeFlags flag, bool enable);
@@ -78,17 +80,19 @@ public:
 
 private:
   // std::map <std::string nickname, User &user> users;
-  std::map<std::string, User *> users;
-  std::string topic;
+  std::string _channelName;
+  std::set<User *> _users;
+  std::string _topic;
 
   // std::map<std::string nickname, unsigned int userStatus> userStatus;
-  std::map<std::string, unsigned int> userStatus;
+  std::map<std::string, unsigned int> _userStatus;
 
-  unsigned int channelModeFlags;
-  std::string channelKey;                // k flag
-  int userLimit;                         // l flag
-  std::set<std::string> banMasks;        // b flag
-  std::set<std::string> exceptionMasks;  // e flag
-  std::set<std::string> invitationMasks; // I flag
+  unsigned int _channelModeFlags;
+  std::string _channelKey;                // k flag
+  int _userLimit;                         // l flag
+  std::set<std::string> _banMasks;        // b flag
+  std::set<std::string> _exceptionMasks;  // e flag
+  std::set<std::string> _invitationMasks; // I flag
 };
+
 #endif

@@ -7,8 +7,11 @@ CXXFLAGS_DEBUG = $(CXXFLAGS) -g -fsanitize=address -fsanitize=leak -fsanitize=un
 DEPFLAGS = -MMD -MP -MF
 
 SRCDIR := src
-SERVER_SRC =  src/CommandHandler.cpp \
+SERVER_SRC =  src/Channel.cpp \
+              src/CommandHandler.cpp \
+              src/CommandHandler_debug.cpp \
               src/CommandHandler_handleCommand.cpp \
+              src/CommandHandler_Join.cpp \
               src/CommandHandler_parseMessage.cpp \
               src/main.cpp \
               src/Replies.cpp \

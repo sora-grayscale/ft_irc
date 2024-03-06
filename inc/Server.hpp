@@ -23,6 +23,7 @@
 #define PASS_MAX_LEN 32
 #define SERVER_MAX_LEN 63
 #define RECEVE_MAX_LEN 512
+#define MAX_CHANNEL_LIMIT 10
 
 class Server {
 public:
@@ -46,6 +47,10 @@ public:
 
   void sendReply(const int fd, const std::string &reply);
   User &findUser(const int fd);
+
+  // channel
+  bool isExistChannel(const std::string &channelName);
+  Channel &getChannel(const std::string &channelName); // channelがあるかのチェックが使う前に必要
 
 private:
   std::string

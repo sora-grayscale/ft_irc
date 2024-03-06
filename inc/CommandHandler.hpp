@@ -42,11 +42,23 @@ private:
   const std::string PASS(User &user);
   const std::string USER(User &user);
   const std::string NICK(User &user);
+  void JOIN(User &user);
   
   // nick method
   void convertChar(std::string &str);
   bool isSpecialChar(const char c);
   bool validateNick(const std::string &str);
-};
+
+  // join method
+  void splitChannelAndKey(std::vector<std::string> &channels,
+                                          std::vector<std::string> &keys);
+  bool isValidChannelName(const std::string &channelName);
+  bool hasReachedChannelLimit(const User &user);
+  bool verifyChannelKey(const Channel &channel, const std::string &key);
+
+  // debug
+  void printStringAsInts(const std::string &input);
+  void printVectorString(const std::vector<std::string> &vec);
+  };
 
 #endif

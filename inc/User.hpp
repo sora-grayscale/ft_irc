@@ -26,7 +26,6 @@ public:
 
   User();
   User(const int fd);
-  User(const std::string &nick, const std::string &realName);
   User &operator=(const User &user);
   ~User();
 
@@ -37,6 +36,7 @@ public:
   const std::string &getRealName() const;
   const std::string &getUserName() const;
   const int &getFd() const;
+  int getJoinedChannelCount() const;
 
   void setMode(unsigned int mode, bool enable);
   bool hasMode(ModeFlags flag) const;
@@ -44,12 +44,11 @@ public:
   RegisterState getState() const;
 
 private:
-  std::string
-      _nickname; // 1.2.1 ユーザー
-                 // 各ユーザーは、最大長さ9文字の一意のニックネームで他のユーザーと区別されます。ニックネームで使用される可能性のあるものとできないものについては、プロトコル文法規則（セクション2.3.1）を参照してください。
+  std::string _nickname;
   std::string _username;
   std::string _realname; // 63 自分で決めた
   int _fd;
+  int _joinedChannelCount;
 
   RegisterState _state;
   unsigned int _modeFlags;

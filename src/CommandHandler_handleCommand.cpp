@@ -4,10 +4,10 @@ void CommandHandler::handleCommand(const std::string &message, const int fd) {
   User &user = this->_server.findUser(fd);
 
   parseMessage(message);
-  if (!checkRegisterdState(user)) {
-    this->_server.sendReply(fd, this->_reply);
-    return;
-  }
+//  if (!checkRegisterdState(user)) {
+//    this->_server.sendReply(fd, this->_reply);
+//    return;
+//  }
   executeCommand(user);
   return;
 }
@@ -38,6 +38,9 @@ void CommandHandler::executeCommand(User &user) {
     this->_server.sendReply(user.getFd(), this->_reply);
   } else if (this->_command == "USER") {
     this->_reply = USER(user);
+    this->_server.sendReply(user.getFd(), this->_reply);
+  } else if (this->_command == "JOIN") {
+    JOIN(user);
     this->_server.sendReply(user.getFd(), this->_reply);
   } else {
     this->_reply = Replies::ERR_UNKNOWNCOMMAND(this->_command);
