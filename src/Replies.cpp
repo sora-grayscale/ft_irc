@@ -119,7 +119,6 @@ const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
 const std::string Replies::ERR_NOMOTD() {
   std::string message;
   message += "422";
-
   message += " :MOTD File is missing";
   return (message);
 }
