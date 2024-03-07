@@ -57,6 +57,9 @@ void CommandHandler::JOIN(User &user) {
       } else if (checkChannelCapacity(channel)) {
         this->_server.sendReply(user.getFd(), Replies::ERR_CHANNELISFULL(
                                                   channel.getChannelName()));
+      } else if (checkInviteOnlyStatus(channel)) {
+        this->_server.sendReply(user.getFd(), Replies::ERR_INVITEONLYCHAN(
+                                                  channel.getChannelName()));
       }
     }
   }
@@ -114,5 +117,13 @@ bool CommandHandler::checkChannelCapacity(const Channel &channel) {
     return (false);
   } else {
     return (true);
+  }
+}
+
+bool CommandHandler::checkInviteOnlyStatus(const Channel &channel) {
+  if (channel.hasChannleMode(Channel::InviteOnly)) {
+    return (true);
+  } else {
+    return (false);
   }
 }

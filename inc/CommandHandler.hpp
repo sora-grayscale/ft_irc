@@ -58,6 +58,7 @@ private:
   bool checkBanStatus(const Channel &channel,
                                     const std::string &nickname);
   bool checkChannelCapacity(const Channel &channel);
+  bool checkInviteOnlyStatus(const Channel &channel);
 
   // debug
   void printStringAsInts(const std::string &input);
