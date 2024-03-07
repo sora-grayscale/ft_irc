@@ -236,3 +236,7 @@ void CommandHandler::VERSION(User &user) {
   }
   this->_server.sendReply(user.getFd(), Replies::RPL_VERSION(SERVER_VERSION, DEBUG_LEVEL, this->_server.getServerName(), SERVER_VERSION_COMMENT));
 }
+void CommandHandler::LINKS(User &user) {
+  this->_server.sendReply(user.getFd(),
+                          Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+}
