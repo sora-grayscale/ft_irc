@@ -4,6 +4,7 @@ const std::string &Server::getPassword() const { return (this->_password); }
 Server::Server(int argc, const char *argv[]) {
   try {
     Server::checkServerName(SERVER_NAME);
+    this->_serverName = SERVER_NAME;
     Server::checkArgc(argc);
     Server::checkArgv(argv);
     Server::initSocket();

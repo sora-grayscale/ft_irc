@@ -70,6 +70,24 @@ const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
   return (message);
 }
 
+// 351
+const std::string Replies::RPL_VERSION(const std::string &version,
+                                       const std::string &debuglevel,
+                                       const std::string &server,
+                                       const std::string &comments) {
+  std::string message;
+  message += "351 ";
+  message += version;
+  message += ".";
+  message += debuglevel;
+  message += " ";
+  message += server;
+  message += " :";
+  message += comments;
+  message += "\r\n";
+  return (message);
+}
+
 // 372
 const std::string Replies::RPL_MOTD() {
   std::string message;

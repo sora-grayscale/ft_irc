@@ -26,6 +26,9 @@
 #define REAL_NAME_MAX_LEN 63
 #define OPER_PASSWORD "password"
 #define OPER_USER "operatuser"
+#define SERVER_VERSION "2.0"
+#define SERVER_VERSION_COMMENT "This is our server :)"
+#define DEBUG_LEVEL "normal"
 
 class Server {
 public:
