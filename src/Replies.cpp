@@ -15,6 +15,7 @@ const std::string Replies::RPL_LUSERCLIENT(const int &users,
   ss << servers;
   ss << " servers";
   message = ss.str();
+  message += "\r\n";
   return (message);
 }
 
@@ -26,6 +27,7 @@ const std::string Replies::RPL_LUSEROP(const int &operators) {
   ss << operators;
   ss << " :operator(s) online";
   message = ss.str();
+  message += "\r\n";
   return (message);
 }
 
@@ -33,10 +35,11 @@ const std::string Replies::RPL_LUSEROP(const int &operators) {
 const std::string Replies::RPL_LUSERUNKNOWN(const int &unknown) {
   std::stringstream ss;
   std::string message;
-  ss << "253";
+  ss << "253 ";
   ss << unknown;
   ss << " :unknown connection(s))";
   message = ss.str();
+  message += "\r\n";
   return (message);
 }
 
@@ -44,10 +47,11 @@ const std::string Replies::RPL_LUSERUNKNOWN(const int &unknown) {
 const std::string Replies::RPL_LUSERCHANNELS(const int &channels) {
   std::stringstream ss;
   std::string message;
-  ss << "254";
+  ss << "254 ";
   ss << channels;
   ss << " :channels formed";
   message = ss.str();
+  message += "\r\n";
   return (message);
 }
 
@@ -62,6 +66,7 @@ const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
   ss << servers;
   ss << " servers";
   message = ss.str();
+  message += "\r\n";
   return (message);
 }
 
@@ -70,6 +75,7 @@ const std::string Replies::RPL_MOTD() {
   std::string message;
   message += "372";
   message += " :Today's message!!";
+  message += "\r\n";
   return (message);
 }
 
@@ -78,6 +84,7 @@ const std::string Replies::RPL_MOTDSTART() {
   std::string message;
   message += "375";
   message += " :- Message of the day - ";
+  message += "\r\n";
   return (message);
 }
 
@@ -86,6 +93,7 @@ const std::string Replies::RPL_ENDOFMOTD() {
   std::string message;
   message += "376";
   message += " :End of MOTD command";
+  message += "\r\n";
   return (message);
 }
 
@@ -94,6 +102,7 @@ const std::string Replies::RPL_YOUREOPER() {
   std::string message;
   message += "381 ";
   message += ":You are now an IRC operator";
+  message += "\r\n";
   return (message);
 }
 
@@ -103,6 +112,7 @@ const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
   message += "402";
   message += serverName;
   message += " :No such server";
+  message += "\r\n";
   return (message);
 }
 
@@ -114,6 +124,7 @@ const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
   message += "421 ";
   message += command;
   message += " :Unknown command";
+  message += "\r\n";
   return (message);
 }
 
@@ -122,6 +133,7 @@ const std::string Replies::ERR_NOMOTD() {
   std::string message;
   message += "422";
   message += " :MOTD File is missing";
+  message += "\r\n";
   return (message);
 }
 
@@ -130,6 +142,7 @@ const std::string Replies::ERR_NONICKNAMEGIVEN() {
   std::string message;
   message += "431 ";
   message += ":No nickname given";
+  message += "\r\n";
   return (message);
 }
 
@@ -139,6 +152,7 @@ const std::string Replies::ERR_ERRONEUSNICKNAME(const std::string &nick) {
   message += "432 ";
   message += nick;
   message += " :Erroneous nickname";
+  message += "\r\n";
   return message;
 }
 
@@ -148,6 +162,7 @@ const std::string Replies::ERR_NICKNAMEINUSE(const std::string &nick) {
   message += "433 ";
   message += nick;
   message += " :Nickname is already in use";
+  message += "\r\n";
   return message;
 }
 
@@ -164,6 +179,7 @@ const std::string Replies::ERR_NICKCOLLISION(const std::string &nick,
   else
     message += user;
   message += host;
+  message += "\r\n";
   return message;
 }
 
@@ -173,6 +189,7 @@ const std::string Replies::ERR_UNAVAILRESOURCE(const std::string &str) {
   message += "437 ";
   message += str;
   message += " :Nick/channel is temporarily unavailable";
+  message += "\r\n";
   return message;
 }
 
@@ -181,6 +198,7 @@ const std::string Replies::ERR_NOTREGISTERED() {
   std::string message;
   message += "451 ";
   message += ":You have not registered";
+  message += "\r\n";
   return (message);
 }
 
@@ -190,6 +208,7 @@ const std::string Replies::ERR_NEEDMOREPARAMS(const std::string &command) {
   message += "461 ";
   message += command;
   message += " :Not enough parameters";
+  message += "\r\n";
   return (message);
 }
 
@@ -198,6 +217,7 @@ const std::string Replies::ERR_ALREADYREGISTRED() {
   std::string message;
   message += "462 ";
   message += ":Unauthorized command (already registered)";
+  message += "\r\n";
   return (message);
 }
 
@@ -206,6 +226,7 @@ const std::string Replies::ERR_PASSWDMISMATCH() {
   std::string message;
   message += "464 ";
   message += ":Password incorrect";
+  message += "\r\n";
   return (message);
 }
 
@@ -214,6 +235,7 @@ const std::string Replies::ERR_RESTRICTED() {
   std::string message;
   message += "484 ";
   message += ":Your connection is restricted!";
+  message += "\r\n";
   return message;
 }
 
@@ -222,6 +244,7 @@ const std::string Replies::ERR_NOOPERHOST() {
   std::string message;
   message += "491 ";
   message += ":No O-lines for your host";
+  message += "\r\n";
   return (message);
 }
 
