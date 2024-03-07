@@ -47,6 +47,7 @@ const std::string Replies::RPL_LUSERCHANNELS(const int &channels) {
   ss << "254";
   ss << channels;
   ss << " :channels formed";
+  message = ss.str();
   return (message);
 }
 
@@ -60,6 +61,7 @@ const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
   ss << " clients and ";
   ss << servers;
   ss << " servers";
+  message = ss.str();
   return (message);
 }
 
