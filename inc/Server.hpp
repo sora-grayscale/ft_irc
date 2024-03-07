@@ -51,13 +51,13 @@ public:
   // channel
   bool isExistChannel(const std::string &channelName);
   Channel &getChannel(const std::string &channelName); // channelがあるかのチェックが使う前に必要
+  void addChannel(const std::string &channelName);
+  void addChannel(const std::string &channelName, const std::string &key);
 
 private:
-  std::string
-      _serverName; //    > 1.1 サーバー
-                   //    サーバーは名前で一意に識別されます。この名前は、最大63文字（63）の文字です。サーバー名で使用される可能性のあるもの、および使用されないものについては、プロトコル文法ルール（セクション2.3.1）を参照してください。
-  std::string _password; // 32 自分で決めた
-  unsigned short _port;  //
+  std::string _serverName;
+  std::string _password;
+  unsigned short _port;
   int _sfd;
   struct sockaddr_in _addr;
   std::vector<struct pollfd> _pollFd;

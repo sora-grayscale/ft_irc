@@ -5,6 +5,14 @@ Channel::Channel()
     : _channelName(""), _topic(""), _topicSetAt(0), _channelModeFlag(0),
       _channelKey(""), _userLimit(INT_MAX) {}
 
+Channel::Channel(const std::string &channelName)
+    : _channelName(channelName), _topic(""), _topicSetAt(0),
+      _channelModeFlag(0), _channelKey(""), _userLimit(INT_MAX) {}
+
+Channel::Channel(const std::string &channelName, const std::string &key)
+    : _channelName(channelName), _topic(""), _topicSetAt(0),
+      _channelModeFlag(0), _channelKey(key), _userLimit(INT_MAX) {}
+
 // destructor
 Channel::~Channel() {}
 

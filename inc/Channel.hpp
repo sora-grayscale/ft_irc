@@ -11,6 +11,8 @@
 class Channel {
 public:
   Channel();
+  Channel(const std::string &channelName);
+  Channel(const std::string &channelName, const std::string &key);
   ~Channel();
 
   enum UserStatusFlags {

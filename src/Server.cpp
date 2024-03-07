@@ -52,3 +52,11 @@ bool Server::isExistChannel(const std::string &channelName) {
 Channel &Server::getChannel(const std::string &channelName) {
   return (this->_channels.at(channelName));
 }
+
+void Server::addChannel(const std::string &channelName){
+  this->_channels[channelName] = Channel(channelName);
+}
+
+void Server::addChannel(const std::string &channelName, const std::string &key){
+  this->_channels[channelName] = Channel(channelName, key);
+}

@@ -4,7 +4,6 @@
 #include <string>
 #include "Channel.hpp"
 
-// 1. RPL_NAMREPLY (353)
 class Replies {
 public:
   // 332

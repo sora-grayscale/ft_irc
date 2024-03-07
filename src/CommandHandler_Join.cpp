@@ -14,6 +14,7 @@
 // 1. RPL_NAMREPLY (353)
 // 1. RPL_ENDOFNAMES (366)
 
+
 void CommandHandler::JOIN(User &user) {
   std::vector<std::string> channelNames;
   std::vector<std::string> keys;
@@ -28,26 +29,30 @@ void CommandHandler::JOIN(User &user) {
   for (std::size_t i = 0; i < channelNames.size(); i++) {
 
     if (channelNames.at(i).empty() || !isValidChannelName(channelNames.at(i))) {
-      //      this->_server.sendReply(user.getFd(),
-      //                              Replies::ERR_NOSUCHCHANNEL());
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHCHANNEL(channelNames.at(i)));
       continue;
     } else if (hasReachedChannelLimit(user)) {
-      //      this->_server.sendReply(user.getFd(),
-      //                              Replies::ERR_TOOMANYCHANNELS());
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_TOOMANYCHANNELS(channelNames.at(i)));
       continue;
     }
 
     if (!this->_server.isExistChannel(channelNames.at(i))) {
       if (keys.at(i).empty()) {
-//        makeChannel(channelNames.at(i));
+        this->_server.addChannel(channelNames.at(i));
       } else {
- //       makeChannel(channelNames.at(i), keys.at(i));
+        this->_server.addChannel(channelNames.at(i), keys.at(i));
       }
     } else {
       const Channel &channel = this->_server.getChannel(channelNames.at(i));
       if (!verifyChannelKey(channel, keys.at(i))) {
-        //      this->_server.sendReply(user.getFd(),
-        //                              Replies::ERR_BADCHANNELKEY());
+        this->_server.sendReply(
+            user.getFd(), Replies::ERR_BADCHANNELKEY(channel.getChannelName()));
+        continue;
+      } else if (!checkBanStatus(channel, user.getNickName())) {
+        this->_server.sendReply(user.getFd(), Replies::ERR_BANNEDFROMCHAN(
+                                                  channel.getChannelName()));
         continue;
       }
     }
@@ -93,7 +98,10 @@ bool CommandHandler::verifyChannelKey(const Channel &channel,
   return (true);
 }
 
-//bool CommandHandler::checkBanStatus(const Channel &channel) {
-//  if () {
-//  }
-//}
+bool CommandHandler::checkBanStatus(const Channel &channel,
+                                    const std::string &nickname) {
+  if (channel.isBanned(nickname)) {
+    return (false);
+  }
+  return (true);
+}
