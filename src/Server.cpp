@@ -36,7 +36,7 @@ bool Server::isNick(const std::string &nick)
   if (this->_nickHistory.find(nick) != this->_nickHistory.end())
     return true;
   for (std::map<int, User>::iterator it = this->_tmpUsers.begin();
-       it != this->_tmpUsers.begin(); it++) {
+       it != this->_tmpUsers.end(); it++) {
     if (it->second.getNickName() == nick)
       return true;
   }
