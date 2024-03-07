@@ -240,3 +240,18 @@ void CommandHandler::LINKS(User &user) {
   this->_server.sendReply(user.getFd(),
                           Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
 }
+
+void CommandHandler::TIME(User &user) {
+  if (!this->_params.at(0).empty()) {
+    if (this->_params.at(0) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(), Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
+  std::stringstream ss;
+  std::string message;
+
+  std::time_t result = std::time(nullptr);
+  ss << std::ctime(&result);
+  message = ss.str();
+}
