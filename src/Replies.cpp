@@ -1,7 +1,8 @@
 #include "Replies.hpp"
 
 // 332
-const std::string Replies::RPL_TOPIC(const std::string &channelName, const std::string &topic) {
+const std::string Replies::RPL_TOPIC(const std::string &channelName,
+                                     const std::string &topic) {
   std::string message;
   message += "332 ";
   message += channelName;
@@ -12,7 +13,9 @@ const std::string Replies::RPL_TOPIC(const std::string &channelName, const std::
 }
 
 // 333
-const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName, const std::string &nick, const long &setat) {
+const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
+                                            const std::string &nick,
+                                            const long &setat) {
   std::string message;
   message += "333 ";
   message += channelName;
@@ -24,6 +27,35 @@ const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName, cons
   return (message);
 }
 
+// 353
+const std::string Replies::RPL_NAMREPLY(const Channel &channel,
+                                        const User &user) {
+  std::string message;
+  message += "353 ";
+
+  // Channel mode
+  if (channel.hasChannleMode(Channel::Secret)) {
+    message += "@ ";
+  } else if (channel.hasChannleMode(Channel::Private)) {
+    message += "* ";
+  } else {
+    message += "= ";
+  }
+
+  // Channel name
+  message += channel.getChannelName() + " :";
+
+  // User status
+  if (channel.hasUserStatus(const_cast<User &>(user), Channel::Operator)) {
+    message += "@";
+  } else if (channel.hasUserStatus(const_cast<User &>(user), Channel::Voice)) {
+    message += "+";
+  }
+  message += user.getNickName();
+
+  message += "\r\n";
+  return (message);
+}
 
 // 366
 const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {

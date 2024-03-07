@@ -29,17 +29,23 @@ public:
   User &operator=(const User &user);
   ~User();
 
+  // setter
   void setNickName(const std::string &nickname);
   void setRealName(const std::string &realname);
   void setUserName(const std::string &username);
+
+  //getter
   const std::string &getNickName() const;
   const std::string &getRealName() const;
   const std::string &getUserName() const;
   const int &getFd() const;
   int getJoinedChannelCount() const;
 
+  // mode
   void setMode(unsigned int mode, bool enable);
   bool hasMode(ModeFlags flag) const;
+
+  // state
   void setState(RegisterState state, bool eneble);
   RegisterState getState() const;
 

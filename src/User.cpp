@@ -19,6 +19,27 @@ User &User::operator=(const User &user) {
 
 User::~User() {}
 
+// setter
+void User::setNickName(const std::string &nickname) {
+  this->_nickname = nickname;
+}
+void User::setRealName(const std::string &realname) {
+  this->_realname = realname;
+}
+void User::setUserName(const std::string &username) {
+  this->_username = username;
+}
+
+// getter
+const std::string &User::getNickName() const { return this->_nickname; }
+const std::string &User::getRealName() const { return this->_realname; }
+const std::string &User::getUserName() const { return this->_username; }
+const int &User::getFd() const { return this->_fd; }
+int User::getJoinedChannelCount() const {
+  return (this->_joinedChannelCount);
+}
+
+// mode
 void User::setMode(unsigned int mode, bool enable) {
   if (enable) {
     this->_modeFlags |= mode;
@@ -30,6 +51,7 @@ bool User::hasMode(ModeFlags flag) const {
   return (this->_modeFlags & flag) != 0;
 }
 
+// state
 void User::setState(RegisterState state, bool enable) {
   if (enable) {
     this->_state = static_cast<RegisterState>(this->_state | state);
@@ -39,23 +61,3 @@ void User::setState(RegisterState state, bool enable) {
 }
 
 User::RegisterState User::getState() const { return this->_state; }
-
-void User::setNickName(const std::string &nickname) {
-  this->_nickname = nickname;
-}
-void User::setRealName(const std::string &realname) {
-  this->_realname = realname;
-}
-void User::setUserName(const std::string &username) {
-  this->_username = username;
-}
-
-const std::string &User::getNickName() const { return this->_nickname; }
-const std::string &User::getRealName() const { return this->_realname; }
-const std::string &User::getUserName() const { return this->_username; }
-
-const int &User::getFd() const { return this->_fd; }
-
-int User::getJoinedChannelCount() const {
-  return (this->_joinedChannelCount);
-}

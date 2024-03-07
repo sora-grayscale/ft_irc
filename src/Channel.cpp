@@ -8,6 +8,15 @@ Channel::Channel()
 // destructor
 Channel::~Channel() {}
 
+// getter
+const std::string &Channel::getChannelName() const {
+  return (this->_channelName);
+}
+
+const std::map<User *, unsigned int> &Channel::getUserStatus() const {
+  return (this->_userStatus);
+}
+
 // user
 void Channel::addUser(User &user) { this->_users.insert(&user); }
 void Channel::removeUser(User &user) { this->_users.erase(&user); }
@@ -22,7 +31,7 @@ void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
   }
 }
 
-bool Channel::hasUserStatus(User &user, UserStatusFlags status) const {
+bool Channel::hasUserStatus(User &user, const UserStatusFlags status) const {
   if ((this->_userStatus.at(&user) & status) == 1) {
     return (true);
   }
