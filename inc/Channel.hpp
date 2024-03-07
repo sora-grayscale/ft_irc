@@ -50,6 +50,7 @@ public:
   // user
   void addUser(User &user);
   void removeUser(User &user);
+  int userNum() const;
 
   // user status
   void setUserStatus(User &user, UserStatusFlags status, bool enable);

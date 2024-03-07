@@ -28,6 +28,9 @@ const std::map<User *, unsigned int> &Channel::getUserStatus() const {
 // user
 void Channel::addUser(User &user) { this->_users.insert(&user); }
 void Channel::removeUser(User &user) { this->_users.erase(&user); }
+int Channel::userNum() const {
+  return (this->_users.size());
+}
 
 // user status
 void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {

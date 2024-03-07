@@ -54,6 +54,9 @@ void CommandHandler::JOIN(User &user) {
         this->_server.sendReply(user.getFd(), Replies::ERR_BANNEDFROMCHAN(
                                                   channel.getChannelName()));
         continue;
+      } else if (checkChannelCapacity(channel)) {
+        this->_server.sendReply(user.getFd(), Replies::ERR_CHANNELISFULL(
+                                                  channel.getChannelName()));
       }
     }
   }
@@ -104,4 +107,12 @@ bool CommandHandler::checkBanStatus(const Channel &channel,
     return (false);
   }
   return (true);
+}
+
+bool CommandHandler::checkChannelCapacity(const Channel &channel) {
+  if (channel.getUserLimit() <= channel.userNum()) {
+    return (false);
+  } else {
+    return (true);
+  }
 }

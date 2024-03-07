@@ -57,6 +57,7 @@ private:
   bool verifyChannelKey(const Channel &channel, const std::string &key);
   bool checkBanStatus(const Channel &channel,
                                     const std::string &nickname);
+  bool checkChannelCapacity(const Channel &channel);
 
   // debug
   void printStringAsInts(const std::string &input);
