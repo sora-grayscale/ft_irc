@@ -1,25 +1,53 @@
 #include "Channel.hpp"
 
-// user
-// void addUser(User &user) {
-//   this->_users.insert(user);
-// }
+// constructor
+Channel::Channel()
+    : _channelName(""), _topic(""), _topicSetAt(0), _channelModeFlag(0),
+      _channelKey(""), _userLimit(INT_MAX) {}
 
-// void removeUser(User &user) {}
-// 
-// // user status
-// void setUserStatus(const std::string &nickname, UserStatusFlags status,
-//                    bool enable) {}
-// void addUserStatus(const std::string &nickname, UserStatusFlags status) {}
-// void removeUserStatus(const std::string &nickname, UserStatusFlags status) {}
-// bool hasUserStatus(const std::string &nickname, UserStatusFlags status) const {}
-// 
-// // topic
-// void setTopic(const std::string &topic) {}
-// 
+// destructor
+Channel::~Channel() {}
+
+// user
+void Channel::addUser(User &user) { this->_users.insert(&user); }
+void Channel::removeUser(User &user) { this->_users.erase(&user); }
+
+// user status
+void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
+  unsigned int &userStatus = this->_userStatus.at(&user);
+  if (enable) {
+    userStatus |= status;
+  } else {
+    userStatus &= ~status;
+  }
+}
+
+bool Channel::hasUserStatus(User &user, UserStatusFlags status) const {
+  if ((this->_userStatus.at(&user) & status) == 1) {
+    return (true);
+  }
+  return (false);
+}
+
+// topic
+void Channel::setTopic(const std::string &topic) { this->_topic = topic; }
+
 // // channel mode
-// void setChannelMode(const ChannelModeFlags flag, bool enable) {}
-// bool hasChannleMode(const ChannelModeFlags flag) const {}
+void Channel::setChannelMode(const ChannelModeFlags flag, bool enable) {
+  if (enable) {
+    this->_channelModeFlag |= flag;
+  } else {
+    this->_channelModeFlag &= ~flag;
+  }
+}
+
+bool Channel::hasChannleMode(const ChannelModeFlags flag) const {
+  if ((this->_channelModeFlag & flag) == 1) {
+    return (true);
+  } else {
+    return (false);
+  }
+}
 
 // k flag
 void Channel::setKey(const std::string &key) { this->_channelKey = key; }
@@ -31,17 +59,59 @@ void Channel::setUserLimit(int limit) { this->_userLimit = limit; }
 
 int Channel::getUserLimit() const { return (this->_userLimit); }
 
-// // b flag
-// void addBanMask(const std::string &mask) {}
-// void removeBanMask(const std::string &mask) {}
-// bool isBanned(const std::string &mask) const {}
-// 
-// // e flag
-// void addExceptionMask(const std::string &mask) {}
-// void removeExceptionMask(const std::string &mask) {}
-// bool hasException(const std::string &mask) const {}
-// 
+// b flag
+void Channel::addBanMask(const std::string &mask) {
+  this->_banMasks.insert(mask);
+}
+
+void Channel::removeBanMask(const std::string &mask) {
+  this->_banMasks.erase(mask);
+}
+
+bool Channel::isBanned(const std::string &mask) const {
+  if (this->_banMasks.find(mask) != this->_banMasks.end()) {
+    return (true);
+  } else {
+    return (false);
+  }
+}
+
+// e flag
+void Channel::addExceptionMask(const std::string &mask) {
+  this->_exceptionMasks.insert(mask);
+}
+
+void Channel::removeExceptionMask(const std::string &mask) {
+  this->_exceptionMasks.erase(mask);
+}
+
+bool Channel::hasException(const std::string &mask) const {
+  if (this->_exceptionMasks.find(mask) != this->_exceptionMasks.end()) {
+    return (true);
+  } else {
+    return (false);
+  }
+}
+
 // // I flag
-// void addInvitationMask(const std::string &mask) {}
-// void removeInvitationMask(const std::string &mask) {}
-// bool isInvited(const std::string &mask) const {}
+void Channel::addInvitationMask(const std::string &mask) {
+  this->_invitationMasks.insert(mask);
+}
+
+void Channel::removeInvitationMask(const std::string &mask) {
+  this->_invitationMasks.erase(mask);
+}
+
+bool Channel::isInvited(const std::string &mask) const {
+  if (this->_invitationMasks.find(mask) != this->_invitationMasks.end()) {
+    return (true);
+  } else {
+    return (false);
+  }
+}
+
+// func
+long Channel::getCurrentUnixTimestamp() {
+  std::time_t now = std::time(NULL);
+  return (static_cast<long>(now));
+}

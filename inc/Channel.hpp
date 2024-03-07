@@ -2,12 +2,17 @@
 #define CHANNEL_HPP
 
 #include "User.hpp"
+#include <climits>
+#include <ctime>
 #include <map>
 #include <set>
 #include <string>
 
 class Channel {
 public:
+  Channel();
+  ~Channel();
+
   enum UserStatusFlags {
     Normal = 0,
     Creator = 1 << 0,
@@ -41,15 +46,13 @@ public:
   void removeUser(User &user);
 
   // user status
-  void setUserStatus(const std::string &nickname, UserStatusFlags status,
-                     bool enable);
-  void addUserStatus(const std::string &nickname,
-                     UserStatusFlags status); // 上とほぼ一緒
-  void removeUserStatus(const std::string &nickname, UserStatusFlags status);
-  bool hasUserStatus(const std::string &nickname, UserStatusFlags status) const;
+  void setUserStatus(User &user, UserStatusFlags status, bool enable);
+  bool hasUserStatus(User &user, UserStatusFlags status) const;
 
   // topic
   void setTopic(const std::string &topic);
+  const std::string &getTopic() const;
+  const long &getTopicSetAt() const;
 
   // channel mode
   void setChannelMode(const ChannelModeFlags flag, bool enable);
@@ -79,20 +82,23 @@ public:
   bool isInvited(const std::string &mask) const;
 
 private:
-  // std::map <std::string nickname, User &user> users;
   std::string _channelName;
+
   std::set<User *> _users;
+  std::map<User *, unsigned int> _userStatus; // nickname, userStatus
+
   std::string _topic;
+  long _topicSetAt;
 
-  // std::map<std::string nickname, unsigned int userStatus> userStatus;
-  std::map<std::string, unsigned int> _userStatus;
-
-  unsigned int _channelModeFlags;
-  std::string _channelKey;                // k flag
-  int _userLimit;                         // l flag
+  unsigned int _channelModeFlag;
+  std::string _channelKey;           // k flag
+  int _userLimit;                    // l flag
   std::set<std::string> _banMasks;        // b flag
   std::set<std::string> _exceptionMasks;  // e flag
   std::set<std::string> _invitationMasks; // I flag
+
+  // setTopic func
+  long getCurrentUnixTimestamp();
 };
 
 #endif
