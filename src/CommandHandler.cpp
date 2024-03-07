@@ -203,6 +203,14 @@ void CommandHandler::MOTD(User &user){
 }
 
 void CommandHandler::LUSERS(User &user) {
+  if (!this->_params.at(0).empty()) {
+    if (this->_params.at(0) != this->_server.getServerName() ||
+        this->_params.at(1) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
   int users = this->_server.numOfUser();
   int services = 0;
   int operators = this->_server.numOfOpeUser();
