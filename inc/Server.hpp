@@ -46,6 +46,9 @@ public:
   void addRegisterMap(const int fd, const User &user);
 
   bool isNick(const std::string &nick);
+  int numOfUser();
+  int numOfChannel();
+  int numOfOpeUser();
 
   void sendReply(const int fd, const std::string &reply);
   User &findUser(const int fd);

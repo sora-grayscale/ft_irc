@@ -47,3 +47,20 @@ void Server::setNickHistory(const std::string &nick) {
 }
 
 const std::string &Server::getServerName() const { return this->_serverName; }
+
+int Server::numOfUser() {
+  return static_cast<int>(this->_registerdUsers.size());
+}
+
+int Server::numOfOpeUser() {
+  int results = 0;
+
+  for (std::map<int, User>::iterator it = this->_registerdUsers.begin();
+       it != this->_registerdUsers.begin(); it++) {
+    if (it->second.hasMode(User::Operator))
+      results++;
+  }
+  return results;
+}
+
+int Server::numOfChannel() { return static_cast<int>(this->_channels.size()); }
