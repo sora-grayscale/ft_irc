@@ -59,6 +59,8 @@ private:
                                     const std::string &nickname);
   bool checkChannelCapacity(const Channel &channel);
   bool checkInviteOnlyStatus(const Channel &channel);
+  bool validateChannelMask(const Channel &channel,
+                                           const std::string &nickname);
 
   // debug
   void printStringAsInts(const std::string &input);

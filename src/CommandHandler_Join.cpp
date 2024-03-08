@@ -54,11 +54,14 @@ void CommandHandler::JOIN(User &user) {
         this->_server.sendReply(user.getFd(), Replies::ERR_BANNEDFROMCHAN(
                                                   channel.getChannelName()));
         continue;
-      } else if (checkChannelCapacity(channel)) {
+      } else if (!checkChannelCapacity(channel)) {
         this->_server.sendReply(user.getFd(), Replies::ERR_CHANNELISFULL(
                                                   channel.getChannelName()));
-      } else if (checkInviteOnlyStatus(channel)) {
+      } else if (!checkInviteOnlyStatus(channel)) {
         this->_server.sendReply(user.getFd(), Replies::ERR_INVITEONLYCHAN(
+                                                  channel.getChannelName()));
+      } else if (!validateChannelMask(channel, user.getNickName())) {
+        this->_server.sendReply(user.getFd(), Replies::ERR_BADCHANMASK(
                                                   channel.getChannelName()));
       }
     }
@@ -113,10 +116,10 @@ bool CommandHandler::checkBanStatus(const Channel &channel,
 }
 
 bool CommandHandler::checkChannelCapacity(const Channel &channel) {
-  if (channel.getUserLimit() <= channel.userNum()) {
-    return (false);
-  } else {
+  if (channel.userNum() < channel.getUserLimit()) {
     return (true);
+  } else {
+    return (false);
   }
 }
 
@@ -125,5 +128,14 @@ bool CommandHandler::checkInviteOnlyStatus(const Channel &channel) {
     return (true);
   } else {
     return (false);
+  }
+}
+
+bool CommandHandler::validateChannelMask(const Channel &channel,
+                                         const std::string &nickname) {
+  if (channel.isBanned(nickname)) {
+    return (false);
+  } else {
+    return (true);
   }
 }
