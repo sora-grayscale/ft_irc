@@ -47,6 +47,8 @@ void CommandHandler::executeCommand(User &user, const int fd) {
     MOTD(user);
   } else if (this->_command == "LUSERS") {
     LUSERS(user);
+  } else if (this->_command == "VERSION") {
+    VERSION(user);
   } else {
     this->_reply = Replies::ERR_UNKNOWNCOMMAND(this->_command);
     this->_server.sendReply(fd, this->_reply);

@@ -17,6 +17,11 @@ public:
   static const std::string RPL_LUSERCHANNELS(const int &channels);
   // 255
   static const std::string RPL_LUSERME(const int &clients, const int &servers);
+  // 351
+  static const std::string RPL_VERSION(const std::string &version,
+                                                const std::string &debuglevel,
+                                                const std::string &server,
+                                                const std::string &comments);
   // 372
   static const std::string RPL_MOTD();
   // 375
