@@ -70,6 +70,45 @@ const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
   return (message);
 }
 
+// 256
+const std::string Replies::RPL_ADMINME(const std::string &serverName) {
+  std::string message;
+  message += "256 ";
+  message += serverName;
+  message += " :Administrative info";
+  message += "\r\n";
+  return (message);
+}
+
+// 257
+const std::string Replies::RPL_ADMINLOC1(const std::string &adminLocation) {
+  std::string message;
+  message += "257 ";
+  message += " :";
+  message += adminLocation;
+  message += "\r\n";
+  return (message);
+}
+// 258
+const std::string Replies::RPL_ADMINLOC2(const std::string &adminAffiliation) {
+  std::string message;
+  message += "258 ";
+  message += " :";
+  message += adminAffiliation;
+  message += "\r\n";
+  return (message);
+}
+
+// 259
+const std::string Replies::RPL_ADMINEMAIL(const std::string &adminMail) {
+  std::string message;
+  message += "259 ";
+  message += " :";
+  message += adminMail;
+  message += "\r\n";
+  return (message);
+}
+
 // 351
 const std::string Replies::RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,

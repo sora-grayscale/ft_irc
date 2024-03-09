@@ -17,6 +17,14 @@ public:
   static const std::string RPL_LUSERCHANNELS(const int &channels);
   // 255
   static const std::string RPL_LUSERME(const int &clients, const int &servers);
+  // 256
+  static const std::string RPL_ADMINME(const std::string &serverName);
+  // 257
+  static const std::string RPL_ADMINLOC1(const std::string &adminLocation);
+  // 258
+  static const std::string RPL_ADMINLOC2(const std::string &adminAffiliation);
+  // 259
+  static const std::string RPL_ADMINEMAIL(const std::string &adminMail);
   // 351
   static const std::string RPL_VERSION(const std::string &version,
                                                 const std::string &debuglevel,

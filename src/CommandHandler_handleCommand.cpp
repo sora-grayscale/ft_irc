@@ -55,6 +55,8 @@ void CommandHandler::executeCommand(User &user, const int fd) {
     CONNECT(user);
   } else if (this->_command == "TRACE") {
     TRACE(user);
+  } else if (this->_command == "ADMIN") {
+    ADMIN(user);
   } else {
     this->_reply = Replies::ERR_UNKNOWNCOMMAND(this->_command);
     this->_server.sendReply(fd, this->_reply);

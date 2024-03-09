@@ -29,6 +29,9 @@
 #define SERVER_VERSION "2.0"
 #define SERVER_VERSION_COMMENT "This is our server :)"
 #define DEBUG_LEVEL "normal"
+#define ADMIN_LOCATION "Tokyo"
+#define ADMIN_AFFILIATION "42Tokyo"
+#define ADMIN_MAIL "admin@student.42tokyo.fr"
 
 class Server {
 public:
