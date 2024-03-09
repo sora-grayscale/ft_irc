@@ -100,3 +100,19 @@ void Server::initSocket() {
     throw std::runtime_error(std::strerror(errno));
   }
 }
+
+void Server::initTimeOfStart() {
+  std::stringstream ss;
+  std::string tmp;
+  std::string day;
+
+  std::time_t result = std::time(nullptr);
+  ss << std::ctime(&result);
+  for (int i = 0; !ss.eof(); i++) {
+    ss >> tmp;
+    if (i == 1 || i == 2) {
+      day += tmp;
+    }
+  }
+  this->_startDay = day;
+}

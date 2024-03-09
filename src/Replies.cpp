@@ -127,6 +127,18 @@ const std::string Replies::RPL_VERSION(const std::string &version,
   return (message);
 }
 
+// 371
+const std::string Replies::RPL_INFO(const std::string detail, const std::string &str) {
+  std::string message;
+  message += "371";
+  message += " :";
+  message += detail;
+  message += " ";
+  message += str;
+  message += "\r\n";
+  return (message);
+}
+
 // 372
 const std::string Replies::RPL_MOTD() {
   std::string message;
@@ -141,6 +153,15 @@ const std::string Replies::RPL_MOTDSTART() {
   std::string message;
   message += "375";
   message += " :- Message of the day - ";
+  message += "\r\n";
+  return (message);
+}
+
+// 374
+const std::string Replies::RPL_ENDOFINFO() {
+  std::string message;
+  message += "374";
+  message += " :End of INFO list";
   message += "\r\n";
   return (message);
 }

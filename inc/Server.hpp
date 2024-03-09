@@ -29,6 +29,7 @@
 #define SERVER_VERSION "2.0"
 #define SERVER_VERSION_COMMENT "This is our server :)"
 #define DEBUG_LEVEL "normal"
+#define PATCH_LEVEL "normal"
 #define ADMIN_LOCATION "Tokyo"
 #define ADMIN_AFFILIATION "42Tokyo"
 #define ADMIN_MAIL "admin@student.42tokyo.fr"
@@ -44,6 +45,7 @@ public:
   const std::string &getServerName() const;
   const std::string &getNickHistory() const;
   const std::string &getPassword() const;
+  const std::string &getStartDay() const;
 
   // setter
   void changeNickname(const std::string &before, const std::string &after);
@@ -73,6 +75,7 @@ private:
   std::map<int, User> _registerdUsers;               // fd, user
   std::map<std::string, Channel> _channels;          /// channelname, channel
   std::set<std::string> _nickHistory;
+  std::string _startDay;
 
   // Server init
   void checkServerName(const std::string &serverName) const;
@@ -81,6 +84,7 @@ private:
   void checkPortNum(const unsigned short port) const;
   void checkPassword(const std::string &password) const;
   void initSocket();
+  void initTimeOfStart();
 
   // Server run
   int pollSockets();

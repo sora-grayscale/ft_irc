@@ -30,8 +30,12 @@ public:
                                                 const std::string &debuglevel,
                                                 const std::string &server,
                                                 const std::string &comments);
+  // 371
+  static const std::string RPL_INFO(const std::string detail, const std::string &str);
   // 372
   static const std::string RPL_MOTD();
+  // 374
+  static const std::string RPL_ENDOFINFO();
   // 375
   static const std::string RPL_MOTDSTART();
   // 376
