@@ -30,6 +30,8 @@ public:
   static const std::string RPL_ENDOFMOTD();
   // 381
   static const std::string RPL_YOUREOPER();
+  // 391
+  static const std::string RPL_TIME(const std::string &serverName, const std::string &time);
   // 402
   static const std::string ERR_NOSUCHSERVER(const std::string &serverName);
   // 421

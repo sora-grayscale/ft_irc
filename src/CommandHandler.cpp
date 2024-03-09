@@ -244,14 +244,17 @@ void CommandHandler::LINKS(User &user) {
 void CommandHandler::TIME(User &user) {
   if (!this->_params.at(0).empty()) {
     if (this->_params.at(0) != this->_server.getServerName()) {
-      this->_server.sendReply(user.getFd(), Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
       return;
     }
   }
   std::stringstream ss;
-  std::string message;
+  std::string time;
 
   std::time_t result = std::time(nullptr);
   ss << std::ctime(&result);
-  message = ss.str();
+  time = ss.str();
+  this->_server.sendReply(
+      user.getFd(), Replies::RPL_TIME(this->_server.getServerName(), time));
 }
