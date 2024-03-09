@@ -61,6 +61,12 @@ private:
   bool checkInviteOnlyStatus(const Channel &channel);
   bool validateChannelMask(const Channel &channel,
                                            const std::string &nickname);
+  bool evaluateChannelJoinCondition(const User &user, const Channel &channel,
+                                    const std::string &key);
+  void sendTopicReply(const User &user, const Channel &channel) const;
+  void sendNamReply(const User &user, const Channel &channel) const;
+  void sendEndOfNamesReply(const User &user, const Channel &channel) const;
+  void sendJoinResponses(const User &user, const Channel &channel) const;
 
   // debug
   void printStringAsInts(const std::string &input);
