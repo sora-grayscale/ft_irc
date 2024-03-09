@@ -43,20 +43,20 @@ void CommandHandler::JOIN(User &user) {
       } else {
         this->_server.addChannel(channelNames.at(i), keys.at(i));
       }
-    } else {
-      const Channel &channel = this->_server.getChannel(channelNames.at(i));
-      if (!evaluateChannelJoinCondition(user, channel, keys.at(i))) {
-        continue;
-      }
     }
+
     const Channel &channel = this->_server.getChannel(channelNames.at(i));
+    if (!evaluateChannelJoinCondition(user, channel, keys.at(i))) {
+      continue;
+    }
+    
+    const_cast<Channel &>(channel).addUser(user);
     sendJoinResponses(user, channel);
   }
 }
 
-
 void CommandHandler::splitChannelAndKey(std::vector<std::string> &channels,
-                                        std::vector<std::string> &keys) {
+                                        std::vector<std::string> &keys) const {
   std::string token;
 
   std::istringstream issChannel(this->_params.at(0));
@@ -72,22 +72,28 @@ void CommandHandler::splitChannelAndKey(std::vector<std::string> &channels,
   }
 }
 
-bool CommandHandler::isValidChannelName(const std::string &channelName) {
-  if (channelName.find_first_of("\a\n\r ,:") == std::string::npos) {
-    return (true);
+bool CommandHandler::isValidChannelName(const std::string &channelName) const {
+  if (channelName.find_first_of("\a\n\r ,:") != std::string::npos) {
+    return (false);
+  } else if (channelName.at(0) != '#' || channelName.at(0) != '+' ||
+             channelName.at(0) != '!' || channelName.at(0) != '&') {
+    return (false);
   }
-  return (false);
+  return (true);
 }
 
-bool CommandHandler::hasReachedChannelLimit(const User &user) {
-  if (10 < user.getJoinedChannelCount()) {
+bool CommandHandler::hasReachedChannelLimit(const User &user) const {
+  if (USER_CHANNEL_LIMIT < user.getJoinedChannelCount()) {
     return (true);
   }
   return (false);
 }
 
 bool CommandHandler::verifyChannelKey(const Channel &channel,
-                                      const std::string &key) {
+                                      const std::string &key) const {
+  if (!channel.hasChannleMode(Channel::Key)) {
+    return (true);
+  }
   if (channel.getKey() != key) {
     return (false);
   }
@@ -95,39 +101,39 @@ bool CommandHandler::verifyChannelKey(const Channel &channel,
 }
 
 bool CommandHandler::checkBanStatus(const Channel &channel,
-                                    const std::string &nickname) {
+                                    const std::string &nickname) const {
+  if (!channel.hasChannleMode(Channel::BanMask)) {
+    return (true);
+  }
   if (channel.isBanned(nickname)) {
     return (false);
   }
   return (true);
 }
 
-bool CommandHandler::checkChannelCapacity(const Channel &channel) {
+bool CommandHandler::checkChannelCapacity(const Channel &channel) const {
+  if (!channel.hasChannleMode(Channel::Limit)) {
+    return (true);
+  }
   if (channel.userNum() < channel.getUserLimit()) {
     return (true);
-  } else {
-    return (false);
   }
+  return (false);
 }
 
-bool CommandHandler::checkInviteOnlyStatus(const Channel &channel) {
-  if (channel.hasChannleMode(Channel::InviteOnly)) {
-    return (true);
-  } else {
-    return (false);
-  }
-}
-
-bool CommandHandler::validateChannelMask(const Channel &channel,
-                                         const std::string &nickname) {
-  if (channel.isBanned(nickname)) {
-    return (false);
-  } else {
+bool CommandHandler::checkInviteOnlyStatus(const Channel &channel,
+                                           const std::string &nickname) const {
+  if (!channel.hasChannleMode(Channel::InviteOnly)) {
     return (true);
   }
+  if (channel.isInvited(nickname)) {
+    return (true);
+  }
+  return (false);
 }
 
-bool CommandHandler::evaluateChannelJoinCondition(const User &user, const Channel &channel, const std::string &key) {
+bool CommandHandler::evaluateChannelJoinCondition(
+    const User &user, const Channel &channel, const std::string &key) const {
   if (!verifyChannelKey(channel, key)) {
     this->_server.sendReply(
         user.getFd(), Replies::ERR_BADCHANNELKEY(channel.getChannelName()));
@@ -140,16 +146,16 @@ bool CommandHandler::evaluateChannelJoinCondition(const User &user, const Channe
     this->_server.sendReply(
         user.getFd(), Replies::ERR_CHANNELISFULL(channel.getChannelName()));
     return (false);
-  } else if (!checkInviteOnlyStatus(channel)) {
+  } else if (!checkInviteOnlyStatus(channel, user.getNickName())) {
     this->_server.sendReply(
         user.getFd(), Replies::ERR_INVITEONLYCHAN(channel.getChannelName()));
     return (false);
-  } else if (!validateChannelMask(channel, user.getNickName())) {
-    this->_server.sendReply(user.getFd(),
-                            Replies::ERR_BADCHANMASK(channel.getChannelName()));
-    return (false);
-  }
+  } 
   return (true);
+}
+
+void CommandHandler::addUserToChannel(User &user, Channel &channel) {
+  channel.addUser(user);
 }
 
 void CommandHandler::sendTopicReply(const User &user,
@@ -176,7 +182,6 @@ void CommandHandler::sendNamReply(const User &user,
 
 void CommandHandler::sendEndOfNamesReply(const User &user,
                                          const Channel &channel) const {
-
   // RPL_ENDOFNAMES (366)
   this->_server.sendReply(user.getFd(),
                           Replies::RPL_ENDOFNAMES(channel.getChannelName()));

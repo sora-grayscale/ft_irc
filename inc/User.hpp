@@ -33,6 +33,8 @@ public:
   void setNickName(const std::string &nickname);
   void setRealName(const std::string &realname);
   void setUserName(const std::string &username);
+  void incrementJoinedChannelCount();
+  void decrementJoinedChannelCount();
 
   //getter
   const std::string &getNickName() const;

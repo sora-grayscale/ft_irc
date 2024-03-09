@@ -1,7 +1,7 @@
 #include "Channel.hpp"
 
 // constructor
-Channel::Channel()
+ Channel::Channel()
     : _channelName(""), _topic(""), _topicSetUser(""), _topicSetAt(0),
       _channelModeFlag(0), _channelKey(""), _userLimit(INT_MAX) {}
 
@@ -11,7 +11,11 @@ Channel::Channel(const std::string &channelName)
 
 Channel::Channel(const std::string &channelName, const std::string &key)
     : _channelName(channelName), _topic(""), _topicSetUser(""), _topicSetAt(0),
-      _channelModeFlag(0), _channelKey(key), _userLimit(INT_MAX) {}
+      _channelModeFlag(0), _channelKey(key), _userLimit(INT_MAX) {
+  if (!key.empty()) {
+    this->_channelModeFlag |= Channel::Key;
+  }
+}
 
 // destructor
 Channel::~Channel() {}
@@ -26,15 +30,23 @@ const std::map<User *, unsigned int> &Channel::getUserStatus() const {
 }
 
 // user
-void Channel::addUser(User &user) { this->_users.insert(&user); }
-void Channel::removeUser(User &user) { this->_users.erase(&user); }
+void Channel::addUser(User &user) {
+  this->_users.insert(&user);
+  user.incrementJoinedChannelCount();
+}
+
+void Channel::removeUser(User &user) {
+  this->_users.erase(&user);
+  user.decrementJoinedChannelCount();
+}
+
 int Channel::userNum() const { return (this->_users.size()); }
 
-std::set<User *>::const_iterator Channel::getUserBegin() const{
+std::set<User *>::const_iterator Channel::getUserBegin() const {
   return (this->_users.begin());
 }
 
-std::set<User *>::const_iterator Channel::getUserEnd() const{
+std::set<User *>::const_iterator Channel::getUserEnd() const {
   return (this->_users.end());
 }
 
@@ -62,7 +74,9 @@ void Channel::setTopic(const std::string &topic, const std::string &nick) {
   this->_topicSetAt = getCurrentUnixTimestamp();
 }
 const std::string &Channel::getTopic() const { return (this->_topic); }
-const std::string &Channel::getTopicSetUser() const{ return (this->_topicSetUser);}
+const std::string &Channel::getTopicSetUser() const {
+  return (this->_topicSetUser);
+}
 const long &Channel::getTopicSetAt() const { return (this->_topicSetAt); }
 
 // // channel mode

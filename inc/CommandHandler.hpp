@@ -11,6 +11,8 @@ class Server;
 #include <string>
 #include <vector>
 
+#define USER_CHANNEL_LIMIT 10
+
 class CommandHandler {
 public:
   CommandHandler(Server &server);
@@ -43,7 +45,7 @@ private:
   const std::string USER(User &user);
   const std::string NICK(User &user);
   void JOIN(User &user);
-  
+
   // nick method
   void convertChar(std::string &str);
   bool isSpecialChar(const char c);
@@ -51,18 +53,18 @@ private:
 
   // join method
   void splitChannelAndKey(std::vector<std::string> &channels,
-                                          std::vector<std::string> &keys);
-  bool isValidChannelName(const std::string &channelName);
-  bool hasReachedChannelLimit(const User &user);
-  bool verifyChannelKey(const Channel &channel, const std::string &key);
+                          std::vector<std::string> &keys) const;
+  bool isValidChannelName(const std::string &channelName) const;
+  bool hasReachedChannelLimit(const User &user) const;
+  bool verifyChannelKey(const Channel &channel, const std::string &key) const;
   bool checkBanStatus(const Channel &channel,
-                                    const std::string &nickname);
-  bool checkChannelCapacity(const Channel &channel);
-  bool checkInviteOnlyStatus(const Channel &channel);
-  bool validateChannelMask(const Channel &channel,
-                                           const std::string &nickname);
+                      const std::string &nickname) const;
+  bool checkChannelCapacity(const Channel &channel) const;
+  bool checkInviteOnlyStatus(const Channel &channel,
+                             const std::string &nickname) const;
   bool evaluateChannelJoinCondition(const User &user, const Channel &channel,
-                                    const std::string &key);
+                                    const std::string &key) const;
+  void addUserToChannel(User &user, Channel &channel);
   void sendTopicReply(const User &user, const Channel &channel) const;
   void sendNamReply(const User &user, const Channel &channel) const;
   void sendEndOfNamesReply(const User &user, const Channel &channel) const;
@@ -71,6 +73,6 @@ private:
   // debug
   void printStringAsInts(const std::string &input);
   void printVectorString(const std::vector<std::string> &vec);
-  };
+};
 
 #endif

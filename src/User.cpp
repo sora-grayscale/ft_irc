@@ -30,6 +30,9 @@ void User::setUserName(const std::string &username) {
   this->_username = username;
 }
 
+void User::incrementJoinedChannelCount() { this->_joinedChannelCount += 1; }
+void User::decrementJoinedChannelCount() { this->_joinedChannelCount -= 1; }
+
 // getter
 const std::string &User::getNickName() const { return this->_nickname; }
 const std::string &User::getRealName() const { return this->_realname; }
