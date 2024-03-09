@@ -14,7 +14,6 @@
 // 1. RPL_NAMREPLY (353)
 // 1. RPL_ENDOFNAMES (366)
 
-
 void CommandHandler::JOIN(User &user) {
   std::vector<std::string> channelNames;
   std::vector<std::string> keys;
@@ -55,16 +54,38 @@ void CommandHandler::JOIN(User &user) {
                                                   channel.getChannelName()));
         continue;
       } else if (!checkChannelCapacity(channel)) {
-        this->_server.sendReply(user.getFd(), Replies::ERR_CHANNELISFULL(
-                                                  channel.getChannelName()));
+        this->_server.sendReply(
+            user.getFd(), Replies::ERR_CHANNELISFULL(channel.getChannelName()));
+        continue;
       } else if (!checkInviteOnlyStatus(channel)) {
         this->_server.sendReply(user.getFd(), Replies::ERR_INVITEONLYCHAN(
                                                   channel.getChannelName()));
+        continue;
       } else if (!validateChannelMask(channel, user.getNickName())) {
-        this->_server.sendReply(user.getFd(), Replies::ERR_BADCHANMASK(
-                                                  channel.getChannelName()));
+        this->_server.sendReply(
+            user.getFd(), Replies::ERR_BADCHANMASK(channel.getChannelName()));
+        continue;
       }
     }
+    const Channel &channel = this->_server.getChannel(channelNames.at(i));
+    // RPL_TOPIC (332)
+    this->_server.sendReply(
+        user.getFd(),
+        Replies::RPL_TOPIC(channel.getChannelName(), channel.getTopic()));
+    // RPL_TOPICWHOTIME (333)
+    this->_server.sendReply(user.getFd(),
+                            Replies::RPL_TOPICWHOTIME(channel.getChannelName(),
+                                                      user.getNickName(),
+                                                      channel.getTopicSetAt()));
+    // RPL_NAMREPLY (353)
+    for (std::set<User *>::const_iterator it = channel.getUserBegin();
+         it != channel.getUserEnd(); it++) {
+      Replies::RPL_NAMREPLY(channel, **it);
+    }
+
+    // RPL_ENDOFNAMES (366)
+    this->_server.sendReply(user.getFd(),
+                            Replies::RPL_ENDOFNAMES(channel.getChannelName()));
   }
 }
 

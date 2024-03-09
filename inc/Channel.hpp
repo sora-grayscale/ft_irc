@@ -51,14 +51,17 @@ public:
   void addUser(User &user);
   void removeUser(User &user);
   int userNum() const;
+  std::set<User *>::const_iterator getUserBegin() const;
+  std::set<User *>::const_iterator getUserEnd() const;
 
   // user status
   void setUserStatus(User &user, UserStatusFlags status, bool enable);
   bool hasUserStatus(User &user, const UserStatusFlags status) const;
 
   // topic
-  void setTopic(const std::string &topic);
+  void setTopic(const std::string &topic, const std::string &nick);
   const std::string &getTopic() const;
+  const std::string &getTopicSetUser() const;
   const long &getTopicSetAt() const;
 
   // channel mode
@@ -95,11 +98,12 @@ private:
   std::map<User *, unsigned int> _userStatus; // nickname, userStatus
 
   std::string _topic;
+  std::string _topicSetUser;
   long _topicSetAt;
 
   unsigned int _channelModeFlag;
-  std::string _channelKey;           // k flag
-  int _userLimit;                    // l flag
+  std::string _channelKey;                // k flag
+  int _userLimit;                         // l flag
   std::set<std::string> _banMasks;        // b flag
   std::set<std::string> _exceptionMasks;  // e flag
   std::set<std::string> _invitationMasks; // I flag

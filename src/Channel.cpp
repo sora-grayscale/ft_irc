@@ -2,15 +2,15 @@
 
 // constructor
 Channel::Channel()
-    : _channelName(""), _topic(""), _topicSetAt(0), _channelModeFlag(0),
-      _channelKey(""), _userLimit(INT_MAX) {}
+    : _channelName(""), _topic(""), _topicSetUser(""), _topicSetAt(0),
+      _channelModeFlag(0), _channelKey(""), _userLimit(INT_MAX) {}
 
 Channel::Channel(const std::string &channelName)
-    : _channelName(channelName), _topic(""), _topicSetAt(0),
+    : _channelName(channelName), _topic(""), _topicSetUser(""), _topicSetAt(0),
       _channelModeFlag(0), _channelKey(""), _userLimit(INT_MAX) {}
 
 Channel::Channel(const std::string &channelName, const std::string &key)
-    : _channelName(channelName), _topic(""), _topicSetAt(0),
+    : _channelName(channelName), _topic(""), _topicSetUser(""), _topicSetAt(0),
       _channelModeFlag(0), _channelKey(key), _userLimit(INT_MAX) {}
 
 // destructor
@@ -30,6 +30,14 @@ void Channel::addUser(User &user) { this->_users.insert(&user); }
 void Channel::removeUser(User &user) { this->_users.erase(&user); }
 int Channel::userNum() const { return (this->_users.size()); }
 
+std::set<User *>::const_iterator Channel::getUserBegin() const{
+  return (this->_users.begin());
+}
+
+std::set<User *>::const_iterator Channel::getUserEnd() const{
+  return (this->_users.end());
+}
+
 // user status
 void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
   unsigned int &userStatus = this->_userStatus.at(&user);
@@ -48,7 +56,14 @@ bool Channel::hasUserStatus(User &user, const UserStatusFlags status) const {
 }
 
 // topic
-void Channel::setTopic(const std::string &topic) { this->_topic = topic; }
+void Channel::setTopic(const std::string &topic, const std::string &nick) {
+  this->_topic = topic;
+  this->_topicSetUser = nick;
+  this->_topicSetAt = getCurrentUnixTimestamp();
+}
+const std::string &Channel::getTopic() const { return (this->_topic); }
+const std::string &Channel::getTopicSetUser() const{ return (this->_topicSetUser);}
+const long &Channel::getTopicSetAt() const { return (this->_topicSetAt); }
 
 // // channel mode
 void Channel::setChannelMode(const ChannelModeFlags flag, bool enable) {
