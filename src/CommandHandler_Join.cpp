@@ -150,7 +150,7 @@ bool CommandHandler::evaluateChannelJoinCondition(
     this->_server.sendReply(
         user.getFd(), Replies::ERR_INVITEONLYCHAN(channel.getChannelName()));
     return (false);
-  } 
+  }
   return (true);
 }
 

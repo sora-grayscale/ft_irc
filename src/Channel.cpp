@@ -1,7 +1,7 @@
 #include "Channel.hpp"
 
 // constructor
- Channel::Channel()
+Channel::Channel()
     : _channelName(""), _topic(""), _topicSetUser(""), _topicSetAt(0),
       _channelModeFlag(0), _channelKey(""), _userLimit(INT_MAX) {}
 

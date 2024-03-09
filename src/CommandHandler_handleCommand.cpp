@@ -4,10 +4,10 @@ void CommandHandler::handleCommand(const std::string &message, const int fd) {
   User &user = this->_server.findUser(fd);
 
   parseMessage(message);
-//  if (!checkRegisterdState(user)) {
-//    this->_server.sendReply(fd, this->_reply);
-//    return;
-//  }
+  if (!checkRegisterdState(user)) {
+    this->_server.sendReply(fd, this->_reply);
+    return;
+  }
   executeCommand(user);
   return;
 }

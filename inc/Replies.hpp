@@ -1,8 +1,8 @@
 #ifndef REPLIES_HPP
 #define REPLIES_HPP
 
-#include <string>
 #include "Channel.hpp"
+#include <string>
 
 class Replies {
 public:
@@ -11,10 +11,11 @@ public:
                                      const std::string &topic);
   // 333
   static const std::string RPL_TOPICWHOTIME(const std::string &channelName,
-                                     const std::string &nick,
-                                     const long &setat);
+                                            const std::string &nick,
+                                            const long &setat);
   // 353
-  static const std::string RPL_NAMREPLY(const Channel &channel, const User &user);
+  static const std::string RPL_NAMREPLY(const Channel &channel,
+                                        const User &user);
   // 366
   static const std::string RPL_ENDOFNAMES(const std::string &channelName);
   // 403

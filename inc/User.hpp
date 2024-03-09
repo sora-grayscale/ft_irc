@@ -36,7 +36,7 @@ public:
   void incrementJoinedChannelCount();
   void decrementJoinedChannelCount();
 
-  //getter
+  // getter
   const std::string &getNickName() const;
   const std::string &getRealName() const;
   const std::string &getUserName() const;

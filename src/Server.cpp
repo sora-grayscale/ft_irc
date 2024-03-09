@@ -30,8 +30,7 @@ void Server::addRegisterMap(const int fd, const User &user) {
   this->_registerdUsers[fd] = user; // fd, user
 }
 
-bool Server::isNick(const std::string &nick)
-{
+bool Server::isNick(const std::string &nick) {
   if (this->_nickHistory.find(nick) != this->_nickHistory.end())
     return true;
   for (std::map<int, User>::iterator it = this->_tmpUsers.begin();
@@ -53,10 +52,11 @@ Channel &Server::getChannel(const std::string &channelName) {
   return (this->_channels.at(channelName));
 }
 
-void Server::addChannel(const std::string &channelName){
+void Server::addChannel(const std::string &channelName) {
   this->_channels[channelName] = Channel(channelName);
 }
 
-void Server::addChannel(const std::string &channelName, const std::string &key){
+void Server::addChannel(const std::string &channelName,
+                        const std::string &key) {
   this->_channels[channelName] = Channel(channelName, key);
 }

@@ -38,9 +38,7 @@ const std::string &User::getNickName() const { return this->_nickname; }
 const std::string &User::getRealName() const { return this->_realname; }
 const std::string &User::getUserName() const { return this->_username; }
 const int &User::getFd() const { return this->_fd; }
-int User::getJoinedChannelCount() const {
-  return (this->_joinedChannelCount);
-}
+int User::getJoinedChannelCount() const { return (this->_joinedChannelCount); }
 
 // mode
 void User::setMode(unsigned int mode, bool enable) {

@@ -50,7 +50,9 @@ public:
 
   // channel
   bool isExistChannel(const std::string &channelName);
-  Channel &getChannel(const std::string &channelName); // channelがあるかのチェックが使う前に必要
+  Channel &
+  getChannel(const std::string
+                 &channelName); // channelがあるかのチェックが使う前に必要
   void addChannel(const std::string &channelName);
   void addChannel(const std::string &channelName, const std::string &key);
 
