@@ -124,6 +124,17 @@ const std::string Replies::RPL_YOUREOPER() {
   return (message);
 }
 
+// 391
+const std::string Replies::RPL_TIME(const std::string &serverName,
+                                    const std::string &time) {
+  std::string message;
+  message += "391 ";
+  message += serverName;
+  message += " :";
+  message += time;
+  return (message);
+}
+
 // 402
 const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
   std::string message;

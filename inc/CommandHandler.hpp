@@ -47,6 +47,7 @@ private:
   void LUSERS(User &user);
   void VERSION(User &user);
   void LINKS(User &user);
+  void TIME(User &user);
 
   // nick method
   void convertChar(std::string &str);
