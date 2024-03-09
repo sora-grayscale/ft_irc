@@ -271,3 +271,9 @@ void CommandHandler::CONNECT(User &user) {
   this->_server.sendReply(user.getFd(),
                           Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
 }
+
+void CommandHandler::TRACE(User &user) {
+  this->_server.sendReply(user.getFd(),
+                          Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+}
+
