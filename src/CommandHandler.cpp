@@ -258,3 +258,16 @@ void CommandHandler::TIME(User &user) {
   this->_server.sendReply(
       user.getFd(), Replies::RPL_TIME(this->_server.getServerName(), time));
 }
+
+void CommandHandler::CONNECT(User &user) {
+  if (this->_params.at(0).empty()) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return;
+  }
+  if (!user.hasMode(User::Operator)) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NOPRIVILEGES());
+    return;
+  }
+  this->_server.sendReply(user.getFd(),
+                          Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+}

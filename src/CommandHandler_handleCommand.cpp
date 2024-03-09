@@ -51,6 +51,8 @@ void CommandHandler::executeCommand(User &user, const int fd) {
     VERSION(user);
   } else if (this->_command == "TIME") {
     TIME(user);
+  } else if (this->_command == "CONNECT") {
+    CONNECT(user);
   } else {
     this->_reply = Replies::ERR_UNKNOWNCOMMAND(this->_command);
     this->_server.sendReply(fd, this->_reply);

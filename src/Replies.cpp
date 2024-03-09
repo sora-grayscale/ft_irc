@@ -259,6 +259,16 @@ const std::string Replies::ERR_PASSWDMISMATCH() {
   return (message);
 }
 
+// 481
+const std::string Replies::ERR_NOPRIVILEGES()
+{
+  std::string message;
+  message += "481";
+  message += " :Permission Denied- You're not an IRC operator";
+  message += "\r\n";
+  return (message);
+}
+
 // 484
 const std::string Replies::ERR_RESTRICTED() {
   std::string message;

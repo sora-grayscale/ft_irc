@@ -48,6 +48,7 @@ private:
   void VERSION(User &user);
   void LINKS(User &user);
   void TIME(User &user);
+  void CONNECT(User &user);
 
   // nick method
   void convertChar(std::string &str);

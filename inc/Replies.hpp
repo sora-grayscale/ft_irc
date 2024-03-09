@@ -58,6 +58,8 @@ public:
   static const std::string ERR_ALREADYREGISTRED();
   // 464
   static const std::string ERR_PASSWDMISMATCH();
+  // 481
+  static const std::string ERR_NOPRIVILEGES();
   // 484
   static const std::string ERR_RESTRICTED();
   // 491
