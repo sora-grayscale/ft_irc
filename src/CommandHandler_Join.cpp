@@ -49,8 +49,8 @@ void CommandHandler::JOIN(User &user) {
     if (!evaluateChannelJoinCondition(user, channel, keys.at(i))) {
       continue;
     }
-    
-    const_cast<Channel &>(channel).addUser(user);
+
+    addUserToChannel(user, const_cast<Channel &>(channel));
     sendJoinResponses(user, channel);
   }
 }
@@ -154,7 +154,7 @@ bool CommandHandler::evaluateChannelJoinCondition(
   return (true);
 }
 
-void CommandHandler::addUserToChannel(User &user, Channel &channel) {
+void CommandHandler::addUserToChannel(User &user, Channel &channel) const {
   channel.addUser(user);
 }
 
