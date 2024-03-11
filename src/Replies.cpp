@@ -98,6 +98,7 @@ const std::string Replies::RPL_ADMINLOC2(const std::string &adminAffiliation) {
   message += "258 ";
   message += " :";
   message += adminAffiliation;
+  message += "\r\n";
   return (message);
 }
 
@@ -135,6 +136,7 @@ const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
   message += nick;
   message += " ";
   message += setat;
+  message += "\r\n";
   return (message);
 }
 
@@ -183,6 +185,7 @@ const std::string Replies::RPL_NAMREPLY(const Channel &channel,
     message += "+";
   }
   message += user.getNickName();
+  message += "\r\n";
   return (message);
 }
 
@@ -193,6 +196,7 @@ const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
   message += "366 ";
   message += channelName;
   message += " :End of NAMES list";
+  message += "\r\n";
   return (message);
 }
 
@@ -262,6 +266,7 @@ const std::string Replies::RPL_TIME(const std::string &serverName,
   message += serverName;
   message += " :";
   message += time;
+  message += "\r\n";
   return (message);
 }
 
@@ -282,6 +287,7 @@ const std::string Replies::ERR_NOSUCHCHANNEL(const std::string &channelName) {
   message += "403 ";
   message += channelName;
   message += " :No such channel";
+  message += "\r\n";
   return (message);
 }
 
@@ -293,6 +299,7 @@ const std::string Replies::ERR_TOOMANYCHANNELS(const std::string &channelName) {
   message += "405 ";
   message += channelName;
   message += " :You have joined too many channels";
+  message += "\r\n";
   return (message);
 }
 
@@ -455,6 +462,7 @@ const std::string Replies::ERR_BADCHANMASK(const std::string &channelName) {
   message += "476 ";
   message += channelName;
   message += " :Bad Channel Mask";
+  message += "\r\n";
   return (message);
 }
 
