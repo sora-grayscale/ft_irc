@@ -130,6 +130,12 @@ void CommandHandler::convertChar(std::string &str) {
   }
 }
 
+bool CommandHandler::isReservedNick(const std::string &nick) {
+  if (nick == OPER_USER || nick == ADMIN_NAME || nick == ANON_NAME)
+    return false;
+  return true;
+}
+
 const std::string CommandHandler::NICK(User &user) {
   // ok
   if (this->_params.at(0).empty())
@@ -150,6 +156,10 @@ const std::string CommandHandler::NICK(User &user) {
 
   // historyに存在するかどうか,this->serverにnickHistoryのsetが存在する
   if (this->_server.isNick(this->_params.at(0)) != 0)
+    return Replies::ERR_NICKNAMEINUSE(this->_params.at(0));
+
+  // 予約された名前の拒否
+  if (!isReservedNick(this->_params.at(0)))
     return Replies::ERR_NICKNAMEINUSE(this->_params.at(0));
 
   if (user.hasMode(User::Restricted))
