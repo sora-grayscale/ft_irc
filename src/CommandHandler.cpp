@@ -4,7 +4,7 @@ CommandHandler::CommandHandler(Server &server) : _server(server) {}
 CommandHandler::~CommandHandler() {}
 
 const std::string CommandHandler::PASS(User &user) {
-  if (this->_params.size() < 1)
+  if (this->_params.at(0).empty())
     return Replies::ERR_NEEDMOREPARAMS(this->_command);
   if (user.getState() != User::NONE && user.getState() != User::PASS)
     return Replies::ERR_ALREADYREGISTRED();
@@ -17,13 +17,12 @@ const std::string CommandHandler::PASS(User &user) {
 }
 
 const std::string CommandHandler::USER(User &user) {
-  const int REAL_NAME_MAX_LEN = 63;
 
   // paramsを確認
   if (this->_params.size() < 4)
     return Replies::ERR_NEEDMOREPARAMS(this->_command);
   // statusを確認
-  if (user.getState() != User::NONE)
+  if (user.getState() == User::NONE)
     return "";
   // stateが4,5,7だったら弾く(4以上)
   if ((user.getState() & User::USER) != 0)
@@ -133,7 +132,7 @@ void CommandHandler::convertChar(std::string &str) {
 
 const std::string CommandHandler::NICK(User &user) {
   // ok
-  if (this->_params.size() < 1)
+  if (this->_params.at(0).empty())
     return Replies::ERR_NONICKNAMEGIVEN();
 
   // state の確認
@@ -166,5 +165,148 @@ const std::string CommandHandler::NICK(User &user) {
   }
   // set
   user.setNickName(this->_params.at(0));
+  this->_server.setNickHistory(user.getNickName());
   return "";
 }
+
+void CommandHandler::OPER(User &user) {
+  if (this->_params.size() < 2) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return;
+  }
+
+  if (this->_params.at(1) != OPER_PASSWORD) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_PASSWDMISMATCH());
+    return;
+  }
+
+  if (this->_params.at(0) != OPER_USER) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NOOPERHOST());
+    return;
+  }
+
+  user.setMode(User::Operator, true);
+  this->_server.sendReply(user.getFd(), Replies::RPL_YOUREOPER());
+}
+
+void CommandHandler::MOTD(User &user){
+  if (!this->_params.at(0).empty()) {
+    if (this->_params.at(0) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(), Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
+  this->_server.sendReply(user.getFd(), Replies::RPL_MOTDSTART());
+  this->_server.sendReply(user.getFd(), Replies::RPL_MOTD());
+  this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFMOTD());
+}
+
+void CommandHandler::LUSERS(User &user) {
+  if (!this->_params.at(0).empty()) {
+    if (this->_params.at(0) != this->_server.getServerName() ||
+        this->_params.at(1) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
+  int users = this->_server.numOfUser();
+  int services = 0;
+  int operators = this->_server.numOfOpeUser();
+  int unknown = 0;
+  int channnels = this->_server.numOfChannel();
+  int clients = users;
+  int servers = 1;
+
+  this->_server.sendReply(user.getFd(),
+                          Replies::RPL_LUSERCLIENT(users, services, servers));
+  this->_server.sendReply(user.getFd(), Replies::RPL_LUSEROP(operators));
+  this->_server.sendReply(user.getFd(), Replies::RPL_LUSERUNKNOWN(unknown));
+  this->_server.sendReply(user.getFd(), Replies::RPL_LUSERCHANNELS(channnels));
+  this->_server.sendReply(user.getFd(), Replies::RPL_LUSERME(clients, servers));
+}
+
+void CommandHandler::VERSION(User &user) {
+  if (!this->_params.at(0).empty()) {
+    if (this->_params.at(0) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(), Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
+  this->_server.sendReply(user.getFd(), Replies::RPL_VERSION(SERVER_VERSION, DEBUG_LEVEL, this->_server.getServerName(), SERVER_VERSION_COMMENT));
+}
+void CommandHandler::LINKS(User &user) {
+  this->_server.sendReply(user.getFd(),
+                          Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+}
+
+void CommandHandler::TIME(User &user) {
+  if (!this->_params.at(0).empty()) {
+    if (this->_params.at(0) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
+  std::stringstream ss;
+  std::string time;
+
+  std::time_t result = std::time(NULL);
+  ss << std::ctime(&result);
+  time = ss.str();
+  this->_server.sendReply(
+      user.getFd(), Replies::RPL_TIME(this->_server.getServerName(), time));
+}
+
+void CommandHandler::CONNECT(User &user) {
+  if (this->_params.size() < 2) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return;
+  }
+  if (!user.hasMode(User::Operator)) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NOPRIVILEGES());
+    return;
+  }
+  this->_server.sendReply(user.getFd(),
+                          Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+}
+
+void CommandHandler::TRACE(User &user) {
+  if (!this->_params.at(0).empty()) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+  } else {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NOSUCHSERVER(this->_server.getServerName()));
+  }
+}
+
+void CommandHandler::ADMIN(User &user) {
+  if (!this->_params.at(0).empty()) {
+    if (this->_params.at(0) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
+  this->_server.sendReply(user.getFd(), Replies::RPL_ADMINME(this->_server.getServerName()));
+  this->_server.sendReply(user.getFd(), Replies::RPL_ADMINLOC1(ADMIN_LOCATION));
+  this->_server.sendReply(user.getFd(), Replies::RPL_ADMINLOC2(ADMIN_AFFILIATION));
+  this->_server.sendReply(user.getFd(), Replies::RPL_ADMINEMAIL(ADMIN_MAIL));
+}
+
+void CommandHandler::INFO(User &user) {
+  if (!this->_params.at(0).empty()) {
+    if (this->_params.at(0) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
+  this->_server.sendReply(user.getFd(), Replies::RPL_INFO("server version", SERVER_VERSION));
+  this->_server.sendReply(user.getFd(), Replies::RPL_INFO("patch level", PATCH_LEVEL));
+  this->_server.sendReply(user.getFd(), Replies::RPL_INFO("start day", this->_server.getStartDay()));
+  this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFINFO());
+}
+

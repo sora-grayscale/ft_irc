@@ -3,7 +3,8 @@
 
 User::User() {}
 
-User::User(const int fd) : _fd(fd), _joinedChannelCount(0) {}
+User::User(const int fd)
+    : _fd(fd), _joinedChannelCount(0), _state(User::NONE) {}
 
 User &User::operator=(const User &user) {
   if (this != &user) {
