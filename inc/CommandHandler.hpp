@@ -8,6 +8,7 @@ class Server;
 #include "Server.hpp"
 #include "User.hpp"
 #include <sstream>
+#include <ctime>
 #include <string>
 #include <vector>
 
