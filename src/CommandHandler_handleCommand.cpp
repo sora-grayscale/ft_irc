@@ -15,6 +15,7 @@ void CommandHandler::handleCommand(const std::string &message, const int fd) {
 // The `parseMessage` function is implemented in a separate file.
 
 bool CommandHandler::checkRegisterdState(const User &user) {
+  std::cout << static_cast<int>(user.getState()) << std::endl;
   if (user.getState() == User::NONE) {
     if (this->_command != "PASS") {
       this->_reply = Replies::ERR_NOTREGISTERED();
@@ -34,14 +35,11 @@ bool CommandHandler::checkRegisterdState(const User &user) {
 
 void CommandHandler::executeCommand(User &user) {
   if (this->_command == "PASS") {
-    this->_reply = PASS(user);
-    this->_server.sendReply(user.getFd(), this->_reply);
+    PASS(user);
   } else if (this->_command == "USER") {
-    this->_reply = USER(user);
-    this->_server.sendReply(user.getFd(), this->_reply);
+    USER(user);
   } else if (this->_command == "NICK") {
-    this->_reply = NICK(user);
-    this->_server.sendReply(user.getFd(), this->_reply);
+    NICK(user);
   } else if (this->_command == "OPER") {
     OPER(user);
   } else if (this->_command == "JOIN") {

@@ -42,9 +42,9 @@ private:
   void executeCommand(User &user);
 
   // command
-  const std::string PASS(User &user);
-  const std::string USER(User &user);
-  const std::string NICK(User &user);
+  void PASS(User &user);
+  void USER(User &user);
+  void NICK(User &user);
   void OPER(User &user);
   void JOIN(User &user);
   void MOTD(User &user);
