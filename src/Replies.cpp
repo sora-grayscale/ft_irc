@@ -1,6 +1,5 @@
 #include "Replies.hpp"
 
-
 // 251
 const std::string Replies::RPL_LUSERCLIENT(const int &users,
                                            const int &services,
@@ -138,7 +137,6 @@ const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
   return (message);
 }
 
-
 // 351
 const std::string Replies::RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,
@@ -197,7 +195,8 @@ const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
 }
 
 // 371
-const std::string Replies::RPL_INFO(const std::string detail, const std::string &str) {
+const std::string Replies::RPL_INFO(const std::string detail,
+                                    const std::string &str) {
   std::string message;
   message += "371";
   message += " :";
@@ -207,7 +206,6 @@ const std::string Replies::RPL_INFO(const std::string detail, const std::string 
   message += "\r\n";
   return (message);
 }
-
 
 // 372
 const std::string Replies::RPL_MOTD() {
@@ -284,7 +282,6 @@ const std::string Replies::ERR_NOSUCHCHANNEL(const std::string &channelName) {
   message += " :No such channel";
   return (message);
 }
-
 
 // !
 // 405
@@ -369,6 +366,42 @@ const std::string Replies::ERR_UNAVAILRESOURCE(const std::string &str) {
   message += " :Nick/channel is temporarily unavailable";
   message += "\r\n";
   return message;
+}
+
+// 441
+const std::string Replies::ERR_USERNOTINCHANNEL(const std::string &nick,
+                                              const std::string &channel) {
+  std::string message;
+  message += "441 ";
+  message += nick;
+  message += " ";
+  message += channel;
+  message += " :They aren't on that channel";
+  message += "\r\n";
+  return (message);
+}
+
+// 442
+const std::string Replies::ERR_NOTONCHANNEL(const std::string &channel) {
+  std::string message;
+  message += "442 ";
+  message += channel;
+  message += " :You're not on that channel";
+  message += "\r\n";
+  return (message);
+}
+
+// 443
+const std::string Replies::ERR_USERONCHANNEL(const std::string &nick,
+                                           const std::string &channel) {
+  std::string message;
+  message += "443 ";
+  message += nick;
+  message += " ";
+  message += channel;
+  message += " :is already on channel";
+  message += "\r\n";
+  return (message);
 }
 
 // 451
@@ -459,11 +492,20 @@ const std::string Replies::ERR_BADCHANMASK(const std::string &channelName) {
 }
 
 // 481
-const std::string Replies::ERR_NOPRIVILEGES()
-{
+const std::string Replies::ERR_NOPRIVILEGES() {
   std::string message;
   message += "481";
   message += " :Permission Denied- You're not an IRC operator";
+  message += "\r\n";
+  return (message);
+}
+
+// 482
+const std::string Replies::ERR_CHANOPRIVSNEEDED(const std::string &channel) {
+  std::string message;
+  message += "482 ";
+  message += channel;
+  message += " :You're not channel operator";
   message += "\r\n";
   return (message);
 }
@@ -485,3 +527,10 @@ const std::string Replies::ERR_NOOPERHOST() {
   message += "\r\n";
   return (message);
 }
+
+
+// RPL_LISTSTART(321)
+// RPL_LIST(322)
+// RPL_LISTEND(323)
+// RPL_NOTOPIC(331)
+// RPL_INVITING(341)

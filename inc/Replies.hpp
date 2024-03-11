@@ -81,6 +81,12 @@ public:
                                              const std::string &host);
   // 437
   static const std::string ERR_UNAVAILRESOURCE(const std::string &str);
+  // 441
+  static const std::string  ERR_USERNOTINCHANNEL(const std::string &nick, const std::string &channel);
+   //442
+  static const std::string ERR_NOTONCHANNEL(const std::string &channel);
+   //443
+  static const std::string ERR_USERONCHANNEL(const std::string &nick, const std::string &channel);
   // 451
   static const std::string ERR_NOTREGISTERED();
   // 461
@@ -101,6 +107,8 @@ public:
   static const std::string ERR_BADCHANMASK(const std::string &channelName);
   // 481
   static const std::string ERR_NOPRIVILEGES();
+  // 482
+  static const std::string ERR_CHANOPRIVSNEEDED(const std::string &channel);
   // 484
   static const std::string ERR_RESTRICTED();
   // 491
