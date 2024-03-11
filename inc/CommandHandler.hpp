@@ -8,6 +8,7 @@ class Server;
 #include "Server.hpp"
 #include "User.hpp"
 #include <sstream>
+#include <ctime>
 #include <string>
 #include <vector>
 
@@ -47,6 +48,11 @@ private:
   void LUSERS(User &user);
   void VERSION(User &user);
   void LINKS(User &user);
+  void TIME(User &user);
+  void CONNECT(User &user);
+  void TRACE(User &user);
+  void ADMIN(User &user);
+  void INFO(User &user);
 
   // nick method
   void convertChar(std::string &str);

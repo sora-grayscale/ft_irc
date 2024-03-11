@@ -8,6 +8,7 @@ Server::Server(int argc, const char *argv[]) {
     Server::checkArgc(argc);
     Server::checkArgv(argv);
     Server::initSocket();
+    Server::initTimeOfStart();
   } catch (const std::exception &e) {
     std::cout << "Error: " << e.what() << std::endl;
     std::exit(EXIT_FAILURE);
@@ -65,3 +66,5 @@ int Server::numOfOpeUser() {
 }
 
 int Server::numOfChannel() { return static_cast<int>(this->_channels.size()); }
+
+const std::string &Server::getStartDay() const { return this->_startDay; }

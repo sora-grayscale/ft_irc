@@ -70,6 +70,45 @@ const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
   return (message);
 }
 
+// 256
+const std::string Replies::RPL_ADMINME(const std::string &serverName) {
+  std::string message;
+  message += "256 ";
+  message += serverName;
+  message += " :Administrative info";
+  message += "\r\n";
+  return (message);
+}
+
+// 257
+const std::string Replies::RPL_ADMINLOC1(const std::string &adminLocation) {
+  std::string message;
+  message += "257 ";
+  message += " :";
+  message += adminLocation;
+  message += "\r\n";
+  return (message);
+}
+// 258
+const std::string Replies::RPL_ADMINLOC2(const std::string &adminAffiliation) {
+  std::string message;
+  message += "258 ";
+  message += " :";
+  message += adminAffiliation;
+  message += "\r\n";
+  return (message);
+}
+
+// 259
+const std::string Replies::RPL_ADMINEMAIL(const std::string &adminMail) {
+  std::string message;
+  message += "259 ";
+  message += " :";
+  message += adminMail;
+  message += "\r\n";
+  return (message);
+}
+
 // 351
 const std::string Replies::RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,
@@ -84,6 +123,18 @@ const std::string Replies::RPL_VERSION(const std::string &version,
   message += server;
   message += " :";
   message += comments;
+  message += "\r\n";
+  return (message);
+}
+
+// 371
+const std::string Replies::RPL_INFO(const std::string detail, const std::string &str) {
+  std::string message;
+  message += "371";
+  message += " :";
+  message += detail;
+  message += " ";
+  message += str;
   message += "\r\n";
   return (message);
 }
@@ -106,6 +157,15 @@ const std::string Replies::RPL_MOTDSTART() {
   return (message);
 }
 
+// 374
+const std::string Replies::RPL_ENDOFINFO() {
+  std::string message;
+  message += "374";
+  message += " :End of INFO list";
+  message += "\r\n";
+  return (message);
+}
+
 // 376
 const std::string Replies::RPL_ENDOFMOTD() {
   std::string message;
@@ -121,6 +181,17 @@ const std::string Replies::RPL_YOUREOPER() {
   message += "381 ";
   message += ":You are now an IRC operator";
   message += "\r\n";
+  return (message);
+}
+
+// 391
+const std::string Replies::RPL_TIME(const std::string &serverName,
+                                    const std::string &time) {
+  std::string message;
+  message += "391 ";
+  message += serverName;
+  message += " :";
+  message += time;
   return (message);
 }
 
@@ -244,6 +315,16 @@ const std::string Replies::ERR_PASSWDMISMATCH() {
   std::string message;
   message += "464 ";
   message += ":Password incorrect";
+  message += "\r\n";
+  return (message);
+}
+
+// 481
+const std::string Replies::ERR_NOPRIVILEGES()
+{
+  std::string message;
+  message += "481";
+  message += " :Permission Denied- You're not an IRC operator";
   message += "\r\n";
   return (message);
 }
