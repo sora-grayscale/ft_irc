@@ -49,7 +49,6 @@ void CommandHandler::USER(User &user) {
   }
 
   // params[0]のバリデート user
-  // params[0]のバリデート user
   if (this->_params.at(0).find_first_of("@\n\r") != std::string::npos) {
     return;
   }
@@ -147,19 +146,20 @@ void CommandHandler::NICK(User &user) {
   // ok
   if (this->_params.at(0).empty()) {
     this->_server.sendReply(user.getFd(), Replies::ERR_NONICKNAMEGIVEN());
-    return ;
+    return;
   }
 
   // state の確認
   if ((user.getState() & User::PASS) == 0) {
-    return ;
+    return;
   }
 
   // ok
   // nick paramのバリデーション
   if (this->_params.at(0).size() > 9 || !validateNick(this->_params.at(0))) {
-    this->_server.sendReply(user.getFd(), Replies::ERR_ERRONEUSNICKNAME(this->_params.at(0)));
-    return ;
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_ERRONEUSNICKNAME(this->_params.at(0)));
+    return;
   }
 
   // ok
@@ -168,13 +168,14 @@ void CommandHandler::NICK(User &user) {
 
   // historyに存在するかどうか,this->serverにnickHistoryのsetが存在する
   if (this->_server.isNick(this->_params.at(0)) != 0) {
-    this->_server.sendReply(user.getFd(), Replies::ERR_NICKNAMEINUSE(this->_params.at(0)));
-    return ;
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NICKNAMEINUSE(this->_params.at(0)));
+    return;
   }
 
   if (user.hasMode(User::Restricted)) {
     this->_server.sendReply(user.getFd(), Replies::ERR_RESTRICTED());
-    return ;
+    return;
   }
 
   // 初期登録かどうかの判別

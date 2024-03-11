@@ -2,16 +2,21 @@
 
 // constructor
 Channel::Channel()
-    : _channelName(""), _topic(""), _topicSetUser(""), _topicSetAt(0),
-      _channelModeFlag(0), _channelKey(""), _userLimit(INT_MAX) {}
+    : _channelName(""), _users(), _userStatus(), _topic(""), _topicSetUser(""),
+      _topicSetAt(0), _channelModeFlag(Channel::None), _channelKey(""),
+      _userLimit(INT_MAX), _banMasks(), _exceptionMasks(), _invitationMasks() {}
 
 Channel::Channel(const std::string &channelName)
-    : _channelName(channelName), _topic(""), _topicSetUser(""), _topicSetAt(0),
-      _channelModeFlag(0), _channelKey(""), _userLimit(INT_MAX) {}
+    : _channelName(channelName), _users(), _userStatus(), _topic(""),
+      _topicSetUser(""), _topicSetAt(0), _channelModeFlag(Channel::None),
+      _channelKey(""), _userLimit(INT_MAX), _banMasks(), _exceptionMasks(),
+      _invitationMasks() {}
 
 Channel::Channel(const std::string &channelName, const std::string &key)
-    : _channelName(channelName), _topic(""), _topicSetUser(""), _topicSetAt(0),
-      _channelModeFlag(0), _channelKey(key), _userLimit(INT_MAX) {
+    : _channelName(channelName), _users(), _userStatus(), _topic(""),
+      _topicSetUser(""), _topicSetAt(0), _channelModeFlag(Channel::None),
+      _channelKey(key), _userLimit(INT_MAX), _banMasks(), _exceptionMasks(),
+      _invitationMasks() {
   if (!key.empty()) {
     this->_channelModeFlag |= Channel::Key;
   }

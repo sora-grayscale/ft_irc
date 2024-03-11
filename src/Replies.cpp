@@ -1,6 +1,5 @@
 #include "Replies.hpp"
 
-
 // 251
 const std::string Replies::RPL_LUSERCLIENT(const int &users,
                                            const int &services,
@@ -140,7 +139,6 @@ const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
   return (message);
 }
 
-
 // 351
 const std::string Replies::RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,
@@ -201,7 +199,8 @@ const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
 }
 
 // 371
-const std::string Replies::RPL_INFO(const std::string detail, const std::string &str) {
+const std::string Replies::RPL_INFO(const std::string detail,
+                                    const std::string &str) {
   std::string message;
   message += "371";
   message += " :";
@@ -211,7 +210,6 @@ const std::string Replies::RPL_INFO(const std::string detail, const std::string 
   message += "\r\n";
   return (message);
 }
-
 
 // 372
 const std::string Replies::RPL_MOTD() {
@@ -266,7 +264,7 @@ const std::string Replies::RPL_TIME(const std::string &serverName,
   message += serverName;
   message += " :";
   message += time;
-//  message += "\r\n";
+  //  message += "\r\n";
   return (message);
 }
 
@@ -290,7 +288,6 @@ const std::string Replies::ERR_NOSUCHCHANNEL(const std::string &channelName) {
   message += "\r\n";
   return (message);
 }
-
 
 // !
 // 405
@@ -467,8 +464,7 @@ const std::string Replies::ERR_BADCHANMASK(const std::string &channelName) {
 }
 
 // 481
-const std::string Replies::ERR_NOPRIVILEGES()
-{
+const std::string Replies::ERR_NOPRIVILEGES() {
   std::string message;
   message += "481";
   message += " :Permission Denied- You're not an IRC operator";

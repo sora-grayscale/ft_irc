@@ -7,8 +7,8 @@ class Server;
 #include "Replies.hpp"
 #include "Server.hpp"
 #include "User.hpp"
-#include <sstream>
 #include <ctime>
+#include <sstream>
 #include <string>
 #include <vector>
 
