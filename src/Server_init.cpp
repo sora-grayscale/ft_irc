@@ -106,7 +106,7 @@ void Server::initTimeOfStart() {
   std::string tmp;
   std::string day;
 
-  std::time_t result = std::time(nullptr);
+  std::time_t result = std::time(NULL);
   ss << std::ctime(&result);
   for (int i = 0; !ss.eof(); i++) {
     ss >> tmp;

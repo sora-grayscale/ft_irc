@@ -252,7 +252,7 @@ void CommandHandler::TIME(User &user) {
   std::stringstream ss;
   std::string time;
 
-  std::time_t result = std::time(nullptr);
+  std::time_t result = std::time(NULL);
   ss << std::ctime(&result);
   time = ss.str();
   this->_server.sendReply(
@@ -260,7 +260,7 @@ void CommandHandler::TIME(User &user) {
 }
 
 void CommandHandler::CONNECT(User &user) {
-  if (this->_params.at(0).empty()) {
+  if (this->_params.size() < 2) {
     this->_server.sendReply(user.getFd(), Replies::ERR_NEEDMOREPARAMS(this->_command));
     return;
   }
@@ -273,8 +273,13 @@ void CommandHandler::CONNECT(User &user) {
 }
 
 void CommandHandler::TRACE(User &user) {
-  this->_server.sendReply(user.getFd(),
-                          Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+  if (!this->_params.at(0).empty()) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+  } else {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NOSUCHSERVER(this->_server.getServerName()));
+  }
 }
 
 void CommandHandler::ADMIN(User &user) {
