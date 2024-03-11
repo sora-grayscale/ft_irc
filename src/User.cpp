@@ -4,7 +4,7 @@
 User::User() {}
 
 User::User(const int fd)
-    : _fd(fd), _joinedChannelCount(0), _state(User::NONE) {}
+    : _fd(fd), _joinedChannelCount(0), _state(User::NONE) , _modeFlags(User::None){}
 
 User &User::operator=(const User &user) {
   if (this != &user) {

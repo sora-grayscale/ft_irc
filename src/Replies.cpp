@@ -266,7 +266,7 @@ const std::string Replies::RPL_TIME(const std::string &serverName,
   message += serverName;
   message += " :";
   message += time;
-  message += "\r\n";
+//  message += "\r\n";
   return (message);
 }
 
