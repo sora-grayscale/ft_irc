@@ -26,6 +26,16 @@ public:
   static const std::string RPL_ADMINLOC2(const std::string &adminAffiliation);
   // 259
   static const std::string RPL_ADMINEMAIL(const std::string &adminMail);
+  // 321
+  static const std::string RPL_LISTSTART();
+  // 322
+  static const std::string RPL_LIST(const std::string &channel,
+                             const std::size_t &visible,
+                             const std::string &topic);
+  // 323
+  static const std::string RPL_LISTEND();
+  // 331
+  static const std::string RPL_NOTOPIC(const std::string &channel);
   // 332
   static const std::string RPL_TOPIC(const std::string &channelName,
                                      const std::string &topic);
@@ -33,6 +43,9 @@ public:
   static const std::string RPL_TOPICWHOTIME(const std::string &channelName,
                                             const std::string &nick,
                                             const long &setat);
+  // 341
+  const std::string RPL_INVITING(const std::string &channel,
+                                 const std::string &nick);
   // 351
   static const std::string RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,
@@ -82,11 +95,13 @@ public:
   // 437
   static const std::string ERR_UNAVAILRESOURCE(const std::string &str);
   // 441
-  static const std::string  ERR_USERNOTINCHANNEL(const std::string &nick, const std::string &channel);
-   //442
+  static const std::string ERR_USERNOTINCHANNEL(const std::string &nick,
+                                                const std::string &channel);
+  // 442
   static const std::string ERR_NOTONCHANNEL(const std::string &channel);
-   //443
-  static const std::string ERR_USERONCHANNEL(const std::string &nick, const std::string &channel);
+  // 443
+  static const std::string ERR_USERONCHANNEL(const std::string &nick,
+                                             const std::string &channel);
   // 451
   static const std::string ERR_NOTREGISTERED();
   // 461
@@ -113,6 +128,6 @@ public:
   static const std::string ERR_RESTRICTED();
   // 491
   static const std::string ERR_NOOPERHOST();
-};
+  };
 
 #endif // REPLIES
