@@ -51,6 +51,8 @@ void CommandHandler::executeCommand(User &user) {
     LUSERS(user);
   } else if (this->_command == "VERSION") {
     VERSION(user);
+  } else if (this->_command == "LINKS") {
+    LINKS(user);
   } else if (this->_command == "TIME") {
     TIME(user);
   } else if (this->_command == "CONNECT") {
