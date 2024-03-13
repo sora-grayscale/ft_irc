@@ -278,8 +278,13 @@ void CommandHandler::VERSION(User &user) {
                                                SERVER_VERSION_COMMENT));
 }
 void CommandHandler::LINKS(User &user) {
-  this->_server.sendReply(user.getFd(),
-                          Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+  if (this->_params.size() == 0) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NOSUCHSERVER(this->_server.getServerName()));
+  } else {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+  }
 }
 
 void CommandHandler::TIME(User &user) {
