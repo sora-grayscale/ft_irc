@@ -3,48 +3,61 @@
 CommandHandler::CommandHandler(Server &server) : _server(server) {}
 CommandHandler::~CommandHandler() {}
 
-const std::string CommandHandler::PASS(User &user) {
-  if (this->_params.at(0).empty())
-    return Replies::ERR_NEEDMOREPARAMS(this->_command);
-  if (user.getState() != User::NONE && user.getState() != User::PASS)
-    return Replies::ERR_ALREADYREGISTRED();
+void CommandHandler::PASS(User &user) {
+  if (this->_params.at(0).empty()) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return;
+  }
+  if (user.getState() != User::NONE && user.getState() != User::PASS) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::Replies::ERR_ALREADYREGISTRED());
+    return;
+  }
   if (this->_params.at(0) != this->_server.getPassword()) {
     user.setState(User::PASS, false);
-    return Replies::ERR_PASSWDMISMATCH();
+    this->_server.sendReply(user.getFd(), Replies::ERR_PASSWDMISMATCH());
+    return;
   }
   user.setState(User::PASS, true);
-  return "";
+  return;
 }
 
-const std::string CommandHandler::USER(User &user) {
+void CommandHandler::USER(User &user) {
 
   // paramsを確認
-  if (this->_params.size() < 4)
-    return Replies::ERR_NEEDMOREPARAMS(this->_command);
+  if (this->_params.size() < 4) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return;
+  }
   // statusを確認
-  if (user.getState() == User::NONE)
-    return "";
+  if (user.getState() == User::NONE) {
+    return;
+  }
   // stateが4,5,7だったら弾く(4以上)
-  if ((user.getState() & User::USER) != 0)
-    return Replies::ERR_ALREADYREGISTRED();
+  if ((user.getState() & User::USER) != 0) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_ALREADYREGISTRED());
+    return;
+  }
 
   // user処理
   // params[0]のバリデート
   if (this->_params.at(0).empty() || this->_params.at(1).empty() ||
-      this->_params.at(2).empty() || this->_params.at(3).empty())
-    return "";
+      this->_params.at(2).empty() || this->_params.at(3).empty()) {
+    return;
+  }
 
   // params[0]のバリデート user
-  // params[0]のバリデート user
   if (this->_params.at(0).find_first_of("@\n\r") != std::string::npos) {
-    return "";
+    return;
   }
   // params[1]のバリデート mode
   unsigned int mode;
   std::istringstream iss(this->_params.at(1));
   iss >> mode;
   if (iss.bad() || iss.fail() || !iss.eof()) {
-    return "";
+    return;
   }
 
   // params[2]のバリデート unused
@@ -53,16 +66,16 @@ const std::string CommandHandler::USER(User &user) {
   // params[3]以降のバリデートrealname
   std::string realname;
   for (std::size_t i = 3; i < this->_params.size(); ++i) {
-    if (i == 3 && this->_params.at(3).at(0) == ':')
+    if (i == 3 && this->_params.at(3).at(0) == ':') {
       realname = this->_params.at(3).substr(1);
-    else if (i == 3) {
+    } else if (i == 3) {
       realname += this->_params.at(i);
     } else {
       realname += " ";
       realname += this->_params.at(i);
     }
     if (realname.size() > REAL_NAME_MAX_LEN)
-      return "";
+      return;
   }
 
   // 全部ok setをする
@@ -82,14 +95,13 @@ const std::string CommandHandler::USER(User &user) {
 
   // 登録済みのmapに移動させる
   if (user.getState() == User::REGISTERD) {
+    this->_server.addRegisterMap(user.getFd(), User(user));
     this->_server.eraseTmpMap(user.getFd());
-    this->_server.addRegisterMap(user.getFd(), user);
   }
 
-  return "";
+  return;
 }
 
-// -----------------------------------------------------------------
 bool CommandHandler::isSpecialChar(const char c) {
   const std::string special = "[]\\`_^{|}";
   return special.find(c) != std::string::npos;
@@ -130,43 +142,54 @@ void CommandHandler::convertChar(std::string &str) {
   }
 }
 
-const std::string CommandHandler::NICK(User &user) {
+void CommandHandler::NICK(User &user) {
   // ok
-  if (this->_params.at(0).empty())
-    return Replies::ERR_NONICKNAMEGIVEN();
+  if (this->_params.at(0).empty()) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NONICKNAMEGIVEN());
+    return;
+  }
 
   // state の確認
-  if ((user.getState() & User::PASS) == 0)
-    return "";
+  if ((user.getState() & User::PASS) == 0) {
+    return;
+  }
 
   // ok
   // nick paramのバリデーション
-  if (this->_params.at(0).size() > 9 || !validateNick(this->_params.at(0)))
-    return Replies::ERR_ERRONEUSNICKNAME(this->_params.at(0));
+  if (this->_params.at(0).size() > 9 || !validateNick(this->_params.at(0))) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_ERRONEUSNICKNAME(this->_params.at(0)));
+    return;
+  }
 
   // ok
   // 変換 { →[, } → ], | → \, ^ → ~
   convertChar(this->_params.at(0));
 
   // historyに存在するかどうか,this->serverにnickHistoryのsetが存在する
-  if (this->_server.isNick(this->_params.at(0)) != 0)
-    return Replies::ERR_NICKNAMEINUSE(this->_params.at(0));
+  if (this->_server.isNick(this->_params.at(0)) != 0) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NICKNAMEINUSE(this->_params.at(0)));
+    return;
+  }
 
-  if (user.hasMode(User::Restricted))
-    return Replies::ERR_RESTRICTED();
+  if (user.hasMode(User::Restricted)) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_RESTRICTED());
+    return;
+  }
 
   // 初期登録かどうかの判別
   if (user.getState() != User::REGISTERD) {
     user.setState(User::NICK, true);
     if (user.getState() == User::REGISTERD) {
-      this->_server.eraseTmpMap(user.getFd());
       this->_server.addRegisterMap(user.getFd(), user);
+      this->_server.eraseTmpMap(user.getFd());
     }
   }
   // set
   user.setNickName(this->_params.at(0));
   this->_server.setNickHistory(user.getNickName());
-  return "";
+  return;
 }
 
 void CommandHandler::OPER(User &user) {
@@ -190,10 +213,11 @@ void CommandHandler::OPER(User &user) {
   this->_server.sendReply(user.getFd(), Replies::RPL_YOUREOPER());
 }
 
-void CommandHandler::MOTD(User &user){
+void CommandHandler::MOTD(User &user) {
   if (!this->_params.at(0).empty()) {
     if (this->_params.at(0) != this->_server.getServerName()) {
-      this->_server.sendReply(user.getFd(), Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
       return;
     }
   }
@@ -230,11 +254,15 @@ void CommandHandler::LUSERS(User &user) {
 void CommandHandler::VERSION(User &user) {
   if (!this->_params.at(0).empty()) {
     if (this->_params.at(0) != this->_server.getServerName()) {
-      this->_server.sendReply(user.getFd(), Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
       return;
     }
   }
-  this->_server.sendReply(user.getFd(), Replies::RPL_VERSION(SERVER_VERSION, DEBUG_LEVEL, this->_server.getServerName(), SERVER_VERSION_COMMENT));
+  this->_server.sendReply(user.getFd(),
+                          Replies::RPL_VERSION(SERVER_VERSION, DEBUG_LEVEL,
+                                               this->_server.getServerName(),
+                                               SERVER_VERSION_COMMENT));
 }
 void CommandHandler::LINKS(User &user) {
   this->_server.sendReply(user.getFd(),
@@ -261,7 +289,8 @@ void CommandHandler::TIME(User &user) {
 
 void CommandHandler::CONNECT(User &user) {
   if (this->_params.size() < 2) {
-    this->_server.sendReply(user.getFd(), Replies::ERR_NEEDMOREPARAMS(this->_command));
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NEEDMOREPARAMS(this->_command));
     return;
   }
   if (!user.hasMode(User::Operator)) {
@@ -277,8 +306,8 @@ void CommandHandler::TRACE(User &user) {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
   } else {
-    this->_server.sendReply(user.getFd(),
-                            Replies::ERR_NOSUCHSERVER(this->_server.getServerName()));
+    this->_server.sendReply(
+        user.getFd(), Replies::ERR_NOSUCHSERVER(this->_server.getServerName()));
   }
 }
 
@@ -290,9 +319,11 @@ void CommandHandler::ADMIN(User &user) {
       return;
     }
   }
-  this->_server.sendReply(user.getFd(), Replies::RPL_ADMINME(this->_server.getServerName()));
+  this->_server.sendReply(user.getFd(),
+                          Replies::RPL_ADMINME(this->_server.getServerName()));
   this->_server.sendReply(user.getFd(), Replies::RPL_ADMINLOC1(ADMIN_LOCATION));
-  this->_server.sendReply(user.getFd(), Replies::RPL_ADMINLOC2(ADMIN_AFFILIATION));
+  this->_server.sendReply(user.getFd(),
+                          Replies::RPL_ADMINLOC2(ADMIN_AFFILIATION));
   this->_server.sendReply(user.getFd(), Replies::RPL_ADMINEMAIL(ADMIN_MAIL));
 }
 
@@ -304,9 +335,12 @@ void CommandHandler::INFO(User &user) {
       return;
     }
   }
-  this->_server.sendReply(user.getFd(), Replies::RPL_INFO("server version", SERVER_VERSION));
-  this->_server.sendReply(user.getFd(), Replies::RPL_INFO("patch level", PATCH_LEVEL));
-  this->_server.sendReply(user.getFd(), Replies::RPL_INFO("start day", this->_server.getStartDay()));
+  this->_server.sendReply(user.getFd(),
+                          Replies::RPL_INFO("server version", SERVER_VERSION));
+  this->_server.sendReply(user.getFd(),
+                          Replies::RPL_INFO("patch level", PATCH_LEVEL));
+  this->_server.sendReply(
+      user.getFd(),
+      Replies::RPL_INFO("start day", this->_server.getStartDay()));
   this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFINFO());
 }
-

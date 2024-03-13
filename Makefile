@@ -46,6 +46,21 @@ run: all
 run_debug: debug
 	@./$(NAME_DEBUG) 6665 password
 
+run_debug_6665: debug
+	@./$(NAME_DEBUG) 6665 password
+
+run_debug_6666: debug
+	@./$(NAME_DEBUG) 6666 password
+
+run_debug_6667: debug
+	@./$(NAME_DEBUG) 6667 password
+
+run_debug_6668: debug
+	@./$(NAME_DEBUG) 6668 password
+
+run_debug_6669: debug
+	@./$(NAME_DEBUG) 6669 password
+
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) "$(@:%.o=%.d)" -I$(INC) -c -o $@ $<
 	@echo "$< =========> $(GRN) $@ $(RES)"
@@ -111,7 +126,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re run server client debug
+.PHONY: all clean fclean re run server client debug run_debug run_debug_6665 run_debug_6666 run_debug_6667 run_debug_6668 run_debug_6669
 
 RED = \033[31m
 GRN = \033[32m

@@ -1,10 +1,13 @@
 #include "User.hpp"
 #include <iostream>
 
-User::User() {}
+User::User()
+    : _nickname(""), _username(""), _realname(""), _fd(0),
+      _joinedChannelCount(0), _state(User::NONE), _modeFlags(User::None) {}
 
 User::User(const int fd)
-    : _fd(fd), _joinedChannelCount(0), _state(User::NONE) {}
+    : _nickname(""), _username(""), _realname(""), _fd(fd),
+      _joinedChannelCount(0), _state(User::NONE), _modeFlags(User::None) {}
 
 User &User::operator=(const User &user) {
   if (this != &user) {
@@ -12,6 +15,7 @@ User &User::operator=(const User &user) {
     this->_username = user._username;
     this->_realname = user._realname;
     this->_fd = user._fd;
+    this->_joinedChannelCount = user._joinedChannelCount;
     this->_state = user._state;
     this->_modeFlags = user._modeFlags;
   }
