@@ -96,10 +96,13 @@ void Channel::setTopic(const std::string &topic, const std::string &nick) {
   this->_topicSetUser = nick;
   this->_topicSetAt = getCurrentUnixTimestamp();
 }
+
 const std::string &Channel::getTopic() const { return (this->_topic); }
+
 const std::string &Channel::getTopicSetUser() const {
   return (this->_topicSetUser);
 }
+
 const long &Channel::getTopicSetAt() const { return (this->_topicSetAt); }
 
 // // channel mode
@@ -180,7 +183,6 @@ bool Channel::isInvited(const std::string &mask) const {
   }
 }
 
-#include <iostream>
 // func
 long Channel::getCurrentUnixTimestamp() {
   std::time_t now = std::time(NULL);
