@@ -322,7 +322,7 @@ const std::string Replies::RPL_TIME(const std::string &serverName,
 // 402
 const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
   std::string message;
-  message += "402";
+  message += "402 ";
   message += serverName;
   message += " :No such server";
   message += "\r\n";
