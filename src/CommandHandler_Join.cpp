@@ -17,6 +17,7 @@
 void CommandHandler::JOIN(User &user) {
   std::vector<std::string> channelNames;
   std::vector<std::string> keys;
+  unsigned int userStatus = Channel::Normal;
 
   if (this->_params.at(0).empty()) {
     this->_server.sendReply(user.getFd(),
@@ -38,19 +39,27 @@ void CommandHandler::JOIN(User &user) {
     }
 
     if (!this->_server.isExistChannel(channelNames.at(i))) {
-      if (keys.at(i).empty()) {
+      if (keys.size() <= i || keys.at(i).empty()) {
         this->_server.addChannel(channelNames.at(i));
       } else {
         this->_server.addChannel(channelNames.at(i), keys.at(i));
       }
+      userStatus |= Channel::Creator;
+      userStatus |= Channel::Operator;
     }
 
     const Channel &channel = this->_server.getChannel(channelNames.at(i));
-    if (!evaluateChannelJoinCondition(user, channel, keys.at(i))) {
-      continue;
+    if (keys.size() <= i || keys.at(i).empty()) {
+      if (!evaluateChannelJoinCondition(user, channel)) {
+        continue;
+      }
+    } else {
+      if (!evaluateChannelJoinCondition(user, channel, keys.at(i))) {
+        continue;
+      }
     }
 
-    addUserToChannel(user, const_cast<Channel &>(channel));
+    addUserToChannel(user, const_cast<Channel &>(channel), static_cast<Channel::UserStatusFlags>(userStatus));
     sendJoinResponses(user, channel);
   }
 }
@@ -75,15 +84,15 @@ void CommandHandler::splitChannelAndKey(std::vector<std::string> &channels,
 bool CommandHandler::isValidChannelName(const std::string &channelName) const {
   if (channelName.find_first_of("\a\n\r ,:") != std::string::npos) {
     return (false);
-  } else if (channelName.at(0) != '#' || channelName.at(0) != '+' ||
-             channelName.at(0) != '!' || channelName.at(0) != '&') {
+  } else if (channelName.at(0) != '#' && channelName.at(0) != '+' &&
+             channelName.at(0) != '!' && channelName.at(0) != '&') {
     return (false);
   }
   return (true);
 }
 
 bool CommandHandler::hasReachedChannelLimit(const User &user) const {
-  if (USER_CHANNEL_LIMIT < user.getJoinedChannelCount()) {
+  if (USER_CHANNEL_LIMIT <= user.getJoinedChannelCount()) {
     return (true);
   }
   return (false);
@@ -133,6 +142,24 @@ bool CommandHandler::checkInviteOnlyStatus(const Channel &channel,
 }
 
 bool CommandHandler::evaluateChannelJoinCondition(
+    const User &user, const Channel &channel) const {
+  if (!checkBanStatus(channel, user.getNickName())) {
+    this->_server.sendReply(
+        user.getFd(), Replies::ERR_BANNEDFROMCHAN(channel.getChannelName()));
+    return (false);
+  } else if (!checkChannelCapacity(channel)) {
+    this->_server.sendReply(
+        user.getFd(), Replies::ERR_CHANNELISFULL(channel.getChannelName()));
+    return (false);
+  } else if (!checkInviteOnlyStatus(channel, user.getNickName())) {
+    this->_server.sendReply(
+        user.getFd(), Replies::ERR_INVITEONLYCHAN(channel.getChannelName()));
+    return (false);
+  }
+  return (true);
+}
+
+bool CommandHandler::evaluateChannelJoinCondition(
     const User &user, const Channel &channel, const std::string &key) const {
   if (!verifyChannelKey(channel, key)) {
     this->_server.sendReply(
@@ -154,8 +181,13 @@ bool CommandHandler::evaluateChannelJoinCondition(
   return (true);
 }
 
-void CommandHandler::addUserToChannel(User &user, Channel &channel) const {
+void CommandHandler::addUserToChannel(User &user, Channel &channel, Channel::UserStatusFlags userStatus) const {
+  unsigned int mode = 0;
+
   channel.addUser(user);
+  mode |= userStatus;
+  mode |= channel.getUserStatus(user);
+  channel.setUserStatus(user, userStatus, true);
 }
 
 void CommandHandler::sendTopicReply(const User &user,

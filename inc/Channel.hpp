@@ -45,7 +45,7 @@ public:
 
   // getter
   const std::string &getChannelName() const;
-  const std::map<User *, unsigned int> &getUserStatus() const;
+//  const std::map<User *, unsigned int> &getUserStatus() const;
 
   // user
   void addUser(User &user);
@@ -57,6 +57,7 @@ public:
   // user status
   void setUserStatus(User &user, UserStatusFlags status, bool enable);
   bool hasUserStatus(User &user, const UserStatusFlags status) const;
+  Channel::UserStatusFlags getUserStatus(User &user) const;
 
   // topic
   void setTopic(const std::string &topic, const std::string &nick);

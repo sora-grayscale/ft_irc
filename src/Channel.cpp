@@ -30,18 +30,22 @@ const std::string &Channel::getChannelName() const {
   return (this->_channelName);
 }
 
-const std::map<User *, unsigned int> &Channel::getUserStatus() const {
-  return (this->_userStatus);
-}
+//const std::map<User *, unsigned int> &Channel::getUserStatus() const {
+//  return (this->_userStatus);
+//}
 
 // user
 void Channel::addUser(User &user) {
-  this->_users.insert(&user);
-  user.incrementJoinedChannelCount();
+  if (this->_users.find(&user) == this->_users.end()) {
+    this->_users.insert(&user);
+    this->_userStatus[&user] = Channel::Normal;
+    user.incrementJoinedChannelCount();
+  }
 }
 
 void Channel::removeUser(User &user) {
   this->_users.erase(&user);
+  this->_userStatus.erase(&user);
   user.decrementJoinedChannelCount();
 }
 
@@ -70,6 +74,13 @@ bool Channel::hasUserStatus(User &user, const UserStatusFlags status) const {
     return (true);
   }
   return (false);
+}
+
+Channel::UserStatusFlags Channel::getUserStatus(User &user) const {
+  if (this->_userStatus.find(&user) != this->_userStatus.end()) {
+    return (static_cast<Channel::UserStatusFlags>(this->_userStatus.at(&user)));
+  }
+  return (Channel::Normal);
 }
 
 // topic

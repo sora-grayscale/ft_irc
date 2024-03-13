@@ -72,9 +72,11 @@ private:
   bool checkChannelCapacity(const Channel &channel) const;
   bool checkInviteOnlyStatus(const Channel &channel,
                              const std::string &nickname) const;
+  bool evaluateChannelJoinCondition(const User &user,
+                                    const Channel &channel) const;
   bool evaluateChannelJoinCondition(const User &user, const Channel &channel,
                                     const std::string &key) const;
-  void addUserToChannel(User &user, Channel &channel) const;
+  void addUserToChannel(User &user, Channel &channel, Channel::UserStatusFlags mode) const;
   void sendTopicReply(const User &user, const Channel &channel) const;
   void sendNamReply(const User &user, const Channel &channel) const;
   void sendEndOfNamesReply(const User &user, const Channel &channel) const;
