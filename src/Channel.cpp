@@ -44,6 +44,9 @@ void Channel::addUser(User &user) {
 }
 
 void Channel::removeUser(User &user) {
+  if (this->_users.find(&user) == this->_users.end()) {
+    return ;
+  }
   this->_users.erase(&user);
   this->_userStatus.erase(&user);
   user.decrementJoinedChannelCount();
@@ -107,9 +110,8 @@ void Channel::setChannelMode(const ChannelModeFlags flag, bool enable) {
 bool Channel::hasChannleMode(const ChannelModeFlags flag) const {
   if ((this->_channelModeFlag & flag) == 1) {
     return (true);
-  } else {
-    return (false);
   }
+  return (false);
 }
 
 // k flag
@@ -134,9 +136,8 @@ void Channel::removeBanMask(const std::string &mask) {
 bool Channel::isBanned(const std::string &mask) const {
   if (this->_banMasks.find(mask) != this->_banMasks.end()) {
     return (true);
-  } else {
-    return (false);
   }
+  return (false);
 }
 
 // e flag
@@ -151,9 +152,8 @@ void Channel::removeExceptionMask(const std::string &mask) {
 bool Channel::hasException(const std::string &mask) const {
   if (this->_exceptionMasks.find(mask) != this->_exceptionMasks.end()) {
     return (true);
-  } else {
-    return (false);
   }
+  return (false);
 }
 
 // // I flag
@@ -168,9 +168,8 @@ void Channel::removeInvitationMask(const std::string &mask) {
 bool Channel::isInvited(const std::string &mask) const {
   if (this->_invitationMasks.find(mask) != this->_invitationMasks.end()) {
     return (true);
-  } else {
-    return (false);
   }
+  return (false);
 }
 
 // func
