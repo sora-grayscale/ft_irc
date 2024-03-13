@@ -12,6 +12,7 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler_debug.cpp \
               src/CommandHandler_handleCommand.cpp \
               src/CommandHandler_Join.cpp \
+              src/CommandHandler_Part.cpp \
               src/CommandHandler_parseMessage.cpp \
               src/main.cpp \
               src/Replies.cpp \

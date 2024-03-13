@@ -59,6 +59,13 @@ std::set<User *>::const_iterator Channel::getUserEnd() const {
   return (this->_users.end());
 }
 
+bool Channel::isUserInChannel(const User &user) const {
+  if (this->_users.find(const_cast<User *>(&user)) != this->_users.end()) {
+    return (true);
+  }
+  return (false);
+}
+
 // user status
 void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
   unsigned int &userStatus = this->_userStatus.at(&user);
