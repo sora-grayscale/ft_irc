@@ -30,9 +30,9 @@ const std::string &Channel::getChannelName() const {
   return (this->_channelName);
 }
 
-//const std::map<User *, unsigned int> &Channel::getUserStatus() const {
-//  return (this->_userStatus);
-//}
+// const std::map<User *, unsigned int> &Channel::getUserStatus() const {
+//   return (this->_userStatus);
+// }
 
 // user
 void Channel::addUser(User &user) {
@@ -99,11 +99,14 @@ void Channel::setTopic(const std::string &topic, const std::string &nick) {
   this->_topicSetUser = nick;
   this->_topicSetAt = getCurrentUnixTimestamp();
 }
+
 const std::string &Channel::getTopic() const { return (this->_topic); }
+
 const std::string &Channel::getTopicSetUser() const {
   return (this->_topicSetUser);
 }
-const long &Channel::getTopicSetAt() const { return (this->_topicSetAt); }
+
+const std::time_t &Channel::getTopicSetAt() const { return (this->_topicSetAt); }
 
 // // channel mode
 void Channel::setChannelMode(const ChannelModeFlags flag, bool enable) {
@@ -180,7 +183,7 @@ bool Channel::isInvited(const std::string &mask) const {
 }
 
 // func
-long Channel::getCurrentUnixTimestamp() {
+std::time_t Channel::getCurrentUnixTimestamp() {
   std::time_t now = std::time(NULL);
-  return (static_cast<long>(now));
+  return (now);
 }

@@ -45,7 +45,7 @@ public:
 
   // getter
   const std::string &getChannelName() const;
-//  const std::map<User *, unsigned int> &getUserStatus() const;
+  //  const std::map<User *, unsigned int> &getUserStatus() const;
 
   // user
   void addUser(User &user);
@@ -64,7 +64,7 @@ public:
   void setTopic(const std::string &topic, const std::string &nick);
   const std::string &getTopic() const;
   const std::string &getTopicSetUser() const;
-  const long &getTopicSetAt() const;
+  const std::time_t &getTopicSetAt() const;
 
   // channel mode
   void setChannelMode(const ChannelModeFlags flag, bool enable);
@@ -101,7 +101,7 @@ private:
 
   std::string _topic;
   std::string _topicSetUser;
-  long _topicSetAt;
+  std::time_t _topicSetAt;
 
   unsigned int _channelModeFlag;
   std::string _channelKey;                // k flag
