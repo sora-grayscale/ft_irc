@@ -42,7 +42,7 @@ public:
   // 333
   static const std::string RPL_TOPICWHOTIME(const std::string &channelName,
                                             const std::string &nick,
-                                            const long &setat);
+                                            const std::time_t &setat);
   // 341
   const std::string RPL_INVITING(const std::string &channel,
                                  const std::string &nick);

@@ -22,7 +22,7 @@ void CommandHandler::TOPIC(User &user) {
     return;
   }
 
-  if (1 < this->_params.size()) {
+  if (2 <=this->_params.size()) {
     setTopic(user, const_cast<Channel &>(channel));
   }
 
