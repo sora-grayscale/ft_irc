@@ -6,6 +6,7 @@ void CommandHandler::PART(User &user) {
   if (this->_params.at(0).empty()) {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return;
   }
 
   splitChannel(channelNames);
