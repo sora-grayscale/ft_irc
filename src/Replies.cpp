@@ -89,6 +89,8 @@ const std::string Replies::RPL_ADMINLOC1(const std::string &adminLocation) {
   message += "\r\n";
   return (message);
 }
+
+// !
 // 258
 const std::string Replies::RPL_ADMINLOC2(const std::string &adminAffiliation) {
   std::string message;
@@ -105,6 +107,34 @@ const std::string Replies::RPL_ADMINEMAIL(const std::string &adminMail) {
   message += "259 ";
   message += " :";
   message += adminMail;
+  message += "\r\n";
+  return (message);
+}
+
+// 332
+const std::string Replies::RPL_TOPIC(const std::string &channelName,
+                                     const std::string &topic) {
+  std::string message;
+  message += "332 ";
+  message += channelName;
+  message += " :";
+  message += topic;
+  message += "\r\n";
+  return (message);
+}
+
+// !
+// 333
+const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
+                                            const std::string &nick,
+                                            const long &setat) {
+  std::string message;
+  message += "333 ";
+  message += channelName;
+  message += " ";
+  message += nick;
+  message += " ";
+  message += setat;
   message += "\r\n";
   return (message);
 }
@@ -127,8 +157,50 @@ const std::string Replies::RPL_VERSION(const std::string &version,
   return (message);
 }
 
+/// !
+// 353
+const std::string Replies::RPL_NAMREPLY(const Channel &channel,
+                                        const User &user) {
+  std::string message;
+  message += "353 ";
+
+  // Channel mode
+  if (channel.hasChannleMode(Channel::Secret)) {
+    message += "@ ";
+  } else if (channel.hasChannleMode(Channel::Private)) {
+    message += "* ";
+  } else {
+    message += "= ";
+  }
+
+  // Channel name
+  message += channel.getChannelName() + " :";
+
+  // User status
+  if (channel.hasUserStatus(const_cast<User &>(user), Channel::Operator)) {
+    message += "@";
+  } else if (channel.hasUserStatus(const_cast<User &>(user), Channel::Voice)) {
+    message += "+";
+  }
+  message += user.getNickName();
+  message += "\r\n";
+  return (message);
+}
+
+// !
+// 366
+const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
+  std::string message;
+  message += "366 ";
+  message += channelName;
+  message += " :End of NAMES list";
+  message += "\r\n";
+  return (message);
+}
+
 // 371
-const std::string Replies::RPL_INFO(const std::string detail, const std::string &str) {
+const std::string Replies::RPL_INFO(const std::string detail,
+                                    const std::string &str) {
   std::string message;
   message += "371";
   message += " :";
@@ -148,20 +220,20 @@ const std::string Replies::RPL_MOTD() {
   return (message);
 }
 
-// 375
-const std::string Replies::RPL_MOTDSTART() {
-  std::string message;
-  message += "375";
-  message += " :- Message of the day - ";
-  message += "\r\n";
-  return (message);
-}
-
 // 374
 const std::string Replies::RPL_ENDOFINFO() {
   std::string message;
   message += "374";
   message += " :End of INFO list";
+  message += "\r\n";
+  return (message);
+}
+
+// 375
+const std::string Replies::RPL_MOTDSTART() {
+  std::string message;
+  message += "375";
+  message += " :- Message of the day - ";
   message += "\r\n";
   return (message);
 }
@@ -192,6 +264,7 @@ const std::string Replies::RPL_TIME(const std::string &serverName,
   message += serverName;
   message += " :";
   message += time;
+  //  message += "\r\n";
   return (message);
 }
 
@@ -205,11 +278,31 @@ const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
   return (message);
 }
 
+// !
+// 403
+const std::string Replies::ERR_NOSUCHCHANNEL(const std::string &channelName) {
+  std::string message;
+  message += "403 ";
+  message += channelName;
+  message += " :No such channel";
+  message += "\r\n";
+  return (message);
+}
+
+// !
+// 405
+const std::string Replies::ERR_TOOMANYCHANNELS(const std::string &channelName) {
+  std::string message;
+  message += "405 ";
+  message += channelName;
+  message += " :You have joined too many channels";
+  message += "\r\n";
+  return (message);
+}
 
 // 421
 const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
   std::string message;
-
   message += "421 ";
   message += command;
   message += " :Unknown command";
@@ -319,9 +412,59 @@ const std::string Replies::ERR_PASSWDMISMATCH() {
   return (message);
 }
 
+// 471
+const std::string Replies::ERR_CHANNELISFULL(const std::string &channelName) {
+  std::string message;
+  message += "471 ";
+  message += channelName;
+  message += " :Cannot join channel (+l)";
+  message += "\r\n";
+  return (message);
+}
+
+// 473
+const std::string Replies::ERR_INVITEONLYCHAN(const std::string &channelName) {
+  std::string message;
+  message += "473 ";
+  message += channelName;
+  message += " :Cannot join channel (+i)";
+  message += "\r\n";
+  return (message);
+}
+
+// 474
+const std::string Replies::ERR_BANNEDFROMCHAN(const std::string &channelName) {
+  std::string message;
+  message += "474 ";
+  message += channelName;
+  message += " :Cannot join channel (+b)";
+  message += "\r\n";
+  return (message);
+}
+
+// 475
+const std::string Replies::ERR_BADCHANNELKEY(const std::string &channelName) {
+  std::string message;
+  message += "475 ";
+  message += channelName;
+  message += " :Cannot join channel (+k)";
+  message += "\r\n";
+  return (message);
+}
+
+// !
+// 476
+const std::string Replies::ERR_BADCHANMASK(const std::string &channelName) {
+  std::string message;
+  message += "476 ";
+  message += channelName;
+  message += " :Bad Channel Mask";
+  message += "\r\n";
+  return (message);
+}
+
 // 481
-const std::string Replies::ERR_NOPRIVILEGES()
-{
+const std::string Replies::ERR_NOPRIVILEGES() {
   std::string message;
   message += "481";
   message += " :Permission Denied- You're not an IRC operator";
@@ -346,4 +489,3 @@ const std::string Replies::ERR_NOOPERHOST() {
   message += "\r\n";
   return (message);
 }
-

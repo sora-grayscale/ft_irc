@@ -1,8 +1,9 @@
 #ifndef REPLIES_HPP
 #define REPLIES_HPP
 
-#include <string>
+#include "Channel.hpp"
 #include <sstream>
+#include <string>
 
 class Replies {
 public:
@@ -25,13 +26,26 @@ public:
   static const std::string RPL_ADMINLOC2(const std::string &adminAffiliation);
   // 259
   static const std::string RPL_ADMINEMAIL(const std::string &adminMail);
+  // 332
+  static const std::string RPL_TOPIC(const std::string &channelName,
+                                     const std::string &topic);
+  // 333
+  static const std::string RPL_TOPICWHOTIME(const std::string &channelName,
+                                            const std::string &nick,
+                                            const long &setat);
   // 351
   static const std::string RPL_VERSION(const std::string &version,
-                                                const std::string &debuglevel,
-                                                const std::string &server,
-                                                const std::string &comments);
+                                       const std::string &debuglevel,
+                                       const std::string &server,
+                                       const std::string &comments);
+  // 353
+  static const std::string RPL_NAMREPLY(const Channel &channel,
+                                        const User &user);
+  // 366
+  static const std::string RPL_ENDOFNAMES(const std::string &channelName);
   // 371
-  static const std::string RPL_INFO(const std::string detail, const std::string &str);
+  static const std::string RPL_INFO(const std::string detail,
+                                    const std::string &str);
   // 372
   static const std::string RPL_MOTD();
   // 374
@@ -43,9 +57,14 @@ public:
   // 381
   static const std::string RPL_YOUREOPER();
   // 391
-  static const std::string RPL_TIME(const std::string &serverName, const std::string &time);
+  static const std::string RPL_TIME(const std::string &serverName,
+                                    const std::string &time);
   // 402
   static const std::string ERR_NOSUCHSERVER(const std::string &serverName);
+  // 403
+  static const std::string ERR_NOSUCHCHANNEL(const std::string &channelName);
+  // 405
+  static const std::string ERR_TOOMANYCHANNELS(const std::string &channelName);
   // 421
   static const std::string ERR_UNKNOWNCOMMAND(const std::string &command);
   // 422
@@ -70,6 +89,16 @@ public:
   static const std::string ERR_ALREADYREGISTRED();
   // 464
   static const std::string ERR_PASSWDMISMATCH();
+  // 471
+  static const std::string ERR_CHANNELISFULL(const std::string &channelName);
+  // 473
+  static const std::string ERR_INVITEONLYCHAN(const std::string &channelName);
+  // 474
+  static const std::string ERR_BANNEDFROMCHAN(const std::string &channelName);
+  // 475
+  static const std::string ERR_BADCHANNELKEY(const std::string &channelName);
+  // 476
+  static const std::string ERR_BADCHANMASK(const std::string &channelName);
   // 481
   static const std::string ERR_NOPRIVILEGES();
   // 484

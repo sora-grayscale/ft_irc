@@ -2,12 +2,19 @@
 #define CHANNEL_HPP
 
 #include "User.hpp"
+#include <climits>
+#include <ctime>
 #include <map>
 #include <set>
 #include <string>
 
 class Channel {
 public:
+  Channel();
+  Channel(const std::string &channelName);
+  Channel(const std::string &channelName, const std::string &key);
+  ~Channel();
+
   enum UserStatusFlags {
     Normal = 0,
     Creator = 1 << 0,
@@ -36,18 +43,27 @@ public:
     InvitationMask = 1 << 16  // I 特別扱いが必要
   };
 
+  // getter
+  const std::string &getChannelName() const;
+//  const std::map<User *, unsigned int> &getUserStatus() const;
+
+  // user
   void addUser(User &user);
   void removeUser(User &user);
-
-  void setTopic(const std::string &topic);
+  int userNum() const;
+  std::set<User *>::const_iterator getUserBegin() const;
+  std::set<User *>::const_iterator getUserEnd() const;
 
   // user status
-  void setUserStatus(const std::string &nickname, UserStatusFlags status,
-                     bool enable);
-  void addUserStatus(const std::string &nickname,
-                     UserStatusFlags status); // 上とほぼ一緒
-  void removeUserStatus(const std::string &nickname, UserStatusFlags status);
-  bool hasUserStatus(const std::string &nickname, UserStatusFlags status) const;
+  void setUserStatus(User &user, UserStatusFlags status, bool enable);
+  bool hasUserStatus(User &user, const UserStatusFlags status) const;
+  Channel::UserStatusFlags getUserStatus(User &user) const;
+
+  // topic
+  void setTopic(const std::string &topic, const std::string &nick);
+  const std::string &getTopic() const;
+  const std::string &getTopicSetUser() const;
+  const long &getTopicSetAt() const;
 
   // channel mode
   void setChannelMode(const ChannelModeFlags flag, bool enable);
@@ -77,18 +93,24 @@ public:
   bool isInvited(const std::string &mask) const;
 
 private:
-  // std::map <std::string nickname, User &user> users;
-  std::map<std::string, User *> users;
-  std::string topic;
+  std::string _channelName;
 
-  // std::map<std::string nickname, unsigned int userStatus> userStatus;
-  std::map<std::string, unsigned int> userStatus;
+  std::set<User *> _users;
+  std::map<User *, unsigned int> _userStatus; // nickname, userStatus
 
-  unsigned int channelModeFlags;
-  std::string channelKey;                // k flag
-  int userLimit;                         // l flag
-  std::set<std::string> banMasks;        // b flag
-  std::set<std::string> exceptionMasks;  // e flag
-  std::set<std::string> invitationMasks; // I flag
+  std::string _topic;
+  std::string _topicSetUser;
+  long _topicSetAt;
+
+  unsigned int _channelModeFlag;
+  std::string _channelKey;                // k flag
+  int _userLimit;                         // l flag
+  std::set<std::string> _banMasks;        // b flag
+  std::set<std::string> _exceptionMasks;  // e flag
+  std::set<std::string> _invitationMasks; // I flag
+
+  // setTopic func
+  long getCurrentUnixTimestamp();
 };
+
 #endif
