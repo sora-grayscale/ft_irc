@@ -182,7 +182,8 @@ const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
 }
 
 // 341
-const std::string Replies::RPL_INVITING(const std::string &channel, const std::string &nick) {
+const std::string Replies::RPL_INVITING(const std::string &channel,
+                                        const std::string &nick) {
   std::string message;
   message += "341 ";
   message += channel;
@@ -583,4 +584,3 @@ const std::string Replies::ERR_NOOPERHOST() {
   message += "\r\n";
   return (message);
 }
-

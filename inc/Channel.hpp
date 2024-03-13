@@ -45,7 +45,7 @@ public:
 
   // getter
   const std::string &getChannelName() const;
-//  const std::map<User *, unsigned int> &getUserStatus() const;
+  //  const std::map<User *, unsigned int> &getUserStatus() const;
 
   // user
   void addUser(User &user);

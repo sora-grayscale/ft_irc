@@ -59,7 +59,8 @@ void CommandHandler::JOIN(User &user) {
       }
     }
 
-    addUserToChannel(user, const_cast<Channel &>(channel), static_cast<Channel::UserStatusFlags>(userStatus));
+    addUserToChannel(user, const_cast<Channel &>(channel),
+                     static_cast<Channel::UserStatusFlags>(userStatus));
     sendJoinResponses(user, channel);
   }
 }
@@ -181,7 +182,8 @@ bool CommandHandler::evaluateChannelJoinCondition(
   return (true);
 }
 
-void CommandHandler::addUserToChannel(User &user, Channel &channel, Channel::UserStatusFlags userStatus) const {
+void CommandHandler::addUserToChannel(
+    User &user, Channel &channel, Channel::UserStatusFlags userStatus) const {
   unsigned int mode = 0;
 
   channel.addUser(user);
