@@ -6,8 +6,8 @@ const std::string Replies::RPL_LUSERCLIENT(const int &users,
                                            const int &servers) {
   std::stringstream ss;
   std::string message;
-  ss << "251";
-  ss << " :There are ";
+  ss << "251 ";
+  ss << ":There are ";
   ss << users;
   ss << " users and ";
   ss << services;
@@ -59,8 +59,8 @@ const std::string Replies::RPL_LUSERCHANNELS(const int &channels) {
 const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
   std::stringstream ss;
   std::string message;
-  ss << "255";
-  ss << " :I have ";
+  ss << "255 ";
+  ss << ":I have ";
   ss << clients;
   ss << " clients and ";
   ss << servers;
@@ -169,20 +169,21 @@ const std::string Replies::RPL_TOPIC(const std::string &channelName,
 // 333
 const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
                                             const std::string &nick,
-                                            const long &setat) {
-  std::string message;
-  message += "333 ";
-  message += channelName;
-  message += " ";
-  message += nick;
-  message += " ";
-  message += setat;
-  message += "\r\n";
-  return (message);
+                                            const std::time_t &setat) {
+  std::stringstream ss;
+  ss <<  "333 ";
+  ss <<  channelName;
+  ss <<  " ";
+  ss <<  nick;
+  ss <<  " ";
+  ss <<  setat;
+  ss <<  "\r\n";
+  return (ss.str());
 }
 
 // 341
-const std::string Replies::RPL_INVITING(const std::string &channel, const std::string &nick) {
+const std::string Replies::RPL_INVITING(const std::string &channel,
+                                        const std::string &nick) {
   std::string message;
   message += "341 ";
   message += channel;
@@ -253,8 +254,8 @@ const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
 const std::string Replies::RPL_INFO(const std::string detail,
                                     const std::string &str) {
   std::string message;
-  message += "371";
-  message += " :";
+  message += "371 ";
+  message += ":";
   message += detail;
   message += " ";
   message += str;
@@ -265,8 +266,8 @@ const std::string Replies::RPL_INFO(const std::string detail,
 // 372
 const std::string Replies::RPL_MOTD() {
   std::string message;
-  message += "372";
-  message += " :Today's message!!";
+  message += "372 ";
+  message += ":Today's message!!";
   message += "\r\n";
   return (message);
 }
@@ -274,8 +275,8 @@ const std::string Replies::RPL_MOTD() {
 // 374
 const std::string Replies::RPL_ENDOFINFO() {
   std::string message;
-  message += "374";
-  message += " :End of INFO list";
+  message += "374 ";
+  message += ":End of INFO list";
   message += "\r\n";
   return (message);
 }
@@ -283,8 +284,8 @@ const std::string Replies::RPL_ENDOFINFO() {
 // 375
 const std::string Replies::RPL_MOTDSTART() {
   std::string message;
-  message += "375";
-  message += " :- Message of the day - ";
+  message += "375 ";
+  message += ":- Message of the day - ";
   message += "\r\n";
   return (message);
 }
@@ -292,8 +293,8 @@ const std::string Replies::RPL_MOTDSTART() {
 // 376
 const std::string Replies::RPL_ENDOFMOTD() {
   std::string message;
-  message += "376";
-  message += " :End of MOTD command";
+  message += "376 ";
+  message += ":End of MOTD command";
   message += "\r\n";
   return (message);
 }
@@ -362,8 +363,8 @@ const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
 // 422
 const std::string Replies::ERR_NOMOTD() {
   std::string message;
-  message += "422";
-  message += " :MOTD File is missing";
+  message += "422 ";
+  message += ":MOTD File is missing";
   message += "\r\n";
   return (message);
 }
@@ -550,8 +551,8 @@ const std::string Replies::ERR_BADCHANMASK(const std::string &channelName) {
 // 481
 const std::string Replies::ERR_NOPRIVILEGES() {
   std::string message;
-  message += "481";
-  message += " :Permission Denied- You're not an IRC operator";
+  message += "481 ";
+  message += ":Permission Denied- You're not an IRC operator";
   message += "\r\n";
   return (message);
 }
@@ -583,4 +584,3 @@ const std::string Replies::ERR_NOOPERHOST() {
   message += "\r\n";
   return (message);
 }
-
