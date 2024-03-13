@@ -45,6 +45,8 @@ void CommandHandler::executeCommand(User &user) {
     OPER(user);
   } else if (this->_command == "JOIN") {
     JOIN(user);
+  } else if (this->_command == "PART") {
+    PART(user);
   } else if (this->_command == "MOTD") {
     MOTD(user);
   } else if (this->_command == "LUSERS") {

@@ -46,6 +46,7 @@ private:
   void NICK(User &user);
   void OPER(User &user);
   void JOIN(User &user);
+  void PART(User &user);
   void MOTD(User &user);
   void LUSERS(User &user);
   void VERSION(User &user);
@@ -82,9 +83,12 @@ private:
   void sendEndOfNamesReply(const User &user, const Channel &channel) const;
   void sendJoinResponses(const User &user, const Channel &channel) const;
 
+  // part method
+  void splitChannel(std::vector<std::string> &channels);
+
   // debug
   void printStringAsInts(const std::string &input);
   void printVectorString(const std::vector<std::string> &vec);
-};
+  };
 
 #endif

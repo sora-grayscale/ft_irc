@@ -53,6 +53,7 @@ public:
   int userNum() const;
   std::set<User *>::const_iterator getUserBegin() const;
   std::set<User *>::const_iterator getUserEnd() const;
+  bool isUserInChannel(const User &user) const;
 
   // user status
   void setUserStatus(User &user, UserStatusFlags status, bool enable);

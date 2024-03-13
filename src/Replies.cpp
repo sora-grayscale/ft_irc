@@ -90,7 +90,6 @@ const std::string Replies::RPL_ADMINLOC1(const std::string &adminLocation) {
   return (message);
 }
 
-// !
 // 258
 const std::string Replies::RPL_ADMINLOC2(const std::string &adminAffiliation) {
   std::string message;
@@ -111,6 +110,50 @@ const std::string Replies::RPL_ADMINEMAIL(const std::string &adminMail) {
   return (message);
 }
 
+// 321
+const std::string Replies::RPL_LISTSTART() {
+  std::string message;
+  message += "321 ";
+  message += ":Channel :Users  Name";
+  message += "\r\n";
+  return (message);
+}
+
+// 322
+const std::string Replies::RPL_LIST(const std::string &channel,
+                                    const std::size_t &visible,
+                                    const std::string &topic) {
+  std::string message;
+  message += "322 ";
+  message += " :";
+  message += channel;
+  message += " ";
+  message += visible;
+  message += " :";
+  message += topic;
+  message += "\r\n";
+  return (message);
+}
+
+// 323
+const std::string Replies::RPL_LISTEND() {
+  std::string message;
+  message += "323 ";
+  message += " :End of LIST";
+  message += "\r\n";
+  return (message);
+}
+
+// 331
+const std::string Replies::RPL_NOTOPIC(const std::string &channel) {
+  std::string message;
+  message += "331 ";
+  message += channel;
+  message += " :No topic is set";
+  message += "\r\n";
+  return (message);
+}
+
 // 332
 const std::string Replies::RPL_TOPIC(const std::string &channelName,
                                      const std::string &topic) {
@@ -123,7 +166,6 @@ const std::string Replies::RPL_TOPIC(const std::string &channelName,
   return (message);
 }
 
-// !
 // 333
 const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
                                             const std::string &nick,
@@ -135,6 +177,17 @@ const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
   message += nick;
   message += " ";
   message += setat;
+  message += "\r\n";
+  return (message);
+}
+
+// 341
+const std::string Replies::RPL_INVITING(const std::string &channel, const std::string &nick) {
+  std::string message;
+  message += "341 ";
+  message += channel;
+  message += " ";
+  message += nick;
   message += "\r\n";
   return (message);
 }
@@ -157,7 +210,6 @@ const std::string Replies::RPL_VERSION(const std::string &version,
   return (message);
 }
 
-/// !
 // 353
 const std::string Replies::RPL_NAMREPLY(const Channel &channel,
                                         const User &user) {
@@ -187,7 +239,6 @@ const std::string Replies::RPL_NAMREPLY(const Channel &channel,
   return (message);
 }
 
-// !
 // 366
 const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
   std::string message;
@@ -278,7 +329,6 @@ const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
   return (message);
 }
 
-// !
 // 403
 const std::string Replies::ERR_NOSUCHCHANNEL(const std::string &channelName) {
   std::string message;
@@ -289,7 +339,6 @@ const std::string Replies::ERR_NOSUCHCHANNEL(const std::string &channelName) {
   return (message);
 }
 
-// !
 // 405
 const std::string Replies::ERR_TOOMANYCHANNELS(const std::string &channelName) {
   std::string message;
@@ -375,6 +424,42 @@ const std::string Replies::ERR_UNAVAILRESOURCE(const std::string &str) {
   return message;
 }
 
+// 441
+const std::string Replies::ERR_USERNOTINCHANNEL(const std::string &nick,
+                                                const std::string &channel) {
+  std::string message;
+  message += "441 ";
+  message += nick;
+  message += " ";
+  message += channel;
+  message += " :They aren't on that channel";
+  message += "\r\n";
+  return (message);
+}
+
+// 442
+const std::string Replies::ERR_NOTONCHANNEL(const std::string &channel) {
+  std::string message;
+  message += "442 ";
+  message += channel;
+  message += " :You're not on that channel";
+  message += "\r\n";
+  return (message);
+}
+
+// 443
+const std::string Replies::ERR_USERONCHANNEL(const std::string &nick,
+                                             const std::string &channel) {
+  std::string message;
+  message += "443 ";
+  message += nick;
+  message += " ";
+  message += channel;
+  message += " :is already on channel";
+  message += "\r\n";
+  return (message);
+}
+
 // 451
 const std::string Replies::ERR_NOTREGISTERED() {
   std::string message;
@@ -452,7 +537,6 @@ const std::string Replies::ERR_BADCHANNELKEY(const std::string &channelName) {
   return (message);
 }
 
-// !
 // 476
 const std::string Replies::ERR_BADCHANMASK(const std::string &channelName) {
   std::string message;
@@ -468,6 +552,16 @@ const std::string Replies::ERR_NOPRIVILEGES() {
   std::string message;
   message += "481";
   message += " :Permission Denied- You're not an IRC operator";
+  message += "\r\n";
+  return (message);
+}
+
+// 482
+const std::string Replies::ERR_CHANOPRIVSNEEDED(const std::string &channel) {
+  std::string message;
+  message += "482 ";
+  message += channel;
+  message += " :You're not channel operator";
   message += "\r\n";
   return (message);
 }
@@ -489,3 +583,4 @@ const std::string Replies::ERR_NOOPERHOST() {
   message += "\r\n";
   return (message);
 }
+
