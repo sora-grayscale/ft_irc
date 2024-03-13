@@ -240,11 +240,17 @@ void CommandHandler::MOTD(User &user) {
 }
 
 void CommandHandler::LUSERS(User &user) {
-  if (!(this->_params.size() == 0)) {
-    if (this->_params.at(0) != this->_server.getServerName() ||
-        this->_params.at(1) != this->_server.getServerName()) {
+  if (1 <= this->_params.size()) {
+    if (this->_params.at(0) != this->_server.getServerName()) {
       this->_server.sendReply(user.getFd(),
                               Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
+      return;
+    }
+  }
+  if (2 <= this->_params.size()) {
+    if (this->_params.at(1) != this->_server.getServerName()) {
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_NOSUCHSERVER(this->_params.at(1)));
       return;
     }
   }
