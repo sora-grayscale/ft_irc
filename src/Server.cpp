@@ -1,7 +1,9 @@
 #include "Server.hpp"
 
-const std::string &Server::getPassword() const { return (this->_password); }
-Server::Server(int argc, const char *argv[]) {
+Server::Server(int argc, const char *argv[])
+    : _serverName(""), _password(""), _port(0), _sfd(0), _addr(), _pollFd(),
+      _fdToNickname(), _tmpUsers(), _registerdUsers(), _channels(),
+      _nickHistory(), _startDay() {
   try {
     Server::checkServerName(SERVER_NAME);
     this->_serverName = SERVER_NAME;
@@ -26,14 +28,7 @@ Server &Server::operator=(const Server &server) {
   return (*this);
 }
 
-void Server::eraseTmpMap(const int fd) { this->_tmpUsers.erase(fd); }
-
-void Server::addRegisterMap(const int fd, const User &user) {
-  this->_registerdUsers[fd] = user; // fd, user
-}
-
-bool Server::isNick(const std::string &nick)
-{
+bool Server::isNick(const std::string &nick) {
   if (this->_nickHistory.find(nick) != this->_nickHistory.end())
     return true;
   for (std::map<int, User>::iterator it = this->_tmpUsers.begin();
@@ -44,11 +39,37 @@ bool Server::isNick(const std::string &nick)
   return false;
 }
 
-void Server::setNickHistory(const std::string &nick) {
-  this->_nickHistory.insert(nick);
+bool Server::isExistChannel(const std::string &channelName) {
+  if (this->_channels.find(channelName) != this->_channels.end()) {
+    return (true);
+  }
+  return (false);
+}
+
+Channel &Server::getChannel(const std::string &channelName) {
+  return (this->_channels.at(channelName));
+}
+
+void Server::addChannel(const std::string &channelName) {
+  this->_channels[channelName] = Channel(channelName);
+}
+
+void Server::addChannel(const std::string &channelName,
+                        const std::string &key) {
+  this->_channels[channelName] = Channel(channelName, key);
 }
 
 const std::string &Server::getServerName() const { return this->_serverName; }
+const std::string &Server::getPassword() const { return (this->_password); }
+const std::string &Server::getStartDay() const { return this->_startDay; }
+
+void Server::setNickHistory(const std::string &nick) {
+  this->_nickHistory.insert(nick);
+}
+void Server::eraseTmpMap(const int fd) { this->_tmpUsers.erase(fd); }
+void Server::addRegisterMap(const int fd, const User &user) {
+  this->_registerdUsers[fd] = user; // fd, user
+}
 
 int Server::numOfUser() {
   return static_cast<int>(this->_registerdUsers.size());
@@ -66,5 +87,3 @@ int Server::numOfOpeUser() {
 }
 
 int Server::numOfChannel() { return static_cast<int>(this->_channels.size()); }
-
-const std::string &Server::getStartDay() const { return this->_startDay; }
