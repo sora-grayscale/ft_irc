@@ -62,6 +62,7 @@ private:
   void convertChar(std::string &str);
   bool isSpecialChar(const char c);
   bool validateNick(const std::string &str);
+  bool isReservedNick(const std::string &nick);
 
   // join method
   void splitChannelAndKey(std::vector<std::string> &channels,

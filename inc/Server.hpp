@@ -35,10 +35,12 @@
 
 #define DEBUG_LEVEL "normal"
 #define PATCH_LEVEL "normal"
+#define ADMIN_NAME "admin"
 
 #define ADMIN_LOCATION "Tokyo"
 #define ADMIN_AFFILIATION "42Tokyo"
 #define ADMIN_MAIL "admin@student.42tokyo.fr"
+#define ANON_NAME "anonymous"
 
 class Server {
 public:
