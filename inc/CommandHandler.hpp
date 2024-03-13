@@ -47,6 +47,7 @@ private:
   void OPER(User &user);
   void JOIN(User &user);
   void PART(User &user);
+  void TOPIC(User &user);
   void MOTD(User &user);
   void LUSERS(User &user);
   void VERSION(User &user);
@@ -85,6 +86,9 @@ private:
 
   // part method
   void splitChannel(std::vector<std::string> &channels);
+
+  // topic method
+  void setTopic(const User &user, Channel &channel) const;
 
   // debug
   void printStringAsInts(const std::string &input);

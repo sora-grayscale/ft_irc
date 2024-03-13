@@ -30,9 +30,9 @@ const std::string &Channel::getChannelName() const {
   return (this->_channelName);
 }
 
-//const std::map<User *, unsigned int> &Channel::getUserStatus() const {
-//  return (this->_userStatus);
-//}
+// const std::map<User *, unsigned int> &Channel::getUserStatus() const {
+//   return (this->_userStatus);
+// }
 
 // user
 void Channel::addUser(User &user) {
@@ -180,6 +180,7 @@ bool Channel::isInvited(const std::string &mask) const {
   }
 }
 
+#include <iostream>
 // func
 long Channel::getCurrentUnixTimestamp() {
   std::time_t now = std::time(NULL);
