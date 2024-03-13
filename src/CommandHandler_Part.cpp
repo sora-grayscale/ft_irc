@@ -3,7 +3,7 @@
 void CommandHandler::PART(User &user) {
   std::vector<std::string> channelNames;
 
-  if (this->_params.at(0).empty()) {
+  if (this->_params.size() == 0) {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_NEEDMOREPARAMS(this->_command));
     return;
