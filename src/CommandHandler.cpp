@@ -4,7 +4,7 @@ CommandHandler::CommandHandler(Server &server) : _server(server) {}
 CommandHandler::~CommandHandler() {}
 
 void CommandHandler::PASS(User &user) {
-  if (this->_params.at(0).empty()) {
+  if (this->_params.size() == 0) {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_NEEDMOREPARAMS(this->_command));
     return;
@@ -151,7 +151,7 @@ bool CommandHandler::isReservedNick(const std::string &nick) {
 
 void CommandHandler::NICK(User &user) {
   // ok
-  if (this->_params.at(0).empty()) {
+  if (this->_params.size() == 0) {
     this->_server.sendReply(user.getFd(), Replies::ERR_NONICKNAMEGIVEN());
     return;
   }
@@ -227,7 +227,7 @@ void CommandHandler::OPER(User &user) {
 }
 
 void CommandHandler::MOTD(User &user) {
-  if (!this->_params.at(0).empty()) {
+  if (!(this->_params.size() == 0)) {
     if (this->_params.at(0) != this->_server.getServerName()) {
       this->_server.sendReply(user.getFd(),
                               Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
@@ -240,7 +240,7 @@ void CommandHandler::MOTD(User &user) {
 }
 
 void CommandHandler::LUSERS(User &user) {
-  if (!this->_params.at(0).empty()) {
+  if (!(this->_params.size() == 0)) {
     if (this->_params.at(0) != this->_server.getServerName() ||
         this->_params.at(1) != this->_server.getServerName()) {
       this->_server.sendReply(user.getFd(),
@@ -265,7 +265,7 @@ void CommandHandler::LUSERS(User &user) {
 }
 
 void CommandHandler::VERSION(User &user) {
-  if (!this->_params.at(0).empty()) {
+  if (!(this->_params.size() == 0)) {
     if (this->_params.at(0) != this->_server.getServerName()) {
       this->_server.sendReply(user.getFd(),
                               Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
@@ -283,7 +283,7 @@ void CommandHandler::LINKS(User &user) {
 }
 
 void CommandHandler::TIME(User &user) {
-  if (!this->_params.at(0).empty()) {
+  if (!(this->_params.size() == 0)) {
     if (this->_params.at(0) != this->_server.getServerName()) {
       this->_server.sendReply(user.getFd(),
                               Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
@@ -315,7 +315,7 @@ void CommandHandler::CONNECT(User &user) {
 }
 
 void CommandHandler::TRACE(User &user) {
-  if (!this->_params.at(0).empty()) {
+  if (!(this->_params.size() == 0)) {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
   } else {
@@ -325,7 +325,7 @@ void CommandHandler::TRACE(User &user) {
 }
 
 void CommandHandler::ADMIN(User &user) {
-  if (!this->_params.at(0).empty()) {
+  if (!(this->_params.size() == 0)) {
     if (this->_params.at(0) != this->_server.getServerName()) {
       this->_server.sendReply(user.getFd(),
                               Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
@@ -341,7 +341,7 @@ void CommandHandler::ADMIN(User &user) {
 }
 
 void CommandHandler::INFO(User &user) {
-  if (!this->_params.at(0).empty()) {
+  if (!(this->_params.size() == 0)) {
     if (this->_params.at(0) != this->_server.getServerName()) {
       this->_server.sendReply(user.getFd(),
                               Replies::ERR_NOSUCHSERVER(this->_params.at(0)));

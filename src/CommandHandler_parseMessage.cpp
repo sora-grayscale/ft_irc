@@ -35,7 +35,9 @@ void CommandHandler::extractParam(std::istringstream &iss) {
   std::string param;
 
   iss >> param;
-  this->_params.push_back(param);
+  if (!param.empty()) {
+    this->_params.push_back(param);
+  }
   if (iss.bad()) {
     throw std::runtime_error(
         "A critical error occurred while extracting param.");

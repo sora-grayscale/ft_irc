@@ -19,7 +19,7 @@ void CommandHandler::JOIN(User &user) {
   std::vector<std::string> keys;
   unsigned int userStatus = Channel::Normal;
 
-  if (this->_params.at(0).empty()) {
+  if (this->_params.size() == 0) {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_NEEDMOREPARAMS(this->_command));
   }
