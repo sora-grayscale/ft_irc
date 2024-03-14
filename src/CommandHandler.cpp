@@ -183,7 +183,8 @@ void CommandHandler::NICK(User &user) {
 
   // 予約された名前の拒否
   if (isReservedNick(this->_params.at(0))) {
-    this->_server.sendReply(user.getFd(), Replies::ERR_NICKNAMEINUSE(this->_params.at(0)));
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NICKNAMEINUSE(this->_params.at(0)));
     return;
   }
 
@@ -286,8 +287,8 @@ void CommandHandler::VERSION(User &user) {
 }
 void CommandHandler::LINKS(User &user) {
   if (this->_params.size() == 0) {
-    this->_server.sendReply(user.getFd(),
-                            Replies::ERR_NOSUCHSERVER(this->_server.getServerName()));
+    this->_server.sendReply(
+        user.getFd(), Replies::ERR_NOSUCHSERVER(this->_server.getServerName()));
   } else {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_NOSUCHSERVER(this->_params.at(0)));

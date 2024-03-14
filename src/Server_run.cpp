@@ -109,15 +109,3 @@ void Server::sendReply(const int fd, const std::string &reply) {
     sent += count;
   }
 }
-
-User &Server::findUser(const int fd) {
-  std::map<int, User>::const_iterator tIt = this->_tmpUsers.find(fd);
-  if (tIt != this->_tmpUsers.end()) {
-    return (this->_tmpUsers.at(fd));
-  }
-  std::map<int, User>::const_iterator rIt = this->_registerdUsers.find(fd);
-  if (rIt != this->_registerdUsers.end()) {
-    return (this->_registerdUsers.at(fd));
-  }
-  throw std::runtime_error("Not found User");
-}
