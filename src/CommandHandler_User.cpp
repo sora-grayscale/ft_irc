@@ -78,5 +78,3 @@ void CommandHandler::USER(User &user) {
 
   return;
 }
-
-

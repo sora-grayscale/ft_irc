@@ -17,4 +17,3 @@ void CommandHandler::TIME(User &user) {
   this->_server.sendReply(
       user.getFd(), Replies::RPL_TIME(this->_server.getServerName(), time));
 }
-

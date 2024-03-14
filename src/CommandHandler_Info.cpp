@@ -17,4 +17,3 @@ void CommandHandler::INFO(User &user) {
       Replies::RPL_INFO("start day", this->_server.getStartDay()));
   this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFINFO());
 }
-
