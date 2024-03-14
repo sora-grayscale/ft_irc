@@ -1,11 +1,12 @@
-on: push
-name: clang-format Code Formatter
+name: clang-format
+on: [push, pull_request]
 jobs:
-  lint:
-    name: clang-format Code Formatter
+  formatting-check:
+    name: Format check
     runs-on: ubuntu-latest
     steps:
-    - name: Clang Code Formatter
-      uses: ivanludvig/clang-format-action@v1.4
-      env:
-        GITHUB_TOKEN: ${ { secrets.GITHUB_TOKEN } }
+    - uses: actions/checkout@v2
+    - name: Run clang-format style check for C/C++ programs.
+      uses: jidicula/clang-format-action@v4.2.0
+      with:
+        clang-format-version: '13'
