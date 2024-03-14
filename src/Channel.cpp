@@ -45,7 +45,7 @@ void Channel::addUser(User &user) {
 
 void Channel::removeUser(User &user) {
   if (this->_users.find(&user) == this->_users.end()) {
-    return ;
+    return;
   }
   this->_users.erase(&user);
   this->_userStatus.erase(&user);
@@ -106,7 +106,9 @@ const std::string &Channel::getTopicSetUser() const {
   return (this->_topicSetUser);
 }
 
-const std::time_t &Channel::getTopicSetAt() const { return (this->_topicSetAt); }
+const std::time_t &Channel::getTopicSetAt() const {
+  return (this->_topicSetAt);
+}
 
 // // channel mode
 void Channel::setChannelMode(const ChannelModeFlags flag, bool enable) {
