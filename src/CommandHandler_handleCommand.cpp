@@ -49,6 +49,8 @@ void CommandHandler::executeCommand(User &user) {
     PART(user);
   } else if (this->_command == "TOPIC") {
     TOPIC(user);
+  } else if (this->_command == "NAMES") {
+    NAMES(user);
   } else if (this->_command == "MOTD") {
     MOTD(user);
   } else if (this->_command == "LUSERS") {
