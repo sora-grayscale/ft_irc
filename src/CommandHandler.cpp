@@ -193,6 +193,10 @@ void CommandHandler::NICK(User &user) {
     return;
   }
 
+  // set
+  user.setNickName(this->_params.at(0));
+  this->_server.setNickHistory(user.getNickName());
+
   // 初期登録かどうかの判別
   if (user.getState() != User::REGISTERD) {
     user.setState(User::NICK, true);
@@ -201,9 +205,6 @@ void CommandHandler::NICK(User &user) {
       this->_server.eraseTmpMap(user.getFd());
     }
   }
-  // set
-  user.setNickName(this->_params.at(0));
-  this->_server.setNickHistory(user.getNickName());
   return;
 }
 
