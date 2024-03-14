@@ -5,7 +5,6 @@ const std::string Replies::RPL_LUSERCLIENT(const int &users,
                                            const int &services,
                                            const int &servers) {
   std::stringstream ss;
-  std::string message;
   ss << "251 ";
   ss << ":There are ";
   ss << users;
@@ -14,60 +13,51 @@ const std::string Replies::RPL_LUSERCLIENT(const int &users,
   ss << " services on ";
   ss << servers;
   ss << " servers";
-  message = ss.str();
-  message += "\r\n";
-  return (message);
+  ss << "\r\n";
+  return (ss.str());
 }
 
 // 252
 const std::string Replies::RPL_LUSEROP(const int &operators) {
   std::stringstream ss;
-  std::string message;
   ss << "252 ";
   ss << operators;
   ss << " :operator(s) online";
-  message = ss.str();
-  message += "\r\n";
-  return (message);
+  ss << "\r\n";
+  return (ss.str());
 }
 
 // 253
 const std::string Replies::RPL_LUSERUNKNOWN(const int &unknown) {
   std::stringstream ss;
-  std::string message;
   ss << "253 ";
   ss << unknown;
   ss << " :unknown connection(s))";
-  message = ss.str();
-  message += "\r\n";
-  return (message);
+  ss << "\r\n";
+  return (ss.str());
 }
 
 // 254
 const std::string Replies::RPL_LUSERCHANNELS(const int &channels) {
   std::stringstream ss;
-  std::string message;
   ss << "254 ";
   ss << channels;
   ss << " :channels formed";
-  message = ss.str();
-  message += "\r\n";
-  return (message);
+  ss << "\r\n";
+  return (ss.str());
 }
 
 // 255
 const std::string Replies::RPL_LUSERME(const int &clients, const int &servers) {
   std::stringstream ss;
-  std::string message;
   ss << "255 ";
   ss << ":I have ";
   ss << clients;
   ss << " clients and ";
   ss << servers;
   ss << " servers";
-  message = ss.str();
-  message += "\r\n";
-  return (message);
+  ss << "\r\n";
+  return (ss.str());
 }
 
 // 256
@@ -171,13 +161,13 @@ const std::string Replies::RPL_TOPICWHOTIME(const std::string &channelName,
                                             const std::string &nick,
                                             const std::time_t &setat) {
   std::stringstream ss;
-  ss <<  "333 ";
-  ss <<  channelName;
-  ss <<  " ";
-  ss <<  nick;
-  ss <<  " ";
-  ss <<  setat;
-  ss <<  "\r\n";
+  ss << "333 ";
+  ss << channelName;
+  ss << " ";
+  ss << nick;
+  ss << " ";
+  ss << setat;
+  ss << "\r\n";
   return (ss.str());
 }
 

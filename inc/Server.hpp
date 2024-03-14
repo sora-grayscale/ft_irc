@@ -54,6 +54,9 @@ public:
   const std::string &getNickHistory() const;
   const std::string &getPassword() const;
   const std::string &getStartDay() const;
+  std::size_t numOfUser() const;
+  std::size_t numOfChannel() const;
+  std::size_t numOfOpeUser() const;
 
   // setter
   void changeNickname(const std::string &before, const std::string &after);
@@ -61,21 +64,21 @@ public:
   void eraseTmpMap(const int fd);
   void addRegisterMap(const int fd, const User &user);
 
-  bool isNick(const std::string &nick);
-  int numOfUser();
-  int numOfChannel();
-  int numOfOpeUser();
-
-  void sendReply(const int fd, const std::string &reply);
+  // Lookup
   User &findUser(const int fd);
+  bool isNick(const std::string &nick);
+
+  // send
+  void sendReply(const int fd, const std::string &reply);
 
   // channel
   bool isExistChannel(const std::string &channelName);
   Channel &
-  getChannel(const std::string
-                 &channelName); // channelがあるかのチェックが使う前に必要
+  getChannel(const std::string &channelName); // channelがあるかのチェックが必要
   void addChannel(const std::string &channelName);
   void addChannel(const std::string &channelName, const std::string &key);
+  std::map<std::string, Channel>::const_iterator getChannelsBegin() const;
+  std::map<std::string, Channel>::const_iterator getChannelsEnd() const;
 
 private:
   std::string _serverName;

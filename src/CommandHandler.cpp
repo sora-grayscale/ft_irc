@@ -3,4 +3,3 @@
 CommandHandler::CommandHandler(Server &server) : _server(server) {}
 
 CommandHandler::~CommandHandler() {}
-

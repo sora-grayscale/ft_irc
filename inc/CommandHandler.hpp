@@ -48,6 +48,7 @@ private:
   void JOIN(User &user);
   void PART(User &user);
   void TOPIC(User &user);
+  void NAMES(User &user);
   void MOTD(User &user);
   void LUSERS(User &user);
   void VERSION(User &user);
