@@ -113,16 +113,16 @@ const std::string Replies::RPL_LISTSTART() {
 const std::string Replies::RPL_LIST(const std::string &channel,
                                     const std::size_t &visible,
                                     const std::string &topic) {
-  std::string message;
-  message += "322 ";
-  message += " :";
-  message += channel;
-  message += " ";
-  message += visible;
-  message += " :";
-  message += topic;
-  message += "\r\n";
-  return (message);
+  std::stringstream ss;
+  ss << "322 ";
+  ss << " :";
+  ss << channel;
+  ss << " ";
+  ss << visible;
+  ss << " :";
+  ss << topic;
+  ss << "\r\n";
+  return (ss.str());
 }
 
 // 323
