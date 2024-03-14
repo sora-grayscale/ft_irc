@@ -33,5 +33,3 @@ void CommandHandler::MOTD(User &user) {
   this->_server.sendReply(user.getFd(), Replies::RPL_MOTD());
   this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFMOTD());
 }
-
-

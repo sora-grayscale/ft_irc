@@ -19,4 +19,3 @@ void CommandHandler::PASS(User &user) {
   user.setState(User::PASS, true);
   return;
 }
-
