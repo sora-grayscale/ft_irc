@@ -52,7 +52,39 @@ void Channel::removeUser(User &user) {
   user.decrementJoinedChannelCount();
 }
 
-int Channel::userNum() const { return (this->_users.size()); }
+std::size_t Channel::userNum() const { return (this->_users.size()); }
+
+std::size_t Channel::getVisibleUsrNum(const User &user) const {
+  std::size_t userNum = 0;
+
+  std::cout << 1 << std::endl;
+  if (hasChannleMode(Channel::Secret)) {
+    return (0);
+  } else if (hasChannleMode(Channel::Private)) {
+    return (0);
+  }
+  std::cout << 1 << std::endl;
+  for (std::set<User *>::const_iterator it = this->_users.begin();
+       it != this->_users.end(); it++) {
+    if ((*it)->hasMode(User::Invisible)) {
+      continue;
+    }
+    if (hasChannleMode(Channel::BanMask) && isBanned(user.getNickName())) {
+      if (!(hasChannleMode(Channel::ExceptionMask) &&
+            hasException(user.getNickName()))) {
+        continue;
+      }
+    }
+    if (hasChannleMode(Channel::InviteOnly) && !isInvited(user.getNickName())) {
+      continue;
+    } else if (hasChannleMode(Channel::InvitationMask) &&
+               !isInvited(user.getNickName())) {
+      continue;
+    }
+    userNum++;
+  }
+  return (userNum);
+}
 
 std::set<User *>::const_iterator Channel::getUserBegin() const {
   return (this->_users.begin());
@@ -134,7 +166,7 @@ const std::string &Channel::getKey() const { return (this->_channelKey); }
 // l flag
 void Channel::setUserLimit(int limit) { this->_userLimit = limit; }
 
-int Channel::getUserLimit() const { return (this->_userLimit); }
+std::size_t Channel::getUserLimit() const { return (this->_userLimit); }
 
 // b flag
 void Channel::addBanMask(const std::string &mask) {

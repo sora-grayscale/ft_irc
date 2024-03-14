@@ -50,7 +50,8 @@ public:
   // user
   void addUser(User &user);
   void removeUser(User &user);
-  int userNum() const;
+  std::size_t userNum() const;
+  std::size_t getVisibleUsrNum(const User &user) const;
   std::set<User *>::const_iterator getUserBegin() const;
   std::set<User *>::const_iterator getUserEnd() const;
   bool isUserInChannel(const User &user) const;
@@ -76,7 +77,7 @@ public:
 
   // l flag
   void setUserLimit(int limit);
-  int getUserLimit() const;
+  std::size_t getUserLimit() const;
 
   // b flag
   void addBanMask(const std::string &mask);
@@ -105,13 +106,13 @@ private:
 
   unsigned int _channelModeFlag;
   std::string _channelKey;                // k flag
-  int _userLimit;                         // l flag
+  std::size_t _userLimit;                         // l flag
   std::set<std::string> _banMasks;        // b flag
   std::set<std::string> _exceptionMasks;  // e flag
   std::set<std::string> _invitationMasks; // I flag
 
   // setTopic func
-  long getCurrentUnixTimestamp();
+  std::time_t getCurrentUnixTimestamp();
 };
 
 #endif
