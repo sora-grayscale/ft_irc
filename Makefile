@@ -11,10 +11,11 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler.cpp \
               src/CommandHandler_Admin.cpp \
               src/CommandHandler_Connect.cpp \
-              src/CommandHandler_INFO.cpp \
+              src/CommandHandler_Info.cpp \
               src/CommandHandler_Join.cpp \
               src/CommandHandler_Links.cpp \
               src/CommandHandler_Lusers.cpp \
+              src/CommandHandler_Names.cpp \
               src/CommandHandler_Nick.cpp \
               src/CommandHandler_Oper.cpp \
               src/CommandHandler_Part.cpp \
@@ -27,7 +28,6 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler_debug.cpp \
               src/CommandHandler_handleCommand.cpp \
               src/CommandHandler_parseMessage.cpp \
-              src/CommandHandler_Names.cpp \
               src/Replies.cpp \
               src/Server.cpp \
               src/Server_init.cpp \
