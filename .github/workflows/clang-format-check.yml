@@ -1,10 +1,11 @@
-name: Clang Format Checker
-on: [push]
+on: push
+name: clang-format Code Formatter
 jobs:
-  clang-format-checking:
+  lint:
+    name: clang-format Code Formatter
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: RafikFarhad/clang-format-github-action@v3
-        with:
-          sources: "*/**/*.hpp,*/**/*.cpp"
+    - name: Clang Code Formatter
+      uses: ivanludvig/clang-format-action@v1.4
+      env:
+        GITHUB_TOKEN: ${ { secrets.GITHUB_TOKEN } }
