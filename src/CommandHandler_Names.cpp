@@ -20,7 +20,7 @@ void CommandHandler::NAMES(User &user) {
       for (std::set<User *>::const_iterator userIt = it->second.getUserBegin();
            userIt != it->second.getUserEnd(); userIt++) {
         this->_server.sendReply(user.getFd(),
-                                Replies::RPL_NAMREPLY(it->first, **userIt));
+                                Replies::RPL_NAMREPLY(it->second, **userIt));
       }
       this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFNAMES(it->first));
     }
@@ -36,8 +36,8 @@ void CommandHandler::NAMES(User &user) {
     Channel &channel = this->_server.getChannel(channelNames.at(i));
     for (std::set<User *>::const_iterator userIt = channel.getUserBegin();
          userIt != channel.getUserEnd(); userIt++) {
-      this->_server.sendReply(
-          user.getFd(), Replies::RPL_NAMREPLY(channelNames.at(i), **userIt));
+      this->_server.sendReply(user.getFd(),
+                              Replies::RPL_NAMREPLY(channel, **userIt));
     }
     this->_server.sendReply(user.getFd(),
                             Replies::RPL_ENDOFNAMES(channelNames.at(i)));
