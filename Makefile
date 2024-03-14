@@ -12,6 +12,7 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler_Admin.cpp \
               src/CommandHandler_Connect.cpp \
               src/CommandHandler_Info.cpp \
+              src/CommandHandler_Invite.cpp \
               src/CommandHandler_Join.cpp \
               src/CommandHandler_Links.cpp \
               src/CommandHandler_List.cpp \
