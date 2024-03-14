@@ -9,18 +9,30 @@ DEPFLAGS = -MMD -MP -MF
 SRCDIR := src
 SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler.cpp \
+              src/CommandHandler_Admin.cpp \
+              src/CommandHandler_Connect.cpp \
+              src/CommandHandler_INFO.cpp \
+              src/CommandHandler_Join.cpp \
+              src/CommandHandler_Links.cpp \
+              src/CommandHandler_Lusers.cpp \
+              src/CommandHandler_Nick.cpp \
+              src/CommandHandler_Oper.cpp \
+              src/CommandHandler_Part.cpp \
+              src/CommandHandler_Pass.cpp \
+              src/CommandHandler_Time.cpp \
+              src/CommandHandler_Topic.cpp \
+              src/CommandHandler_Trace.cpp \
+              src/CommandHandler_User.cpp \
+              src/CommandHandler_Version.cpp \
               src/CommandHandler_debug.cpp \
               src/CommandHandler_handleCommand.cpp \
-              src/CommandHandler_Join.cpp \
-              src/CommandHandler_Topic.cpp \
-              src/CommandHandler_Part.cpp \
               src/CommandHandler_parseMessage.cpp \
-              src/main.cpp \
               src/Replies.cpp \
               src/Server.cpp \
               src/Server_init.cpp \
               src/Server_run.cpp \
-              src/User.cpp
+              src/User.cpp \
+              src/main.cpp
 
 OBJDIR := obj
 SERVER_OBJ = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SERVER_SRC))
