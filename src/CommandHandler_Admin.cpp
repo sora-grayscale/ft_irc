@@ -15,4 +15,3 @@ void CommandHandler::ADMIN(User &user) {
                           Replies::RPL_ADMINLOC2(ADMIN_AFFILIATION));
   this->_server.sendReply(user.getFd(), Replies::RPL_ADMINEMAIL(ADMIN_MAIL));
 }
-

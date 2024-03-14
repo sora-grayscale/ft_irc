@@ -9,4 +9,3 @@ void CommandHandler::TRACE(User &user) {
         user.getFd(), Replies::ERR_NOSUCHSERVER(this->_server.getServerName()));
   }
 }
-

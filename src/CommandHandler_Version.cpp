@@ -13,4 +13,3 @@ void CommandHandler::VERSION(User &user) {
                                                this->_server.getServerName(),
                                                SERVER_VERSION_COMMENT));
 }
-

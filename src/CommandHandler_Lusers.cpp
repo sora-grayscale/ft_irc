@@ -30,4 +30,3 @@ void CommandHandler::LUSERS(User &user) {
   this->_server.sendReply(user.getFd(), Replies::RPL_LUSERCHANNELS(channnels));
   this->_server.sendReply(user.getFd(), Replies::RPL_LUSERME(clients, servers));
 }
-

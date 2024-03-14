@@ -45,6 +45,7 @@ private:
   void USER(User &user);
   void NICK(User &user);
   void OPER(User &user);
+  void Quit(User &user);
   void JOIN(User &user);
   void PART(User &user);
   void TOPIC(User &user);
