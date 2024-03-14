@@ -7,8 +7,13 @@ CXXFLAGS_DEBUG = $(CXXFLAGS) -g -fsanitize=address -fsanitize=leak -fsanitize=un
 DEPFLAGS = -MMD -MP -MF
 
 SRCDIR := src
-SERVER_SRC =  src/CommandHandler.cpp \
+SERVER_SRC =  src/Channel.cpp \
+              src/CommandHandler.cpp \
+              src/CommandHandler_debug.cpp \
               src/CommandHandler_handleCommand.cpp \
+              src/CommandHandler_Join.cpp \
+              src/CommandHandler_Topic.cpp \
+              src/CommandHandler_Part.cpp \
               src/CommandHandler_parseMessage.cpp \
               src/main.cpp \
               src/Replies.cpp \
@@ -42,6 +47,21 @@ run: all
 
 run_debug: debug
 	@./$(NAME_DEBUG) 6665 password
+
+run_debug_6665: debug
+	@./$(NAME_DEBUG) 6665 password
+
+run_debug_6666: debug
+	@./$(NAME_DEBUG) 6666 password
+
+run_debug_6667: debug
+	@./$(NAME_DEBUG) 6667 password
+
+run_debug_6668: debug
+	@./$(NAME_DEBUG) 6668 password
+
+run_debug_6669: debug
+	@./$(NAME_DEBUG) 6669 password
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) "$(@:%.o=%.d)" -I$(INC) -c -o $@ $<
@@ -108,7 +128,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re run server client debug
+.PHONY: all clean fclean re run server client debug run_debug run_debug_6665 run_debug_6666 run_debug_6667 run_debug_6668 run_debug_6669
 
 RED = \033[31m
 GRN = \033[32m
