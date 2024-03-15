@@ -1,5 +1,6 @@
 #include "CommandHandler.hpp"
 
+// ERR_NEEDMOREPARAMS
 // ERR_NOSUCHNICK
 // ERR_NOTONCHANNEL
 // ERR_USERONCHANNEL
@@ -21,10 +22,12 @@ void CommandHandler::INVITE(User &user) {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_NEEDMOREPARAMS(this->_command));
     return;
-  //} else if (this->) {
-  //  this->_server.sendReply(user.getFd(),
-  //                          Replies::ERR_NOSUCHNICK(this->_command));
+  } else if (!this->_server.isNickRegisterd(this->_params.at(0))) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_NOSUCHNICK(this->_params.at(0)));
   }
+//  if (this->_server.isExistChannel(this->_params.at(1))) {
+//  }
   return;
 }
 
@@ -56,5 +59,5 @@ void CommandHandler::INVITE(User &user) {
 //                                              channel.getTopic()));
 //    this->_server.sendReply(user.getFd(), Replies::RPL_LISTEND());
 //  }
-//return;
+// return;
 //}

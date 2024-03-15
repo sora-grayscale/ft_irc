@@ -72,6 +72,8 @@ public:
   // 391
   static const std::string RPL_TIME(const std::string &serverName,
                                     const std::string &time);
+  // 401
+  static const std::string ERR_NOSUCHNICK(const std::string &nickName);
   // 402
   static const std::string ERR_NOSUCHSERVER(const std::string &serverName);
   // 403
