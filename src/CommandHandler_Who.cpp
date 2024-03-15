@@ -29,9 +29,9 @@ void CommandHandler::displayChannelUser(const int fd, const Channel &channel,
       else {
         this->_server.sendReply(
             fd, Replies::RPL_WHOREPLY(
-                    (*it)->getCurrentChannel(), (*it)->getUserName(),
-                    "127.0.0.1", this->_server.getServerName(),
-                    (*it)->getNickName(), (*it)->getRealName()));
+                    channel.getChannelName(), (*it)->getUserName(), "127.0.0.1",
+                    this->_server.getServerName(), (*it)->getNickName(),
+                    (*it)->getRealName()));
       }
     }
   }
