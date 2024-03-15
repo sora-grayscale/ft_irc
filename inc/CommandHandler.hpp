@@ -98,6 +98,7 @@ private:
   // who method
   void displayAllUser(const int fd, bool flag);
   void displayChannelUser(const int fd, const Channel &channel, bool flag);
+  void displayUser(const int fd, const User &user, bool flag);
   void displayWhoQuery(const int fd, const std::string &str, bool flag);
 
   // debug

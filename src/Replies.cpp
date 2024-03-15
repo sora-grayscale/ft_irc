@@ -100,6 +100,16 @@ const std::string Replies::RPL_ADMINEMAIL(const std::string &adminMail) {
   return (message);
 }
 
+// 315
+const std::string Replies::RPL_ENDOFWHO(const std::string &name) {
+  std::string message;
+  message += "315 ";
+  message += name;
+  message += " :End of WHO list";
+  message += "\r\n";
+  return (message);
+}
+
 // 321
 const std::string Replies::RPL_LISTSTART() {
   std::string message;
