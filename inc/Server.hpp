@@ -66,6 +66,7 @@ public:
 
   // Lookup
   User &findUser(const int fd);
+  User &findUser(const std::string &nick);
   bool isNick(const std::string &nick);
 
   // send
@@ -79,6 +80,8 @@ public:
   void addChannel(const std::string &channelName, const std::string &key);
   std::map<std::string, Channel>::const_iterator getChannelsBegin() const;
   std::map<std::string, Channel>::const_iterator getChannelsEnd() const;
+  std::map<int, User>::const_iterator getUserBegin() const;
+  std::map<int, User>::const_iterator getUserEnd() const;
 
 private:
   std::string _serverName;

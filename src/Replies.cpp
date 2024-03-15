@@ -100,6 +100,16 @@ const std::string Replies::RPL_ADMINEMAIL(const std::string &adminMail) {
   return (message);
 }
 
+// 315
+const std::string Replies::RPL_ENDOFWHO(const std::string &name) {
+  std::string message;
+  message += "315 ";
+  message += name;
+  message += " :End of WHO list";
+  message += "\r\n";
+  return (message);
+}
+
 // 321
 const std::string Replies::RPL_LISTSTART() {
   std::string message;
@@ -197,6 +207,30 @@ const std::string Replies::RPL_VERSION(const std::string &version,
   message += server;
   message += " :";
   message += comments;
+  message += "\r\n";
+  return (message);
+}
+
+// 352
+const std::string
+Replies::RPL_WHOREPLY(const std::string &channel, const std::string &user,
+                      const std::string &host, const std::string &server,
+                      const std::string &nick, const std::string &realname) {
+  std::string message;
+  message += "352 ";
+  message += channel;
+  message += " ";
+  message += user;
+  message += " ";
+  message += host;
+  message += " ";
+  message += server;
+  message += " ";
+  message += nick;
+  message += " ";
+  message += ":0 ";
+  message += realname;
+  message += " ";
   message += "\r\n";
   return (message);
 }
