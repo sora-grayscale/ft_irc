@@ -1,14 +1,5 @@
 #include "CommandHandler.hpp"
 
-/*
-channel
-user
-host
-server
-nick
-realname
-*/
-
 void CommandHandler::displayAllUser(const int fd, bool flag) {
   for (std::map<int, User>::const_iterator it = this->_server.getUserBegin();
        it != this->_server.getUserEnd(); it++) {
@@ -78,7 +69,7 @@ void CommandHandler::WHO(User &user) {
   } else if (this->_params.size() == 1) {
     displayWhoQuery(user.getFd(), this->_params.at(0), false);
     this->_server.sendReply(user.getFd(),
-                            Replies::RPL_ENDOFWHO(this->_params.at(1)));
+                            Replies::RPL_ENDOFWHO(this->_params.at(0)));
     return;
   } else if (this->_params.size() >= 2) {
     if (this->_params.at(1) == "o")
