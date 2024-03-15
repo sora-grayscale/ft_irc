@@ -51,6 +51,13 @@ public:
                                        const std::string &debuglevel,
                                        const std::string &server,
                                        const std::string &comments);
+  // 352
+  static const std::string RPL_WHOREPLY(const std::string &channel,
+                                        const std::string &user,
+                                        const std::string &host,
+                                        const std::string &server,
+                                        const std::string &nick,
+                                        const std::string &realname);
   // 353
   static const std::string RPL_NAMREPLY(const Channel &channel,
                                         const User &user);

@@ -95,6 +95,11 @@ private:
   // topic method
   void setTopic(const User &user, Channel &channel) const;
 
+  // who method
+  void displayAllUser(bool flag);
+  void displayChannelUser(const channel &channel, bool flag);
+  void displayWhoQuery(const int fd, const std::string &str, bool flag);
+
   // debug
   void printStringAsInts(const std::string &input);
   void printVectorString(const std::vector<std::string> &vec);

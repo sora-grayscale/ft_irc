@@ -201,6 +201,32 @@ const std::string Replies::RPL_VERSION(const std::string &version,
   return (message);
 }
 
+// 352
+static const std::string Replies::RPL_WHOREPLY(const std::string &channel,
+                                               const std::string &user,
+                                               const std::string &host,
+                                               const std::string &server,
+                                               const std::string &nick,
+                                               const std::string &realname) {
+  std::string message;
+  message += "352 ";
+  message += channel;
+  message += " ";
+  message += user;
+  message += " ";
+  message += host;
+  message += " ";
+  message += server;
+  message += " ";
+  message += nick;
+  message += " ";
+  message += ":0 ";
+  message += realname;
+  message += " ";
+  message += "\r\n";
+  return (message);
+}
+
 // 353
 const std::string Replies::RPL_NAMREPLY(const Channel &channel,
                                         const User &user) {
