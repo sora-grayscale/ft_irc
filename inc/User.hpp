@@ -33,6 +33,7 @@ public:
   void setNickName(const std::string &nickname);
   void setRealName(const std::string &realname);
   void setUserName(const std::string &username);
+  void setCurrentChannel(const std::string &channel);
   void incrementJoinedChannelCount();
   void decrementJoinedChannelCount();
 
@@ -42,6 +43,7 @@ public:
   const std::string &getUserName() const;
   const int &getFd() const;
   int getJoinedChannelCount() const;
+  const std::string &getCurrentChannel() const;
 
   // mode
   void setMode(unsigned int mode, bool enable);
@@ -55,6 +57,7 @@ private:
   std::string _nickname;
   std::string _username;
   std::string _realname; // 63 自分で決めた
+  std::string _currentChannel;
   int _fd;
   int _joinedChannelCount;
 

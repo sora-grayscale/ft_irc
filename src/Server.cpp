@@ -80,8 +80,9 @@ User &Server::findUser(const std::string &nick) {
   for (std::map<int, User>::iterator it = this->_registerdUsers.begin();
        it != this->_registerdUsers.end(); it++) {
     if (it->second.getNickName() == nick)
-      return it;
+      return it->second;
   }
+  throw std::runtime_error("Not found User");
 }
 
 bool Server::isNick(const std::string &nick) {

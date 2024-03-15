@@ -61,6 +61,7 @@ void CommandHandler::JOIN(User &user) {
 
     addUserToChannel(user, const_cast<Channel &>(channel),
                      static_cast<Channel::UserStatusFlags>(userStatus));
+    user.setCurrentChannel(channelNames.at(i));
     sendJoinResponses(user, channel);
   }
 }

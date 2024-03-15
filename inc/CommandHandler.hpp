@@ -96,8 +96,8 @@ private:
   void setTopic(const User &user, Channel &channel) const;
 
   // who method
-  void displayAllUser(bool flag);
-  void displayChannelUser(const channel &channel, bool flag);
+  void displayAllUser(const int fd, bool flag);
+  void displayChannelUser(const int fd, const Channel &channel, bool flag);
   void displayWhoQuery(const int fd, const std::string &str, bool flag);
 
   // debug

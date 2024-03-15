@@ -202,12 +202,10 @@ const std::string Replies::RPL_VERSION(const std::string &version,
 }
 
 // 352
-static const std::string Replies::RPL_WHOREPLY(const std::string &channel,
-                                               const std::string &user,
-                                               const std::string &host,
-                                               const std::string &server,
-                                               const std::string &nick,
-                                               const std::string &realname) {
+const std::string
+Replies::RPL_WHOREPLY(const std::string &channel, const std::string &user,
+                      const std::string &host, const std::string &server,
+                      const std::string &nick, const std::string &realname) {
   std::string message;
   message += "352 ";
   message += channel;
