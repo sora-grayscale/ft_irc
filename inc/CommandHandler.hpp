@@ -59,6 +59,7 @@ private:
   void TRACE(User &user);
   void ADMIN(User &user);
   void INFO(User &user);
+  void WHO(User &user);
 
   // nick method
   void convertChar(std::string &str);
