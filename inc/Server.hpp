@@ -72,6 +72,9 @@ public:
   // send
   void sendReply(const int fd, const std::string &reply);
 
+  // user
+  int getUserFd(const std::string &nick) const;
+
   // channel
   bool isExistChannel(const std::string &channelName);
   Channel &
