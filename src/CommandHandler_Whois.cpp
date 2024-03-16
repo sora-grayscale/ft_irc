@@ -7,7 +7,8 @@ void CommandHandler::displayAllChannel(const int fd,
        it != this->_server.getChannelsEnd(); it++) {
     for (std::set<User *>::const_iterator userIt = it->second.getUserBegin();
          userIt != it->second.getUserEnd(); userIt++) {
-      if ((*userIt)->getNickName() != nick) {
+      if ((*userIt)->getNickName() != nick ||
+          (*userIt)->hasMode(User::Invisible)) {
         continue;
       } else {
         this->_server.sendReply(fd,
