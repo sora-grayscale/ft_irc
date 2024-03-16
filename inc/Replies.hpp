@@ -4,6 +4,8 @@
 #include "Channel.hpp"
 #include <sstream>
 #include <string>
+/*
+*/
 
 class Replies {
 public:
@@ -26,8 +28,24 @@ public:
   static const std::string RPL_ADMINLOC2(const std::string &adminAffiliation);
   // 259
   static const std::string RPL_ADMINEMAIL(const std::string &adminMail);
+  // 311
+  static const std::string RPL_WHOISUSER(const std::string &nick,
+                                         const std::string &user,
+                                         const std::string &host,
+                                         const std::string &realname);
+  // 312
+  static const std::string RPL_WHOISSERVER(const std::string &nick,
+                                           const std::string &server,
+                                           const std::string &serverinfo);
+  // 313
+  static const std::string RPL_WHOISOPERATOR(const std::string &nick);
   // 315
   static const std::string RPL_ENDOFWHO(const std::string &name);
+  // 318
+  static const std::string RPL_ENDOFWHOIS(const std::string nick);
+  // 319
+  static const std::string RPL_WHOISCHANNELS(const std::string nick,
+                                             const std::string channel);
   // 321
   static const std::string RPL_LISTSTART();
   // 322

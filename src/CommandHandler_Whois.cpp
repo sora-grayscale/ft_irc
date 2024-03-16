@@ -7,13 +7,12 @@ void CommandHandler::displayAllChannel(const int fd,
        it != this->_server.getChannelsEnd(); it++) {
     for (std::set<User *>::const_iterator userIt = it->second.getUserBegin();
          userIt != it->second.getUserEnd(); userIt++) {
-      if ((*userIt)->getNickName() == nick)
-        if (it->second.hasUserStatus(*userIt, Channel::Operator))
-          this->_server.sendReply(
-              fd, Replies::RPL_WHOISCHANNELS(nick, true, it->first));
-        else
-          this->_server.sendReply(
-              fd, Replies::RPL_WHOISCHANNELS(nick, false, it->first));
+      if ((*userIt)->getNickName() != nick) {
+        continue;
+      } else {
+        this->_server.sendReply(fd,
+                                Replies::RPL_WHOISCHANNELS(nick, it->first));
+      }
     }
   }
 }
@@ -34,8 +33,8 @@ void CommandHandler::displayWhoisQuery(const User &user,
                              "127.0.0.1", user.getRealName()));
   displayAllChannel(user.getFd(), nick);
   this->_server.sendReply(
-      user.getFd(),
-      Replies::RPL_WHOISSERVER(nick, this->_server.getServerName()));
+      user.getFd(), Replies::RPL_WHOISSERVER(
+                        nick, this->_server.getServerName(), "server info"));
   displayOpeUser(user.getFd(), nick);
   this->_server.sendReply(user.getFd(), Replies::RPL_ENDOFWHOIS(nick));
 }
@@ -72,17 +71,3 @@ void CommandHandler::WHOIS(User &user) {
   }
 }
 
-/*
-WHOIS [target] NICK
-
-311 RPL_WHOISUSER
-  nick user host realname
-319 RPL_WHOISCHANNELS
-  nick channel 全てのチャンネル&& operatorだったら@をつける
-312 RPL_WHOISSERVER
-  nick server serverinfo
-313 RPL_WHOISOPERATOR
-  もしoperetorだったら: nick
-318 RPL_ENDOFWHOIS
-  nick
-*/

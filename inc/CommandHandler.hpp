@@ -103,6 +103,11 @@ private:
   void displayUser(const int fd, const User &user, bool flag) const;
   void displayWhoQuery(const int fd, const std::string &str, bool flag) const;
 
+  // whois method
+  void displayWhoisQuery(const User &user, const std::string nick) const;
+  void displayOpeUser(const int fd, const std::string nick) const;
+  void displayAllChannel(const int fd, const std::string nick) const;
+
   // debug
   void printStringAsInts(const std::string &input);
   void printVectorString(const std::vector<std::string> &vec);
