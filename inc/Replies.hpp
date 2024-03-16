@@ -62,8 +62,8 @@ public:
                                             const std::string &nick,
                                             const std::time_t &setat);
   // 341
-  const std::string RPL_INVITING(const std::string &channel,
-                                 const std::string &nick);
+  static const std::string RPL_INVITING(const std::string &channel,
+                                        const std::string &nick);
   // 351
   static const std::string RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,
@@ -96,7 +96,7 @@ public:
   static const std::string RPL_TIME(const std::string &serverName,
                                     const std::string &time);
   // 401
-  static const std::string ERR_NOSUCHNICK(const std::string &nickname);
+  static const std::string ERR_NOSUCHNICK(const std::string &nickName);
   // 402
   static const std::string ERR_NOSUCHSERVER(const std::string &serverName);
   // 403

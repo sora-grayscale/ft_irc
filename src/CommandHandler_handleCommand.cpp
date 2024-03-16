@@ -53,6 +53,8 @@ void CommandHandler::executeCommand(User &user) {
     NAMES(user);
   } else if (this->_command == "LIST") {
     LIST(user);
+  } else if (this->_command == "INVITE") {
+    INVITE(user);
   } else if (this->_command == "MOTD") {
     MOTD(user);
   } else if (this->_command == "LUSERS") {

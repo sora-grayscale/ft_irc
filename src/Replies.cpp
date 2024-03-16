@@ -410,10 +410,10 @@ const std::string Replies::RPL_TIME(const std::string &serverName,
 }
 
 // 401
-const std::string Replies::ERR_NOSUCHNICK(const std::string &nickname) {
+const std::string Replies::ERR_NOSUCHNICK(const std::string &nickName) {
   std::string message;
   message += "401 ";
-  message += nickname;
+  message += nickName;
   message += " :No such nick/channel";
   message += "\r\n";
   return (message);
