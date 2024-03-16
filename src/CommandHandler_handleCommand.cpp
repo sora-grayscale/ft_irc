@@ -73,6 +73,8 @@ void CommandHandler::executeCommand(User &user) {
     ADMIN(user);
   } else if (this->_command == "INFO") {
     INFO(user);
+  } else if (this->_command == "WHO") {
+    WHO(user);
   } else {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_UNKNOWNCOMMAND(this->_command));
