@@ -37,6 +37,11 @@ public:
                                            const std::string &serverinfo);
   // 313
   static const std::string RPL_WHOISOPERATOR(const std::string &nick);
+  // 314
+  static const std::string RPL_WHOWASUSER(const std::string &nick,
+                                          const std::string &user,
+                                          const std::string &host,
+                                          const std::string &realname);
   // 315
   static const std::string RPL_ENDOFWHO(const std::string &name);
   // 318
@@ -79,6 +84,8 @@ public:
                                         const User &user);
   // 366
   static const std::string RPL_ENDOFNAMES(const std::string &channelName);
+  // 369
+  static const std::string RPL_ENDOFWHOWAS(const std::string &nick);
   // 371
   static const std::string RPL_INFO(const std::string detail,
                                     const std::string &str);

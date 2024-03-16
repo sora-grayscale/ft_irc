@@ -62,6 +62,7 @@ private:
   void INFO(User &user);
   void WHO(User &user);
   void WHOIS(User &user);
+  void WHOWAS(User &user);
 
   // nick method
   void convertChar(std::string &str);

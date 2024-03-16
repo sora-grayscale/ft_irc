@@ -144,6 +144,24 @@ const std::string Replies::RPL_WHOISOPERATOR(const std::string &nick) {
   return (message);
 }
 
+// 314
+const std::string Replies::RPL_WHOWASUSER(const std::string &nick,
+                                          const std::string &user,
+                                          const std::string &host,
+                                          const std::string &realname) {
+  std::string message;
+  message += "314 ";
+  message += nick;
+  message += " ";
+  message += user;
+  message += " ";
+  message += host;
+  message += " :";
+  message += realname;
+  message += "\r\n";
+  return (message);
+}
+
 // 315
 const std::string Replies::RPL_ENDOFWHO(const std::string &name) {
   std::string message;
@@ -335,6 +353,16 @@ const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
   message += "366 ";
   message += channelName;
   message += " :End of NAMES list";
+  message += "\r\n";
+  return (message);
+}
+
+// 369
+const std::string Replies::RPL_ENDOFWHOWAS(const std::string &nick) {
+  std::string message;
+  message += "369 ";
+  message += nick;
+  message += " :End of WHOWAS";
   message += "\r\n";
   return (message);
 }
