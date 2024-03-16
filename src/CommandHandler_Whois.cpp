@@ -70,4 +70,3 @@ void CommandHandler::WHOIS(User &user) {
     return;
   }
 }
-

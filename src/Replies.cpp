@@ -102,9 +102,9 @@ const std::string Replies::RPL_ADMINEMAIL(const std::string &adminMail) {
 
 // 311
 const std::string Replies::RPL_WHOISUSER(const std::string &nick,
-                                       const std::string &user,
-                                       const std::string &host,
-                                       const std::string &realname) {
+                                         const std::string &user,
+                                         const std::string &host,
+                                         const std::string &realname) {
   std::string message;
   message += "311 ";
   message += nick;
@@ -121,8 +121,8 @@ const std::string Replies::RPL_WHOISUSER(const std::string &nick,
 
 // 312
 const std::string Replies::RPL_WHOISSERVER(const std::string &nick,
-                                         const std::string &server,
-                                         const std::string &serverinfo) {
+                                           const std::string &server,
+                                           const std::string &serverinfo) {
   std::string message;
   message += "312 ";
   message += nick;
@@ -166,7 +166,7 @@ const std::string Replies::RPL_ENDOFWHOIS(const std::string nick) {
 
 // 319
 const std::string Replies::RPL_WHOISCHANNELS(const std::string nick,
-                                           const std::string channel) {
+                                             const std::string channel) {
   std::string message;
   message += "319 ";
   message += nick;

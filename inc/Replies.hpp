@@ -4,8 +4,6 @@
 #include "Channel.hpp"
 #include <sstream>
 #include <string>
-/*
-*/
 
 class Replies {
 public:
