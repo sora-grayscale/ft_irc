@@ -1,6 +1,6 @@
 #include "CommandHandler.hpp"
 
-void CommandHandler::displayAllUser(const int fd, bool flag) {
+void CommandHandler::displayAllUser(const int fd, bool flag) const {
   for (std::map<int, User>::const_iterator it = this->_server.getUserBegin();
        it != this->_server.getUserEnd(); it++) {
     if (it->second.hasMode(User::Invisible))
@@ -20,7 +20,7 @@ void CommandHandler::displayAllUser(const int fd, bool flag) {
 }
 
 void CommandHandler::displayChannelUser(const int fd, const Channel &channel,
-                                        bool flag) {
+                                        bool flag) const {
   for (std::set<User *>::iterator it = channel.getUserBegin();
        it != channel.getUserEnd(); it++) {
     if (!(*it)->hasMode(User::Invisible)) {
@@ -37,7 +37,8 @@ void CommandHandler::displayChannelUser(const int fd, const Channel &channel,
   }
 }
 
-void CommandHandler::displayUser(const int fd, const User &user, bool flag) {
+void CommandHandler::displayUser(const int fd, const User &user,
+                                 bool flag) const {
   if (flag && !user.hasMode(User::Operator))
     return;
   this->_server.sendReply(
@@ -47,7 +48,7 @@ void CommandHandler::displayUser(const int fd, const User &user, bool flag) {
 }
 
 void CommandHandler::displayWhoQuery(const int fd, const std::string &str,
-                                     bool flag) {
+                                     bool flag) const {
   if (str == "0")
     displayAllUser(fd, flag);
   else if (this->_server.isExistChannel(str))

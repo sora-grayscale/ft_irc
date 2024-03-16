@@ -230,7 +230,6 @@ Replies::RPL_WHOREPLY(const std::string &channel, const std::string &user,
   message += " ";
   message += ":0 ";
   message += realname;
-  message += " ";
   message += "\r\n";
   return (message);
 }
