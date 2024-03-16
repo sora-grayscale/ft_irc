@@ -76,6 +76,15 @@ User &Server::findUser(const int fd) {
   throw std::runtime_error("Not found User");
 }
 
+User &Server::findUser(const std::string &nick) {
+  for (std::map<int, User>::iterator it = this->_registerdUsers.begin();
+       it != this->_registerdUsers.end(); it++) {
+    if (it->second.getNickName() == nick)
+      return it->second;
+  }
+  throw std::runtime_error("Not found User");
+}
+
 bool Server::isNick(const std::string &nick) {
   if (this->_nickHistory.find(nick) != this->_nickHistory.end())
     return true;
@@ -117,4 +126,12 @@ Server::getChannelsBegin() const {
 
 std::map<std::string, Channel>::const_iterator Server::getChannelsEnd() const {
   return (this->_channels.end());
+}
+
+std::map<int, User>::const_iterator Server::getUserBegin() const {
+  return (this->_registerdUsers.begin());
+}
+
+std::map<int, User>::const_iterator Server::getUserEnd() const {
+  return (this->_registerdUsers.end());
 }

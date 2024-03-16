@@ -59,6 +59,7 @@ private:
   void TRACE(User &user);
   void ADMIN(User &user);
   void INFO(User &user);
+  void WHO(User &user);
 
   // nick method
   void convertChar(std::string &str);
@@ -93,6 +94,13 @@ private:
 
   // topic method
   void setTopic(const User &user, Channel &channel) const;
+
+  // who method
+  void displayAllUser(const int fd, bool flag) const;
+  void displayChannelUser(const int fd, const Channel &channel,
+                          bool flag) const;
+  void displayUser(const int fd, const User &user, bool flag) const;
+  void displayWhoQuery(const int fd, const std::string &str, bool flag) const;
 
   // debug
   void printStringAsInts(const std::string &input);

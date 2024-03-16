@@ -106,7 +106,7 @@ private:
 
   unsigned int _channelModeFlag;
   std::string _channelKey;                // k flag
-  std::size_t _userLimit;                         // l flag
+  std::size_t _userLimit;                 // l flag
   std::set<std::string> _banMasks;        // b flag
   std::set<std::string> _exceptionMasks;  // e flag
   std::set<std::string> _invitationMasks; // I flag

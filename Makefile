@@ -26,6 +26,7 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler_Trace.cpp \
               src/CommandHandler_User.cpp \
               src/CommandHandler_Version.cpp \
+              src/CommandHandler_Who.cpp \
               src/CommandHandler_debug.cpp \
               src/CommandHandler_handleCommand.cpp \
               src/CommandHandler_parseMessage.cpp \
