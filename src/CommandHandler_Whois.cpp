@@ -11,7 +11,7 @@ void CommandHandler::WHOIS(User &user) {
   if (this->_params.size() == 1) {
     if (!this->_server.isRegiNick(this->_params.at(0))) {
       // ERR_NOSUCHNICK
-      return ;
+      return;
     }
     // RPL_
     return;
@@ -22,13 +22,12 @@ void CommandHandler::WHOIS(User &user) {
     if (this->_params.at(0) != this->_server.getServerName()) {
       this->_server.sendReply(user.getFd(),
                               Replies::ERR_NOSUCHSERVER(this->_params.at(0)));
-      return ;
+      return;
     }
     if (!this->_server.isRegiNick(this->_params.at(1))) {
       // ERR_NOSUCHNICK
-      return ;
+      return;
     }
     // RPL
   }
 }
-

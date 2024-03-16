@@ -345,7 +345,7 @@ const std::string Replies::RPL_TIME(const std::string &serverName,
 }
 
 // 401
-static const std::string ERR_NOSUCHNICK(const std::string &nickname) {
+const std::string Replies::ERR_NOSUCHNICK(const std::string &nickname) {
   std::string message;
   message += "401 ";
   message += nickname;
