@@ -96,7 +96,28 @@ bool Server::isNick(const std::string &nick) {
   return false;
 }
 
+bool Server::isNickRegisterd(const std::string &nick) {
+  for (std::map<int, User>::const_iterator it = this->_registerdUsers.begin();
+       it != this->_registerdUsers.end(); it++) {
+    if (it->second.getNickName() == nick) {
+      return (true);
+    }
+  }
+  return (false);
+}
+
 // send
+
+// user
+int Server::getUserFd(const std::string &nick) const {
+  for (std::map<int, User>::const_iterator it = this->_registerdUsers.begin();
+       it != this->_registerdUsers.end(); it++) {
+    if (it->second.getNickName() == nick) {
+      return (it->second.getFd());
+    }
+  }
+  throw std::runtime_error("Not found User");
+}
 
 // channel
 bool Server::isExistChannel(const std::string &channelName) {

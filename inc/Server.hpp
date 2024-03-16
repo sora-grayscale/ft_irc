@@ -68,9 +68,13 @@ public:
   User &findUser(const int fd);
   User &findUser(const std::string &nick);
   bool isNick(const std::string &nick);
+  bool isNickRegisterd(const std::string &nick);
 
   // send
   void sendReply(const int fd, const std::string &reply);
+
+  // user
+  int getUserFd(const std::string &nick) const;
 
   // channel
   bool isExistChannel(const std::string &channelName);
