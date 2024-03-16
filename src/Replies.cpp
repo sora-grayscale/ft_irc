@@ -344,6 +344,16 @@ const std::string Replies::RPL_TIME(const std::string &serverName,
   return (message);
 }
 
+// 401
+static const std::string ERR_NOSUCHNICK(const std::string &nickname) {
+  std::string message;
+  message += "401 ";
+  message += nickname;
+  message += " :No such nick/channel";
+  message += "\r\n";
+  return (message);
+}
+
 // 402
 const std::string Replies::ERR_NOSUCHSERVER(const std::string &serverName) {
   std::string message;

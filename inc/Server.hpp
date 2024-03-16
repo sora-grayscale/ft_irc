@@ -67,6 +67,9 @@ public:
   // Lookup
   User &findUser(const int fd);
   User &findUser(const std::string &nick);
+  bool isHisNick(const std::string &nick);
+  bool isTmpNick(const std::string &nick);
+  bool isRegiNick(const std::string &nick);
   bool isNick(const std::string &nick);
 
   // send

@@ -85,14 +85,35 @@ User &Server::findUser(const std::string &nick) {
   throw std::runtime_error("Not found User");
 }
 
-bool Server::isNick(const std::string &nick) {
+bool Server::isHisNick(const std::string &nick) {
   if (this->_nickHistory.find(nick) != this->_nickHistory.end())
     return true;
+  return false;
+}
+
+bool Server::isTmpNick(const std::string &nick) {
   for (std::map<int, User>::iterator it = this->_tmpUsers.begin();
        it != this->_tmpUsers.end(); it++) {
     if (it->second.getNickName() == nick)
       return true;
   }
+  return false;
+}
+
+bool Server::isRegiNick(const std::string &nick) {
+  for (std::map<int, User>::iterator it = this->_registerdUsers.begin();
+       it != this->_registerdUsers.end(); it++) {
+    if (it->second.getNickName() == nick)
+      return true;
+  }
+  return false;
+}
+
+bool Server::isNick(const std::string &nick) {
+  if (isHisNick(nick))
+    return true;
+  if (isTmpNick(nick))
+    return true;
   return false;
 }
 
