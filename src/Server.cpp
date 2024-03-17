@@ -101,7 +101,7 @@ bool Server::isTmpNick(const std::string &nick) {
 }
 
 bool Server::isRegiNick(const std::string &nick) {
-  for (std::map<int, User>::iterator it = this->_registerdUsers.begin();
+  for (std::map<int, User>::const_iterator it = this->_registerdUsers.begin();
        it != this->_registerdUsers.end(); it++) {
     if (it->second.getNickName() == nick)
       return true;
