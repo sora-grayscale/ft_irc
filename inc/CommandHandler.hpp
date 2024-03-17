@@ -61,6 +61,7 @@ private:
   void TRACE(User &user);
   void ADMIN(User &user);
   void INFO(User &user);
+  void KILL(User &user);
   void WHO(User &user);
   void WHOIS(User &user);
   void WHOWAS(User &user);
@@ -123,6 +124,11 @@ private:
   // pong method
   void sendPong(User &user);
   void checkPong(User &user);
+
+  // KILL method
+  void delUser(User &user, const std::string &comment);
+  void eraseUserList(User user);
+  void delUserChannel(User user, const std::string &comment);
 
   // debug
   void printStringAsInts(const std::string &input);

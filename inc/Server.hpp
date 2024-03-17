@@ -54,6 +54,7 @@ public:
   const std::string &getNickHistory() const;
   const std::string &getPassword() const;
   const std::string &getStartDay() const;
+  std::map<std::string, Channel> &getChannels();
   std::size_t numOfUser() const;
   std::size_t numOfChannel() const;
   std::size_t numOfOpeUser() const;
@@ -62,6 +63,7 @@ public:
   void changeNickname(const std::string &before, const std::string &after);
   void setNickHistory(const std::string &nick);
   void eraseTmpMap(const int fd);
+  void eraseRegiMap(const int fd);
   void addRegisterMap(const int fd, const User &user);
 
   // Lookup

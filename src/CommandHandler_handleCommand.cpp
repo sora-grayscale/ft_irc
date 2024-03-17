@@ -81,6 +81,8 @@ void CommandHandler::executeCommand(User &user) {
     WHOIS(user);
   } else if (this->_command == "WHOWAS") {
     WHOWAS(user);
+  } else if (this->_command == "KILL") {
+    WHOWAS(user);
   } else if (this->_command == "PING") {
     PING(user);
   } else if (this->_command == "PONG") {

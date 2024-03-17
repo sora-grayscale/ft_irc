@@ -11,7 +11,7 @@ void CommandHandler::checkPong(User &user) {
   if (diff < 10) {
     return;
   }
-  // KILL
+  delUser(user, "user Killed because of no respons\n\r");
 }
 
 void CommandHandler::sendPong(User &user) {

@@ -58,6 +58,7 @@ void Server::setNickHistory(const std::string &nick) {
 }
 
 void Server::eraseTmpMap(const int fd) { this->_tmpUsers.erase(fd); }
+void Server::eraseRegiMap(const int fd) { this->_registerdUsers.erase(fd); }
 
 void Server::addRegisterMap(const int fd, const User &user) {
   this->_registerdUsers[fd] = user; // fd, user
@@ -158,6 +159,10 @@ Server::getChannelsBegin() const {
 
 std::map<std::string, Channel>::const_iterator Server::getChannelsEnd() const {
   return (this->_channels.end());
+}
+
+std::map<std::string, Channel> &Server::getChannels() {
+  return (this->_channels);
 }
 
 std::map<int, User>::const_iterator Server::getUserBegin() const {
