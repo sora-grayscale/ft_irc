@@ -1,7 +1,7 @@
 #include "CommandHandler.hpp"
 
 void CommandHandler::displayAllChannel(const int fd,
-                                       const std::string nick) const {
+                                       const std::string &nick) const {
   for (std::map<std::string, Channel>::const_iterator it =
            this->_server.getChannelsBegin();
        it != this->_server.getChannelsEnd(); it++) {
