@@ -110,6 +110,8 @@ public:
   static const std::string ERR_NOSUCHCHANNEL(const std::string &channelName);
   // 405
   static const std::string ERR_TOOMANYCHANNELS(const std::string &channelName);
+  // 406
+  static const std::string ERR_WASNOSUCHNICK(const std::string &nickName);
   // 421
   static const std::string ERR_UNKNOWNCOMMAND(const std::string &command);
   // 422

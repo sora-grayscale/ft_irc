@@ -477,6 +477,16 @@ const std::string Replies::ERR_TOOMANYCHANNELS(const std::string &channelName) {
   return (message);
 }
 
+// 406
+const std::string Replies::ERR_WASNOSUCHNICK(const std::string &nickName) {
+  std::string message;
+  message += "406 ";
+  message += nickName;
+  message += " :There was no such nickname";
+  message += "\r\n";
+  return (message);
+}
+
 // 421
 const std::string Replies::ERR_UNKNOWNCOMMAND(const std::string &command) {
   std::string message;
