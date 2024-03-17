@@ -11,9 +11,8 @@ void CommandHandler::INVITE(User &user) {
   const std::string &nickName = this->_params.at(0);
   const std::string &channelName = this->_params.at(1);
 
-  if (!this->_server.isNickRegisterd(nickName)) {
-    this->_server.sendReply(user.getFd(),
-                            Replies::ERR_NOSUCHNICK(nickName));
+  if (!this->_server.isRegiNick(nickName)) {
+    this->_server.sendReply(user.getFd(), Replies::ERR_NOSUCHNICK(nickName));
     return;
   }
   if (this->_server.isExistChannel(channelName)) {

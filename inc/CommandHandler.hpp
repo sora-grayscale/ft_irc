@@ -61,6 +61,8 @@ private:
   void ADMIN(User &user);
   void INFO(User &user);
   void WHO(User &user);
+  void WHOIS(User &user);
+  void WHOWAS(User &user);
 
   // nick method
   void convertChar(std::string &str);
@@ -102,6 +104,11 @@ private:
                           bool flag) const;
   void displayUser(const int fd, const User &user, bool flag) const;
   void displayWhoQuery(const int fd, const std::string &str, bool flag) const;
+
+  // whois method
+  void displayWhoisQuery(const User &user, const std::string &nick) const;
+  void displayOpeUser(const int fd, const std::string &nick) const;
+  void displayAllChannel(const int fd, const std::string &nick) const;
 
   // debug
   void printStringAsInts(const std::string &input);
