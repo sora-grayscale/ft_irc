@@ -43,7 +43,7 @@ public:
     InvitationMask = 1 << 16  // I 特別扱いが必要
   };
 
-  // chat 
+  // chat
   void broadcastMessage(const std::string &message, const User &sender);
 
   // getter

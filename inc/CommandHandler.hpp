@@ -98,7 +98,8 @@ private:
   void setTopic(const User &user, Channel &channel) const;
 
   // kick method
-  void splitStringByColon(const std::string &str, std::vector<std::string> &vec);
+  void splitStringByColon(const std::string &str,
+                          std::vector<std::string> &vec);
 
   // who method
   void displayAllUser(const int fd, bool flag) const;

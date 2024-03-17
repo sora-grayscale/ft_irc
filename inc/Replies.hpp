@@ -47,7 +47,7 @@ public:
                                             const std::time_t &setat);
   // 341
   static const std::string RPL_INVITING(const std::string &channel,
-                                 const std::string &nick);
+                                        const std::string &nick);
   // 351
   static const std::string RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,

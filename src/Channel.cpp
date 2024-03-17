@@ -1,7 +1,6 @@
 #include "Channel.hpp"
 #include "Server.hpp"
 
-
 // constructor
 Channel::Channel()
     : _channelName(""), _users(), _userStatus(), _topic(""), _topicSetUser(""),
