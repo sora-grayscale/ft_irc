@@ -73,7 +73,7 @@ public:
   bool isNick(const std::string &nick);
 
   // send
-  void sendReply(const int fd, const std::string &reply);
+  static void sendReply(const int fd, const std::string &reply);
 
   // user
   int getUserFd(const std::string &nick) const;

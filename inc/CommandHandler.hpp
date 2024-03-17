@@ -51,6 +51,7 @@ private:
   void NAMES(User &user);
   void LIST(User &user);
   void INVITE(User &user);
+  void KICK(User &user);
   void MOTD(User &user);
   void LUSERS(User &user);
   void VERSION(User &user);
@@ -97,6 +98,10 @@ private:
 
   // topic method
   void setTopic(const User &user, Channel &channel) const;
+
+  // kick method
+  void splitStringByColon(const std::string &str,
+                          std::vector<std::string> &vec);
 
   // who method
   void displayAllUser(const int fd, bool flag) const;
