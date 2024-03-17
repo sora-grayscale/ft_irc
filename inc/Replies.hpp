@@ -9,44 +9,6 @@ class Replies {
 public:
   // 221
   static const std::string RPL_UMODEIS(const std::string &userModeString);
-  // 324
-  static const std::string RPL_CHANNELMODEIS(const std::string &channelName,
-                                               const std::string &mode,
-                                               const std::string &modeParams);
-  // 325
-  static const std::string RPL_UNIQOPIS(const std::string &channelName,
-                                          const std::string &nick);
-  // 329
-  static const std::string RPL_CREATIONTIME(const std::string &channelName,
-                                              std::time_t creationTime);
-  // 346
-  static const std::string RPL_INVITELIST(const std::string &channelName,
-                                            std::string &mask);
-  // 347
-  static const std::string
-  RPL_ENDOFINVITELIST(const std::string &channelName);
-  // 348
-  static const std::string RPL_EXCEPTLIST(const std::string &channelName,
-                                            std::string &mask);
-  // 349
-  static const std::string
-  RPL_ENDOFEXCEPTLIST(const std::string &channelName);
-  // 367
-  static const std::string RPL_BANLIST(const std::string &channelName,
-                                         std::string &mask);
-  // 368
-  static const std::string RPL_ENDOFBANLIST(const std::string &channelName);
-  // 467
-  static const std::string ERR_KEYSET(const std::string &channelName);
-  // 472
-  static const std::string ERR_UNKNOWNMODE(const char c,
-                                             const std::string &channelName);
-  // 477
-  static const std::string ERR_NOCHANMODES(const std::string &channelName);
-  // 501
-  static const std::string ERR_UMODEUNKNOWNFLAG();
-  // 502
-  static const std::string ERR_USERSDONTMATCH();
   // 251
   static const std::string
   RPL_LUSERCLIENT(const int &users, const int &services, const int &servers);
@@ -97,6 +59,16 @@ public:
                                     const std::string &topic);
   // 323
   static const std::string RPL_LISTEND();
+  // 324
+  static const std::string RPL_CHANNELMODEIS(const std::string &channelName,
+                                               const std::string &mode,
+                                               const std::string &modeParams);
+  // 325
+  static const std::string RPL_UNIQOPIS(const std::string &channelName,
+                                          const std::string &nick);
+  // 329
+  static const std::string RPL_CREATIONTIME(const std::string &channelName,
+                                              std::time_t creationTime);
   // 331
   static const std::string RPL_NOTOPIC(const std::string &channel);
   // 332
@@ -109,6 +81,18 @@ public:
   // 341
   static const std::string RPL_INVITING(const std::string &channel,
                                         const std::string &nick);
+  // 346
+  static const std::string RPL_INVITELIST(const std::string &channelName,
+                                            std::string &mask);
+  // 347
+  static const std::string
+  RPL_ENDOFINVITELIST(const std::string &channelName);
+  // 348
+  static const std::string RPL_EXCEPTLIST(const std::string &channelName,
+                                            std::string &mask);
+  // 349
+  static const std::string
+  RPL_ENDOFEXCEPTLIST(const std::string &channelName);
   // 351
   static const std::string RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,
@@ -124,6 +108,11 @@ public:
                                         const User &user);
   // 366
   static const std::string RPL_ENDOFNAMES(const std::string &channelName);
+  // 367
+  static const std::string RPL_BANLIST(const std::string &channelName,
+                                         std::string &mask);
+  // 368
+  static const std::string RPL_ENDOFBANLIST(const std::string &channelName);
   // 369
   static const std::string RPL_ENDOFWHOWAS(const std::string &nick);
   // 371
@@ -184,8 +173,13 @@ public:
   static const std::string ERR_ALREADYREGISTRED();
   // 464
   static const std::string ERR_PASSWDMISMATCH();
+  // 467
+  static const std::string ERR_KEYSET(const std::string &channelName);
   // 471
   static const std::string ERR_CHANNELISFULL(const std::string &channelName);
+  // 472
+  static const std::string ERR_UNKNOWNMODE(const char c,
+                                             const std::string &channelName);
   // 473
   static const std::string ERR_INVITEONLYCHAN(const std::string &channelName);
   // 474
@@ -194,6 +188,8 @@ public:
   static const std::string ERR_BADCHANNELKEY(const std::string &channelName);
   // 476
   static const std::string ERR_BADCHANMASK(const std::string &channelName);
+  // 477
+  static const std::string ERR_NOCHANMODES(const std::string &channelName);
   // 481
   static const std::string ERR_NOPRIVILEGES();
   // 482
@@ -202,6 +198,10 @@ public:
   static const std::string ERR_RESTRICTED();
   // 491
   static const std::string ERR_NOOPERHOST();
+  // 501
+  static const std::string ERR_UMODEUNKNOWNFLAG();
+  // 502
+  static const std::string ERR_USERSDONTMATCH();
 };
 
 #endif // REPLIES
