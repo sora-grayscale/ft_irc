@@ -1,7 +1,7 @@
 #include "CommandHandler.hpp"
 
 void CommandHandler::displayAllChannel(const int fd,
-                                       const std::string nick) const {
+                                       const std::string &nick) const {
   for (std::map<std::string, Channel>::const_iterator it =
            this->_server.getChannelsBegin();
        it != this->_server.getChannelsEnd(); it++) {
@@ -19,7 +19,7 @@ void CommandHandler::displayAllChannel(const int fd,
 }
 
 void CommandHandler::displayOpeUser(const int fd,
-                                    const std::string nick) const {
+                                    const std::string &nick) const {
   User user = this->_server.findUser(nick);
   if (!user.hasMode(User::Operator))
     return;
@@ -27,7 +27,7 @@ void CommandHandler::displayOpeUser(const int fd,
 }
 
 void CommandHandler::displayWhoisQuery(const User &user,
-                                       const std::string nick) const {
+                                       const std::string &nick) const {
   this->_server.sendReply(
       user.getFd(),
       Replies::RPL_WHOISUSER(user.getNickName(), user.getUserName(),

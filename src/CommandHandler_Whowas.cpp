@@ -6,6 +6,8 @@ void CommandHandler::WHOWAS(User &user) {
     return;
   }
   if (!this->_server.isHisNick(this->_params.at(0))) {
+   this->_server.sendReply(user.getFd(),
+                               Replies::ERR_WASNOSUCHNICK(this->_params.at(0)));
     return;
   }
   if (this->_server.isRegiNick(this->_params.at(0))) {
