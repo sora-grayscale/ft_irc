@@ -129,7 +129,6 @@ void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
   } else {
     userStatus &= ~status;
   }
-  std::cout << userStatus << std::endl;
 }
 
 bool Channel::hasUserStatus(User &user, const UserStatusFlags status) const {

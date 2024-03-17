@@ -7,6 +7,46 @@
 
 class Replies {
 public:
+  // 221
+  static const std::string RPL_UMODEIS(const std::string &userModeString);
+  // 324
+  static const std::string RPL_CHANNELMODEIS(const std::string &channelName,
+                                               const std::string &mode,
+                                               const std::string &modeParams);
+  // 325
+  static const std::string RPL_UNIQOPIS(const std::string &channelName,
+                                          const std::string &nick);
+  // 329
+  static const std::string RPL_CREATIONTIME(const std::string &channelName,
+                                              std::time_t creationTime);
+  // 346
+  static const std::string RPL_INVITELIST(const std::string &channelName,
+                                            std::string &mask);
+  // 347
+  static const std::string
+  RPL_ENDOFINVITELIST(const std::string &channelName);
+  // 348
+  static const std::string RPL_EXCEPTLIST(const std::string &channelName,
+                                            std::string &mask);
+  // 349
+  static const std::string
+  RPL_ENDOFEXCEPTLIST(const std::string &channelName);
+  // 367
+  static const std::string RPL_BANLIST(const std::string &channelName,
+                                         std::string &mask);
+  // 368
+  static const std::string RPL_ENDOFBANLIST(const std::string &channelName);
+  // 467
+  static const std::string ERR_KEYSET(const std::string &channelName);
+  // 472
+  static const std::string ERR_UNKNOWNMODE(const char c,
+                                             const std::string &channelName);
+  // 477
+  static const std::string ERR_NOCHANMODES(const std::string &channelName);
+  // 501
+  static const std::string ERR_UMODEUNKNOWNFLAG();
+  // 502
+  static const std::string ERR_USERSDONTMATCH();
   // 251
   static const std::string
   RPL_LUSERCLIENT(const int &users, const int &services, const int &servers);
