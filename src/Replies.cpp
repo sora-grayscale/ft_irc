@@ -100,12 +100,96 @@ const std::string Replies::RPL_ADMINEMAIL(const std::string &adminMail) {
   return (message);
 }
 
+// 311
+const std::string Replies::RPL_WHOISUSER(const std::string &nick,
+                                         const std::string &user,
+                                         const std::string &host,
+                                         const std::string &realname) {
+  std::string message;
+  message += "311 ";
+  message += nick;
+  message += " ";
+  message += user;
+  message += " ";
+  message += host;
+  message += " ";
+  message += ":";
+  message += realname;
+  message += "\r\n";
+  return (message);
+}
+
+// 312
+const std::string Replies::RPL_WHOISSERVER(const std::string &nick,
+                                           const std::string &server,
+                                           const std::string &serverinfo) {
+  std::string message;
+  message += "312 ";
+  message += nick;
+  message += " ";
+  message += server;
+  message += " :";
+  message += serverinfo;
+  message += "\r\n";
+  return (message);
+}
+
+// 313
+const std::string Replies::RPL_WHOISOPERATOR(const std::string &nick) {
+  std::string message;
+  message += "313 ";
+  message += nick;
+  message += " :is an IRC operator";
+  message += "\r\n";
+  return (message);
+}
+
+// 314
+const std::string Replies::RPL_WHOWASUSER(const std::string &nick,
+                                          const std::string &user,
+                                          const std::string &host,
+                                          const std::string &realname) {
+  std::string message;
+  message += "314 ";
+  message += nick;
+  message += " ";
+  message += user;
+  message += " ";
+  message += host;
+  message += " :";
+  message += realname;
+  message += "\r\n";
+  return (message);
+}
+
 // 315
 const std::string Replies::RPL_ENDOFWHO(const std::string &name) {
   std::string message;
   message += "315 ";
   message += name;
   message += " :End of WHO list";
+  message += "\r\n";
+  return (message);
+}
+
+// 318
+const std::string Replies::RPL_ENDOFWHOIS(const std::string nick) {
+  std::string message;
+  message += "318 ";
+  message += nick;
+  message += " :End of WHOIS list";
+  message += "\r\n";
+  return (message);
+}
+
+// 319
+const std::string Replies::RPL_WHOISCHANNELS(const std::string nick,
+                                             const std::string channel) {
+  std::string message;
+  message += "319 ";
+  message += nick;
+  message += " ";
+  message += channel;
   message += "\r\n";
   return (message);
 }
@@ -273,6 +357,16 @@ const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
   return (message);
 }
 
+// 369
+const std::string Replies::RPL_ENDOFWHOWAS(const std::string &nick) {
+  std::string message;
+  message += "369 ";
+  message += nick;
+  message += " :End of WHOWAS";
+  message += "\r\n";
+  return (message);
+}
+
 // 371
 const std::string Replies::RPL_INFO(const std::string detail,
                                     const std::string &str) {
@@ -379,6 +473,16 @@ const std::string Replies::ERR_TOOMANYCHANNELS(const std::string &channelName) {
   message += "405 ";
   message += channelName;
   message += " :You have joined too many channels";
+  message += "\r\n";
+  return (message);
+}
+
+// 406
+const std::string Replies::ERR_WASNOSUCHNICK(const std::string &nickName) {
+  std::string message;
+  message += "406 ";
+  message += nickName;
+  message += " :There was no such nickname";
   message += "\r\n";
   return (message);
 }

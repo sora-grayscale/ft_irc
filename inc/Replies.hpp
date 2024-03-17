@@ -26,8 +26,29 @@ public:
   static const std::string RPL_ADMINLOC2(const std::string &adminAffiliation);
   // 259
   static const std::string RPL_ADMINEMAIL(const std::string &adminMail);
+  // 311
+  static const std::string RPL_WHOISUSER(const std::string &nick,
+                                         const std::string &user,
+                                         const std::string &host,
+                                         const std::string &realname);
+  // 312
+  static const std::string RPL_WHOISSERVER(const std::string &nick,
+                                           const std::string &server,
+                                           const std::string &serverinfo);
+  // 313
+  static const std::string RPL_WHOISOPERATOR(const std::string &nick);
+  // 314
+  static const std::string RPL_WHOWASUSER(const std::string &nick,
+                                          const std::string &user,
+                                          const std::string &host,
+                                          const std::string &realname);
   // 315
   static const std::string RPL_ENDOFWHO(const std::string &name);
+  // 318
+  static const std::string RPL_ENDOFWHOIS(const std::string nick);
+  // 319
+  static const std::string RPL_WHOISCHANNELS(const std::string nick,
+                                             const std::string channel);
   // 321
   static const std::string RPL_LISTSTART();
   // 322
@@ -63,6 +84,8 @@ public:
                                         const User &user);
   // 366
   static const std::string RPL_ENDOFNAMES(const std::string &channelName);
+  // 369
+  static const std::string RPL_ENDOFWHOWAS(const std::string &nick);
   // 371
   static const std::string RPL_INFO(const std::string detail,
                                     const std::string &str);
@@ -87,6 +110,8 @@ public:
   static const std::string ERR_NOSUCHCHANNEL(const std::string &channelName);
   // 405
   static const std::string ERR_TOOMANYCHANNELS(const std::string &channelName);
+  // 406
+  static const std::string ERR_WASNOSUCHNICK(const std::string &nickName);
   // 421
   static const std::string ERR_UNKNOWNCOMMAND(const std::string &command);
   // 422

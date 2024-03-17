@@ -77,6 +77,10 @@ void CommandHandler::executeCommand(User &user) {
     INFO(user);
   } else if (this->_command == "WHO") {
     WHO(user);
+  } else if (this->_command == "WHOIS") {
+    WHOIS(user);
+  } else if (this->_command == "WHOWAS") {
+    WHOWAS(user);
   } else {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_UNKNOWNCOMMAND(this->_command));
