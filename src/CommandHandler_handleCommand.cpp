@@ -55,6 +55,8 @@ void CommandHandler::executeCommand(User &user) {
     LIST(user);
   } else if (this->_command == "INVITE") {
     INVITE(user);
+  } else if (this->_command == "KICK") {
+    KICK(user);
   } else if (this->_command == "MOTD") {
     MOTD(user);
   } else if (this->_command == "LUSERS") {
