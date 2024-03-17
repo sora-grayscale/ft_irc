@@ -92,7 +92,7 @@ bool Server::isHisNick(const std::string &nick) {
 }
 
 bool Server::isTmpNick(const std::string &nick) {
-  for (std::map<int, User>::iterator it = this->_tmpUsers.begin();
+  for (std::map<int, User>::const_iterator it = this->_tmpUsers.begin();
        it != this->_tmpUsers.end(); it++) {
     if (it->second.getNickName() == nick)
       return true;
