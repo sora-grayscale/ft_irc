@@ -27,7 +27,7 @@ void CommandHandler::displayOpeUser(const int fd,
 }
 
 void CommandHandler::displayWhoisQuery(const User &user,
-                                       const std::string nick) const {
+                                       const std::string &nick) const {
   this->_server.sendReply(
       user.getFd(),
       Replies::RPL_WHOISUSER(user.getNickName(), user.getUserName(),
