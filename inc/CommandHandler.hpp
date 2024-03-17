@@ -63,6 +63,8 @@ private:
   void WHO(User &user);
   void WHOIS(User &user);
   void WHOWAS(User &user);
+  void PING(User &user);
+  void PONG(User &user);
 
   // nick method
   void convertChar(std::string &str);
@@ -109,6 +111,13 @@ private:
   void displayWhoisQuery(const User &user, const std::string &nick) const;
   void displayOpeUser(const int fd, const std::string &nick) const;
   void displayAllChannel(const int fd, const std::string &nick) const;
+
+  // ping method
+  void sendPing(User &user);
+
+  // pong method
+  void sendPong(User &user);
+  void checkPong(User &user);
 
   // debug
   void printStringAsInts(const std::string &input);
