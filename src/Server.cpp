@@ -188,7 +188,7 @@ std::map<int, User>::const_iterator Server::getUserEnd() const {
   return (this->_registerdUsers.end());
 }
 
-void Server::delUserChannel(User user, const std::string &comment) {
+void Server::delUserChannel(User &user, const std::string &comment) {
   std::map<std::string, Channel> channels = this->getChannels();
 
   for (std::map<std::string, Channel>::iterator it = channels.begin();
@@ -200,20 +200,22 @@ void Server::delUserChannel(User user, const std::string &comment) {
   }
 }
 
-void Server::eraseUserList(User user) {
-  if (!this->isRegiUser(user.getFd())) {
-    this->eraseTmpMap(user.getFd());
+void Server::eraseUserList(User &user) {
+  int fd = user.getFd();
+  this->erasePollfd(fd);
+  if (!this->isRegiUser(fd)) {
+    this->eraseTmpMap(fd);
   } else {
-    this->eraseRegiMap(user.getFd());
+    this->eraseRegiMap(fd);
   }
-  this->erasePollfd(user.getFd());
 }
 
 void Server::delUser(User &user, const std::string &comment) {
+  int fd = user.getFd();
   // userをチャンネルから消去, messageの送信
   delUserChannel(user, comment);
+  // userのfdをクローズ
+  close(fd);
   // userを持っているリスト系から取り除く
   eraseUserList(user);
-  // userのfdをクローズ
-  close(user.getFd());
 }

@@ -35,7 +35,6 @@ void Server::run() {
         }
       }
       // checkPing();
-
     } catch (const std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       continue;
@@ -119,8 +118,9 @@ void Server::sendReply(const int fd, const std::string &reply) {
 
 void Server::checkPing() {
   std::time_t now = std::time(NULL);
+  std::time_t diff = now - this->_lastPingSent;
 
-  if (now - this->_lastPingSent < 10) {
+  if (static_cast<long>(diff) < 10) {
     return;
   }
   for (std::size_t i = 0; i < this->_pollFd.size(); i++) {

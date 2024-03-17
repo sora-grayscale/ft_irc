@@ -95,8 +95,8 @@ public:
 
   // erase method
   void delUser(User &user, const std::string &comment);
-  void eraseUserList(User user);
-  void delUserChannel(User user, const std::string &comment);
+  void eraseUserList(User &user);
+  void delUserChannel(User &user, const std::string &comment);
 
 private:
   std::string _serverName;
