@@ -14,6 +14,7 @@ void CommandHandler::sendPing(User &user) {
 void CommandHandler::PING(User &user) {
   if (this->_params.size() < 1) {
     this->_server.sendReply(user.getFd(), Replies::ERR_NEEDMOREPARAMS(this->_command));
+    return ;
   }
   sendPong(user);
 }
