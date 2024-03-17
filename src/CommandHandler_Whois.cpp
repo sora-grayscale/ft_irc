@@ -19,7 +19,7 @@ void CommandHandler::displayAllChannel(const int fd,
 }
 
 void CommandHandler::displayOpeUser(const int fd,
-                                    const std::string nick) const {
+                                    const std::string &nick) const {
   User user = this->_server.findUser(nick);
   if (!user.hasMode(User::Operator))
     return;
