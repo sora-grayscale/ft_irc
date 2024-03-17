@@ -64,6 +64,7 @@ public:
   void setNickHistory(const std::string &nick);
   void eraseTmpMap(const int fd);
   void eraseRegiMap(const int fd);
+  void erasePollfd(const int fd);
   void addRegisterMap(const int fd, const User &user);
 
   // Lookup
@@ -73,6 +74,7 @@ public:
   bool isTmpNick(const std::string &nick);
   bool isRegiNick(const std::string &nick);
   bool isNick(const std::string &nick);
+  bool isRegiUser(const int &fd);
 
   // send
   static void sendReply(const int fd, const std::string &reply);
@@ -91,6 +93,11 @@ public:
   std::map<int, User>::const_iterator getUserBegin() const;
   std::map<int, User>::const_iterator getUserEnd() const;
 
+  // erase method
+  void delUser(User &user, const std::string &comment);
+  void eraseUserList(User user);
+  void delUserChannel(User user, const std::string &comment);
+
 private:
   std::string _serverName;
   std::string _password;
@@ -104,6 +111,7 @@ private:
   std::map<std::string, Channel> _channels;          /// channelname, channel
   std::set<std::string> _nickHistory;
   std::string _startDay;
+  std::time_t _lastPingSent;
 
   // Server init
   void checkServerName(const std::string &serverName) const;
@@ -118,6 +126,7 @@ private:
   int pollSockets();
   void acceptNewSocket();
   std::string readClientCommand(int fd);
+  void checkPing();
 
   Server();
   Server(const Server &server);

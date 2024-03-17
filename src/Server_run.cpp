@@ -27,8 +27,14 @@ void Server::run() {
                                            this->_pollFd.at(i).fd);
             }
           }
+        } else if ((this->_pollFd.at(i).revents & POLLERR) ||
+                   (this->_pollFd.at(i).revents & POLLHUP) ||
+                   (this->_pollFd.at(i).revents & POLLNVAL)) {
+          this->delUser(this->findUser(this->_pollFd.at(i).fd),
+                        "user Killed because of no respons\n\r");
         }
       }
+      // checkPing();
 
     } catch (const std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
@@ -103,9 +109,25 @@ void Server::sendReply(const int fd, const std::string &reply) {
         continue;
       } else {
         // その他のエラー
+        std::cout << errno << std::endl;
         throw std::runtime_error(std::strerror(errno));
       }
     }
     sent += count;
+  }
+}
+
+void Server::checkPing() {
+  std::time_t now = std::time(NULL);
+
+  if (now - this->_lastPingSent < 10) {
+    return;
+  }
+  for (std::size_t i = 0; i < this->_pollFd.size(); i++) {
+    if (this->_pollFd.at(i).fd == this->_sfd) {
+      continue;
+    } else {
+      CommandHandler::sendPing(this->findUser(this->_pollFd.at(i).fd));
+    }
   }
 }

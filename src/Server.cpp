@@ -5,7 +5,7 @@
 Server::Server(int argc, const char *argv[])
     : _serverName(""), _password(""), _port(0), _sfd(0), _addr(), _pollFd(),
       _fdToNickname(), _tmpUsers(), _registerdUsers(), _channels(),
-      _nickHistory(), _startDay() {
+      _nickHistory(), _startDay(), _lastPingSent(std::time(NULL)) {
   try {
     Server::checkServerName(SERVER_NAME);
     this->_serverName = SERVER_NAME;
@@ -59,6 +59,14 @@ void Server::setNickHistory(const std::string &nick) {
 
 void Server::eraseTmpMap(const int fd) { this->_tmpUsers.erase(fd); }
 void Server::eraseRegiMap(const int fd) { this->_registerdUsers.erase(fd); }
+void Server::erasePollfd(const int fd) {
+  for (std::vector<struct pollfd>::iterator it = this->_pollFd.begin();
+       it != this->_pollFd.end(); it++) {
+    if (it->fd == fd) {
+      this->_pollFd.erase(it);
+    }
+  }
+}
 
 void Server::addRegisterMap(const int fd, const User &user) {
   this->_registerdUsers[fd] = user; // fd, user
@@ -118,6 +126,13 @@ bool Server::isNick(const std::string &nick) {
   return false;
 }
 
+bool Server::isRegiUser(const int &fd) {
+  if (this->_registerdUsers.find(fd) != this->_registerdUsers.end()) {
+    return true;
+  }
+  return false;
+}
+
 // send
 
 // user
@@ -171,4 +186,34 @@ std::map<int, User>::const_iterator Server::getUserBegin() const {
 
 std::map<int, User>::const_iterator Server::getUserEnd() const {
   return (this->_registerdUsers.end());
+}
+
+void Server::delUserChannel(User user, const std::string &comment) {
+  std::map<std::string, Channel> channels = this->getChannels();
+
+  for (std::map<std::string, Channel>::iterator it = channels.begin();
+       it != channels.end(); it++) {
+    if (it->second.isUserInChannel(user.getNickName())) {
+      it->second.broadcastMessage(comment, user);
+      it->second.removeUser(user);
+    }
+  }
+}
+
+void Server::eraseUserList(User user) {
+  if (!this->isRegiUser(user.getFd())) {
+    this->eraseTmpMap(user.getFd());
+  } else {
+    this->eraseRegiMap(user.getFd());
+  }
+  this->erasePollfd(user.getFd());
+}
+
+void Server::delUser(User &user, const std::string &comment) {
+  // userをチャンネルから消去, messageの送信
+  delUserChannel(user, comment);
+  // userを持っているリスト系から取り除く
+  eraseUserList(user);
+  // userのfdをクローズ
+  close(user.getFd());
 }

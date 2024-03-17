@@ -20,6 +20,9 @@ public:
   ~CommandHandler();
   void handleCommand(const std::string &message, const int fd);
 
+  // ping method
+  static void sendPing(User &user);
+
 private:
   CommandHandler();
   Server &_server;
@@ -118,17 +121,9 @@ private:
   void displayOpeUser(const int fd, const std::string &nick) const;
   void displayAllChannel(const int fd, const std::string &nick) const;
 
-  // ping method
-  void sendPing(User &user);
-
   // pong method
   void sendPong(User &user);
   void checkPong(User &user);
-
-  // KILL method
-  void delUser(User &user, const std::string &comment);
-  void eraseUserList(User user);
-  void delUserChannel(User user, const std::string &comment);
 
   // debug
   void printStringAsInts(const std::string &input);
