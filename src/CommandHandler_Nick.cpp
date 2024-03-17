@@ -48,7 +48,6 @@ bool CommandHandler::isReservedNick(const std::string &nick) {
 }
 
 void CommandHandler::NICK(User &user) {
-  // ok
   if (this->_params.size() == 0) {
     this->_server.sendReply(user.getFd(), Replies::ERR_NONICKNAMEGIVEN());
     return;
@@ -59,7 +58,6 @@ void CommandHandler::NICK(User &user) {
     return;
   }
 
-  // ok
   // nick paramのバリデーション
   if (this->_params.at(0).size() > 9 || !validateNick(this->_params.at(0))) {
     this->_server.sendReply(user.getFd(),
@@ -67,7 +65,13 @@ void CommandHandler::NICK(User &user) {
     return;
   }
 
-  // ok
+  // チャンネル名との競合を防ぐ処理
+  if (this->isValidChannelName(this->_params.at(0))) {
+    this->_server.sendReply(user.getFd(),
+                            Replies::ERR_ERRONEUSNICKNAME(this->_params.at(0)));
+    return;
+  }
+
   // 変換 { →[, } → ], | → \, ^ → ~
   convertChar(this->_params.at(0));
 

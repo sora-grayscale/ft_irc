@@ -4,6 +4,7 @@
 const std::string Replies::RPL_UMODEIS(const std::string &userModeString) {
   std::string message;
   message += "221 ";
+  message += "+";
   message += userModeString;
   message += "\r\n";
   return (message);
