@@ -43,6 +43,9 @@ public:
     InvitationMask = 1 << 16  // I 特別扱いが必要
   };
 
+  // chat 
+  void broadcastMessage(const std::string &message, const User &sender);
+
   // getter
   const std::string &getChannelName() const;
   //  const std::map<User *, unsigned int> &getUserStatus() const;
@@ -55,6 +58,7 @@ public:
   std::set<User *>::const_iterator getUserBegin() const;
   std::set<User *>::const_iterator getUserEnd() const;
   bool isUserInChannel(const User &user) const;
+  bool isUserInChannel(const std::string &nick) const;
 
   // user status
   void setUserStatus(User &user, UserStatusFlags status, bool enable);

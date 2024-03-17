@@ -1,4 +1,6 @@
 #include "Channel.hpp"
+#include "Server.hpp"
+
 
 // constructor
 Channel::Channel()
@@ -24,6 +26,17 @@ Channel::Channel(const std::string &channelName, const std::string &key)
 
 // destructor
 Channel::~Channel() {}
+
+// chat
+void Channel::broadcastMessage(const std::string &message, const User &sender) {
+  for (std::set<User *>::const_iterator it = this->_users.begin();
+       it != this->_users.end(); it++) {
+    if (*it == &sender) {
+      continue;
+    }
+    Server::sendReply((*it)->getFd(), message);
+  }
+}
 
 // getter
 const std::string &Channel::getChannelName() const {
@@ -99,6 +112,16 @@ bool Channel::isUserInChannel(const User &user) const {
   return (false);
 }
 
+bool Channel::isUserInChannel(const std::string &nick) const {
+  for (std::set<User *>::const_iterator it = this->_users.begin();
+       it != this->_users.end(); it++) {
+    if ((*it)->getNickName() == nick) {
+      return (true);
+    }
+  }
+  return (false);
+}
+
 // user status
 void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
   unsigned int &userStatus = this->_userStatus.at(&user);
@@ -107,10 +130,11 @@ void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
   } else {
     userStatus &= ~status;
   }
+  std::cout << userStatus << std::endl;
 }
 
 bool Channel::hasUserStatus(User &user, const UserStatusFlags status) const {
-  if ((this->_userStatus.at(&user) & status) == 1) {
+  if ((this->_userStatus.at(&user) & status) != 0) {
     return (true);
   }
   return (false);
