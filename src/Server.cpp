@@ -221,4 +221,16 @@ void Server::delUser(User &user, const std::string &comment) {
   eraseUserList(user);
   // userのfdをクローズ
   close(fd);
+  std::cout << "close socket: " << fd << std::endl;
+}
+
+void Server::delUser(const int fd) {
+  if (!this->isRegiUser(fd)) {
+    this->eraseTmpMap(fd);
+  } else {
+    this->eraseRegiMap(fd);
+  }
+  erasePollfd(fd);
+  close(fd);
+  std::cout << "close socket: " << fd << std::endl;
 }

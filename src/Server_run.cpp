@@ -21,7 +21,14 @@ void Server::run() {
           } else {
             std::string receivedMessage =
                 readClientCommand(this->_pollFd.at(i).fd);
-            if (!receivedMessage.empty()) {
+            if (receivedMessage == "") {
+              try {
+                this->delUser(this->findUser(this->_pollFd.at(i).fd),
+                              "user Killed because of no respons\n\r");
+              } catch (const std::exception &e) {
+                this->delUser(this->_pollFd.at(i).fd);
+              }
+            } else if (!receivedMessage.empty()) {
               CommandHandler commandhandler(*this);
               commandhandler.handleCommand(receivedMessage,
                                            this->_pollFd.at(i).fd);
