@@ -1,6 +1,7 @@
 #ifndef USER_HPP
 #define USER_HPP
 
+#include <ctime>
 #include <string>
 
 class User {
@@ -33,6 +34,8 @@ public:
   void setNickName(const std::string &nickname);
   void setRealName(const std::string &realname);
   void setUserName(const std::string &username);
+  void setCurrentChannel(const std::string &channel);
+  void setPingTime(const std::time_t &time);
   void incrementJoinedChannelCount();
   void decrementJoinedChannelCount();
 
@@ -42,6 +45,8 @@ public:
   const std::string &getUserName() const;
   const int &getFd() const;
   int getJoinedChannelCount() const;
+  const std::string &getCurrentChannel() const;
+  const std::time_t &getPingTime() const;
 
   // mode
   void setMode(unsigned int mode, bool enable);
@@ -55,8 +60,10 @@ private:
   std::string _nickname;
   std::string _username;
   std::string _realname; // 63 自分で決めた
+  std::string _currentChannel;
   int _fd;
   int _joinedChannelCount;
+  std::time_t _pingTime;
 
   RegisterState _state;
   unsigned int _modeFlags;

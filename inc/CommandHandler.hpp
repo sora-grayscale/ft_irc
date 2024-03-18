@@ -50,6 +50,9 @@ private:
   void PART(User &user);
   void TOPIC(User &user);
   void NAMES(User &user);
+  void LIST(User &user);
+  void INVITE(User &user);
+  void KICK(User &user);
   void MOTD(User &user);
   void LUSERS(User &user);
   void VERSION(User &user);
@@ -59,6 +62,12 @@ private:
   void TRACE(User &user);
   void ADMIN(User &user);
   void INFO(User &user);
+  void KILL(User &user);
+  void WHO(User &user);
+  void WHOIS(User &user);
+  void WHOWAS(User &user);
+  void PING(User &user);
+  void PONG(User &user);
 
   // nick method
   void convertChar(std::string &str);
@@ -93,6 +102,25 @@ private:
 
   // topic method
   void setTopic(const User &user, Channel &channel) const;
+
+  // kick method
+  void splitStringByColon(const std::string &str,
+                          std::vector<std::string> &vec);
+
+  // who method
+  void displayAllUser(const int fd, bool flag) const;
+  void displayChannelUser(const int fd, const Channel &channel,
+                          bool flag) const;
+  void displayUser(const int fd, const User &user, bool flag) const;
+  void displayWhoQuery(const int fd, const std::string &str, bool flag) const;
+
+  // whois method
+  void displayWhoisQuery(const User &user, const std::string &nick) const;
+  void displayOpeUser(const int fd, const std::string &nick) const;
+  void displayAllChannel(const int fd, const std::string &nick) const;
+
+  // pong method
+  void sendPong(User &user);
 
   // debug
   void printStringAsInts(const std::string &input);

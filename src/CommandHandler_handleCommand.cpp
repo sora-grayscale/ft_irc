@@ -51,6 +51,12 @@ void CommandHandler::executeCommand(User &user) {
     TOPIC(user);
   } else if (this->_command == "NAMES") {
     NAMES(user);
+  } else if (this->_command == "LIST") {
+    LIST(user);
+  } else if (this->_command == "INVITE") {
+    INVITE(user);
+  } else if (this->_command == "KICK") {
+    KICK(user);
   } else if (this->_command == "MOTD") {
     MOTD(user);
   } else if (this->_command == "LUSERS") {
@@ -69,6 +75,18 @@ void CommandHandler::executeCommand(User &user) {
     ADMIN(user);
   } else if (this->_command == "INFO") {
     INFO(user);
+  } else if (this->_command == "WHO") {
+    WHO(user);
+  } else if (this->_command == "WHOIS") {
+    WHOIS(user);
+  } else if (this->_command == "WHOWAS") {
+    WHOWAS(user);
+  } else if (this->_command == "KILL") {
+    KILL(user);
+  } else if (this->_command == "PING") {
+    PING(user);
+  } else if (this->_command == "PONG") {
+    PONG(user);
   } else {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_UNKNOWNCOMMAND(this->_command));

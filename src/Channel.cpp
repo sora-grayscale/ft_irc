@@ -1,4 +1,5 @@
 #include "Channel.hpp"
+#include "Server.hpp"
 
 // constructor
 Channel::Channel()
@@ -24,6 +25,17 @@ Channel::Channel(const std::string &channelName, const std::string &key)
 
 // destructor
 Channel::~Channel() {}
+
+// chat
+void Channel::broadcastMessage(const std::string &message, const User &sender) {
+  for (std::set<User *>::const_iterator it = this->_users.begin();
+       it != this->_users.end(); it++) {
+    if (*it == &sender) {
+      continue;
+    }
+    Server::sendReply((*it)->getFd(), message);
+  }
+}
 
 // getter
 const std::string &Channel::getChannelName() const {
@@ -52,7 +64,37 @@ void Channel::removeUser(User &user) {
   user.decrementJoinedChannelCount();
 }
 
-int Channel::userNum() const { return (this->_users.size()); }
+std::size_t Channel::userNum() const { return (this->_users.size()); }
+
+std::size_t Channel::getVisibleUsrNum(const User &user) const {
+  std::size_t userNum = 0;
+
+  if (hasChannleMode(Channel::Secret)) {
+    return (0);
+  } else if (hasChannleMode(Channel::Private)) {
+    return (0);
+  }
+  for (std::set<User *>::const_iterator it = this->_users.begin();
+       it != this->_users.end(); it++) {
+    if ((*it)->hasMode(User::Invisible)) {
+      continue;
+    }
+    if (hasChannleMode(Channel::BanMask) && isBanned(user.getNickName())) {
+      if (!(hasChannleMode(Channel::ExceptionMask) &&
+            hasException(user.getNickName()))) {
+        continue;
+      }
+    }
+    if (hasChannleMode(Channel::InviteOnly) && !isInvited(user.getNickName())) {
+      continue;
+    } else if (hasChannleMode(Channel::InvitationMask) &&
+               !isInvited(user.getNickName())) {
+      continue;
+    }
+    userNum++;
+  }
+  return (userNum);
+}
 
 std::set<User *>::const_iterator Channel::getUserBegin() const {
   return (this->_users.begin());
@@ -69,6 +111,16 @@ bool Channel::isUserInChannel(const User &user) const {
   return (false);
 }
 
+bool Channel::isUserInChannel(const std::string &nick) const {
+  for (std::set<User *>::const_iterator it = this->_users.begin();
+       it != this->_users.end(); it++) {
+    if ((*it)->getNickName() == nick) {
+      return (true);
+    }
+  }
+  return (false);
+}
+
 // user status
 void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
   unsigned int &userStatus = this->_userStatus.at(&user);
@@ -80,7 +132,7 @@ void Channel::setUserStatus(User &user, UserStatusFlags status, bool enable) {
 }
 
 bool Channel::hasUserStatus(User &user, const UserStatusFlags status) const {
-  if ((this->_userStatus.at(&user) & status) == 1) {
+  if ((this->_userStatus.at(&user) & status) != 0) {
     return (true);
   }
   return (false);
@@ -134,7 +186,7 @@ const std::string &Channel::getKey() const { return (this->_channelKey); }
 // l flag
 void Channel::setUserLimit(int limit) { this->_userLimit = limit; }
 
-int Channel::getUserLimit() const { return (this->_userLimit); }
+std::size_t Channel::getUserLimit() const { return (this->_userLimit); }
 
 // b flag
 void Channel::addBanMask(const std::string &mask) {

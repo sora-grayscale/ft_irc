@@ -10,10 +10,10 @@ void Server::run() {
   while (true) {
     try {
       int ret = Server::pollSockets();
-      if (ret == 0) { // timeoutの場合はここでは発生しないが、念のため
+      if (ret == 0) {
+        // timeoutの場合はここでは発生しないが、念のため
         continue;
       }
-
       for (std::size_t i = 0; i < this->_pollFd.size(); i++) {
         if (this->_pollFd.at(i).revents & POLLIN) {
           if (this->_pollFd.at(i).fd == this->_sfd) {
@@ -21,15 +21,28 @@ void Server::run() {
           } else {
             std::string receivedMessage =
                 readClientCommand(this->_pollFd.at(i).fd);
-            if (!receivedMessage.empty()) {
+            if (receivedMessage == "") {
+              try {
+                this->delUser(this->findUser(this->_pollFd.at(i).fd),
+                              "user Killed because of no respons\n\r");
+              } catch (const std::exception &e) {
+                this->delUser(this->_pollFd.at(i).fd);
+              }
+            } else if (!receivedMessage.empty()) {
               CommandHandler commandhandler(*this);
               commandhandler.handleCommand(receivedMessage,
                                            this->_pollFd.at(i).fd);
             }
           }
+        } else if ((this->_pollFd.at(i).revents & POLLERR) ||
+                   (this->_pollFd.at(i).revents & POLLHUP) ||
+                   (this->_pollFd.at(i).revents & POLLNVAL)) {
+          this->delUser(this->findUser(this->_pollFd.at(i).fd),
+                        "user Killed because of no respons\n\r");
+          std::cout << "debug: deleted" << std::endl;
         }
       }
-
+      checkPing();
     } catch (const std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       continue;
@@ -107,5 +120,24 @@ void Server::sendReply(const int fd, const std::string &reply) {
       }
     }
     sent += count;
+  }
+}
+
+void Server::checkPing() {
+  std::time_t now = std::time(NULL);
+  std::time_t diff = now - this->_lastPingSent;
+
+  if (static_cast<long>(diff) < 10) {
+    return;
+  }
+  this->setPingTime(now);
+  for (std::size_t i = 0; i < this->_pollFd.size(); i++) {
+    if (this->_pollFd.at(i).fd == this->_sfd) {
+      continue;
+    } else {
+      User &user = this->findUser(this->_pollFd.at(i).fd);
+      sendPing(user);
+      checkPong(user);
+    }
   }
 }

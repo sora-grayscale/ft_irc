@@ -2,11 +2,11 @@
 #include <iostream>
 
 User::User()
-    : _nickname(""), _username(""), _realname(""), _fd(0),
+    : _nickname(""), _username(""), _realname(""), _currentChannel(""), _fd(0),
       _joinedChannelCount(0), _state(User::NONE), _modeFlags(User::None) {}
 
 User::User(const int fd)
-    : _nickname(""), _username(""), _realname(""), _fd(fd),
+    : _nickname(""), _username(""), _realname(""), _currentChannel(""), _fd(fd),
       _joinedChannelCount(0), _state(User::NONE), _modeFlags(User::None) {}
 
 User &User::operator=(const User &user) {
@@ -35,6 +35,12 @@ void User::setUserName(const std::string &username) {
   this->_username = username;
 }
 
+void User::setCurrentChannel(const std::string &channel) {
+  this->_currentChannel = channel;
+}
+
+void User::setPingTime(const std::time_t &time) { this->_pingTime = time; }
+
 void User::incrementJoinedChannelCount() { this->_joinedChannelCount += 1; }
 void User::decrementJoinedChannelCount() { this->_joinedChannelCount -= 1; }
 
@@ -44,6 +50,10 @@ const std::string &User::getRealName() const { return this->_realname; }
 const std::string &User::getUserName() const { return this->_username; }
 const int &User::getFd() const { return this->_fd; }
 int User::getJoinedChannelCount() const { return (this->_joinedChannelCount); }
+const std::string &User::getCurrentChannel() const {
+  return this->_currentChannel;
+}
+const std::time_t &User::getPingTime() const { return (this->_pingTime); }
 
 // mode
 void User::setMode(unsigned int mode, bool enable) {
