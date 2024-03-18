@@ -39,7 +39,6 @@ void Server::run() {
                    (this->_pollFd.at(i).revents & POLLNVAL)) {
           this->delUser(this->findUser(this->_pollFd.at(i).fd),
                         "user Killed because of no respons\n\r");
-          std::cout << "debug: deleted" << std::endl;
         }
       }
       checkPing();
