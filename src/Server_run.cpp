@@ -10,10 +10,10 @@ void Server::run() {
   while (true) {
     try {
       int ret = Server::pollSockets();
-      if (ret == 0) { // timeoutの場合はここでは発生しないが、念のため
+      if (ret == 0) {
+        // timeoutの場合はここでは発生しないが、念のため
         continue;
       }
-
       for (std::size_t i = 0; i < this->_pollFd.size(); i++) {
         if (this->_pollFd.at(i).revents & POLLIN) {
           if (this->_pollFd.at(i).fd == this->_sfd) {
@@ -32,6 +32,7 @@ void Server::run() {
                    (this->_pollFd.at(i).revents & POLLNVAL)) {
           this->delUser(this->findUser(this->_pollFd.at(i).fd),
                         "user Killed because of no respons\n\r");
+          std::cout << "debug: deleted" << std::endl;
         }
       }
       // checkPing();
@@ -108,7 +109,6 @@ void Server::sendReply(const int fd, const std::string &reply) {
         continue;
       } else {
         // その他のエラー
-        std::cout << errno << std::endl;
         throw std::runtime_error(std::strerror(errno));
       }
     }
