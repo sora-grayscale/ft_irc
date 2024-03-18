@@ -73,9 +73,7 @@ void Server::addRegisterMap(const int fd, const User &user) {
   this->_registerdUsers[fd] = user; // fd, user
 }
 
-  void Server::setPingTime(const std::time_t time) {
-    this->_lastPingSent = time;
-  }
+void Server::setPingTime(const std::time_t time) { this->_lastPingSent = time; }
 
 // Lookup
 User &Server::findUser(const int fd) {
