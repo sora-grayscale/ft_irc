@@ -11,6 +11,7 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler.cpp \
               src/CommandHandler_Admin.cpp \
               src/CommandHandler_Connect.cpp \
+              src/CommandHandler_Error.cpp \
               src/CommandHandler_Info.cpp \
               src/CommandHandler_Invite.cpp \
               src/CommandHandler_Join.cpp \
@@ -26,14 +27,15 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler_Pass.cpp \
               src/CommandHandler_Ping.cpp \
               src/CommandHandler_Pong.cpp \
+              src/CommandHandler_Quit.cpp \
               src/CommandHandler_Time.cpp \
               src/CommandHandler_Topic.cpp \
               src/CommandHandler_Trace.cpp \
               src/CommandHandler_User.cpp \
               src/CommandHandler_Version.cpp \
               src/CommandHandler_Who.cpp \
-              src/CommandHandler_Whowas.cpp \
               src/CommandHandler_Whois.cpp \
+              src/CommandHandler_Whowas.cpp \
               src/CommandHandler_debug.cpp \
               src/CommandHandler_handleCommand.cpp \
               src/CommandHandler_parseMessage.cpp \

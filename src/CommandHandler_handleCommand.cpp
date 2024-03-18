@@ -43,6 +43,8 @@ void CommandHandler::executeCommand(User &user) {
     NICK(user);
   } else if (this->_command == "OPER") {
     OPER(user);
+  } else if (this->_command == "QUIT") {
+    QUIT(user);
   } else if (this->_command == "JOIN") {
     JOIN(user);
   } else if (this->_command == "PART") {

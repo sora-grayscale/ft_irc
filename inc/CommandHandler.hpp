@@ -45,7 +45,7 @@ private:
   void USER(User &user);
   void NICK(User &user);
   void OPER(User &user);
-  void Quit(User &user);
+  void QUIT(User &user);
   void JOIN(User &user);
   void PART(User &user);
   void TOPIC(User &user);
@@ -68,6 +68,7 @@ private:
   void WHOWAS(User &user);
   void PING(User &user);
   void PONG(User &user);
+  void ERROR(User &user);
 
   // nick method
   void convertChar(std::string &str);
@@ -121,6 +122,10 @@ private:
 
   // pong method
   void sendPong(User &user);
+
+  // error method
+
+  void sendError(const int fd, const std::string &message);
 
   // debug
   void printStringAsInts(const std::string &input);
