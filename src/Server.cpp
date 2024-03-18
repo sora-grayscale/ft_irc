@@ -64,6 +64,7 @@ void Server::erasePollfd(const int fd) {
        it != this->_pollFd.end(); it++) {
     if (it->fd == fd) {
       this->_pollFd.erase(it);
+      return ;
     }
   }
 }
