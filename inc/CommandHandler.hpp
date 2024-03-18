@@ -20,9 +20,6 @@ public:
   ~CommandHandler();
   void handleCommand(const std::string &message, const int fd);
 
-  // ping method
-  static void sendPing(User &user);
-
 private:
   CommandHandler();
   Server &_server;
@@ -123,7 +120,6 @@ private:
 
   // pong method
   void sendPong(User &user);
-  void checkPong(User &user);
 
   // debug
   void printStringAsInts(const std::string &input);

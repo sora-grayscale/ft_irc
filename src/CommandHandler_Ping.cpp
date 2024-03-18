@@ -1,6 +1,10 @@
 #include "CommandHandler.hpp"
+#include "Server.hpp"
 
-void CommandHandler::sendPing(User &user) {
+void Server::sendPing(User &user) {
+  if (user.getPingTime() != 0) {
+    return;
+  }
 
   user.setPingTime(std::time(NULL));
 

@@ -1,6 +1,7 @@
 #include "CommandHandler.hpp"
+#include "Server.hpp"
 
-void CommandHandler::checkPong(User &user) {
+void Server::checkPong(User &user) {
   if (user.getPingTime() == 0) {
     return;
   }
@@ -11,7 +12,7 @@ void CommandHandler::checkPong(User &user) {
   if (static_cast<long>(diff) < 10) {
     return;
   }
-  this->_server.delUser(user, "user Killed because of no respons\n\r");
+  delUser(user, "user Killed because of no respons\n\r");
 }
 
 void CommandHandler::sendPong(User &user) {

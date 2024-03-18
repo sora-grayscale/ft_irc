@@ -42,7 +42,7 @@ void Server::run() {
           std::cout << "debug: deleted" << std::endl;
         }
       }
-      // checkPing();
+      checkPing();
     } catch (const std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       continue;
@@ -130,11 +130,14 @@ void Server::checkPing() {
   if (static_cast<long>(diff) < 10) {
     return;
   }
+  this->setPingTime(now);
   for (std::size_t i = 0; i < this->_pollFd.size(); i++) {
     if (this->_pollFd.at(i).fd == this->_sfd) {
       continue;
     } else {
-      CommandHandler::sendPing(this->findUser(this->_pollFd.at(i).fd));
+      User &user = this->findUser(this->_pollFd.at(i).fd);
+      sendPing(user);
+      checkPong(user);
     }
   }
 }

@@ -66,6 +66,7 @@ public:
   void eraseRegiMap(const int fd);
   void erasePollfd(const int fd);
   void addRegisterMap(const int fd, const User &user);
+  void setPingTime(const std::time_t time);
 
   // Lookup
   User &findUser(const int fd);
@@ -96,8 +97,6 @@ public:
   // erase method
   void delUser(User &user, const std::string &comment);
   void delUser(const int fd);
-  void eraseUserList(User &user);
-  void delUserChannel(User &user, const std::string &comment);
 
 private:
   std::string _serverName;
@@ -128,6 +127,14 @@ private:
   void acceptNewSocket();
   std::string readClientCommand(int fd);
   void checkPing();
+
+  // ping method
+  void sendPing(User &user);
+  void checkPong(User &user);
+
+  // delUser method
+  void eraseUserList(User &user);
+  void delUserChannel(User &user, const std::string &comment);
 
   Server();
   Server(const Server &server);
