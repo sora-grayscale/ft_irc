@@ -1,6 +1,6 @@
 #include "CommandHandler.hpp"
 
-void CommandHandler::CreatePrivMessage(std::string &message) {
+void CommandHandler::CreateParamToOneString(std::string &message) {
   for (std::size_t i = 1; i < this->_params.size(); i++) {
     if (i != 1) {
       message += " ";
@@ -14,6 +14,17 @@ void CommandHandler::CreatePrivMessage(std::string &message) {
       message += this->_params.at(i);
     }
   }
+}
+
+const std::string CommandHandler::createPrivMessage(const std::string &sendTo,
+                                    const std::string &message) {
+  std::string str;
+  str = "PRIVMSG ";
+  str += sendTo;
+  str += " :";
+  str += message;
+  str += "\n\r";
+  return str;
 }
 
 void CommandHandler::sendPrivMessageChannel(const User &sender,
@@ -53,12 +64,7 @@ void CommandHandler::sendPrivMessage(const User &user,
   std::string privMessage;
 
   for (std::size_t i = 0; i < sendTo.size(); i++) {
-    privMessage = "PRIVMSG ";
-    privMessage += sendTo.at(i);
-    privMessage += " :";
-    privMessage += message;
-    privMessage += "\n\r";
-
+    privMessage = createPrivMessage(sendTo.at(i), message);
     if (isValidChannelName(sendTo.at(i))) {
       sendPrivMessageChannel(user, sendTo.at(i), privMessage);
     } else {
@@ -81,7 +87,7 @@ void CommandHandler::PRIVMSG(User &user) {
   std::vector<std::string> sendTo;
   std::string message;
 
-  CreatePrivMessage(message);
+  CreateParamToOneString(message);
   splitStringByColon(this->_params.at(0), sendTo);
 
   sendPrivMessage(user, sendTo, message);

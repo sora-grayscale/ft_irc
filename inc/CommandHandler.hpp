@@ -63,6 +63,7 @@ private:
   void ADMIN(User &user);
   void INFO(User &user);
   void PRIVMSG(User &user);
+  void NOTICE(User &user);
   void KILL(User &user);
   void WHO(User &user);
   void WHOIS(User &user);
@@ -128,7 +129,7 @@ private:
   void sendError(const int fd, const std::string &message);
 
   // privmsg method
-  void CreatePrivMessage(std::string &message);
+  void CreateParamToOneString(std::string &message);
   void sendPrivMessageChannel(const User &sender,
                               const std::string &channelName,
                               const std::string &message);
@@ -136,6 +137,20 @@ private:
                            const std::string &message);
   void sendPrivMessage(const User &user, const std::vector<std::string> &sendTo,
                        const std::string &message);
+  const std::string createPrivMessage(const std::string &sendTo,
+                                      const std::string &message);
+
+  // notice method
+  void sendNoticeMessageChannel(const User &sender,
+                                const std::string &channelName,
+                                const std::string &message);
+  void sendNoticeMessageUser(const std::string &nick,
+                             const std::string &message);
+  void sendNoticeMessage(const User &user,
+                         const std::vector<std::string> &sendTo,
+                         const std::string &message);
+  const std::string createNoticeMessage(const std::string &sendTo,
+                                        const std::string &message);
 
   // debug
   void printStringAsInts(const std::string &input);
