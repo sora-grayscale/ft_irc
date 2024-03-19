@@ -108,10 +108,16 @@ public:
   static const std::string ERR_NOSUCHSERVER(const std::string &serverName);
   // 403
   static const std::string ERR_NOSUCHCHANNEL(const std::string &channelName);
+  // 404
+  static const std::string ERR_CANNOTSENDTOCHAN(const std::string &channelName);
   // 405
   static const std::string ERR_TOOMANYCHANNELS(const std::string &channelName);
   // 406
   static const std::string ERR_WASNOSUCHNICK(const std::string &nickName);
+  // 411
+  static const std::string ERR_NORECIPIENT(const std::string &command);
+  // 412
+  static const std::string ERR_NOTEXTTOSEND();
   // 421
   static const std::string ERR_UNKNOWNCOMMAND(const std::string &command);
   // 422

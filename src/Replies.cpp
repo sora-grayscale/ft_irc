@@ -467,6 +467,17 @@ const std::string Replies::ERR_NOSUCHCHANNEL(const std::string &channelName) {
   return (message);
 }
 
+// 404
+const std::string
+Replies::ERR_CANNOTSENDTOCHAN(const std::string &channelName) {
+  std::string message;
+  message += "404 ";
+  message += channelName;
+  message += " :Cannot send to channel";
+  message += "\r\n";
+  return (message);
+}
+
 // 405
 const std::string Replies::ERR_TOOMANYCHANNELS(const std::string &channelName) {
   std::string message;
@@ -483,6 +494,25 @@ const std::string Replies::ERR_WASNOSUCHNICK(const std::string &nickName) {
   message += "406 ";
   message += nickName;
   message += " :There was no such nickname";
+  message += "\r\n";
+  return (message);
+}
+
+// 411
+const std::string Replies::ERR_NORECIPIENT(const std::string &command) {
+  std::string message;
+  message += "411 ";
+  message += ":No recipient given ";
+  message += command;
+  message += "\r\n";
+  return (message);
+}
+
+// 412
+const std::string Replies::ERR_NOTEXTTOSEND() {
+  std::string message;
+  message += "412 ";
+  message += ":No text to send";
   message += "\r\n";
   return (message);
 }
