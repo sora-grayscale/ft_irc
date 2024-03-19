@@ -59,6 +59,8 @@ void CommandHandler::executeCommand(User &user) {
     INVITE(user);
   } else if (this->_command == "KICK") {
     KICK(user);
+  } else if (this->_command == "PRIVMSG") {
+    PRIVMSG(user);
   } else if (this->_command == "MOTD") {
     MOTD(user);
   } else if (this->_command == "LUSERS") {

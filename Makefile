@@ -27,6 +27,7 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler_Pass.cpp \
               src/CommandHandler_Ping.cpp \
               src/CommandHandler_Pong.cpp \
+              src/CommandHandler_Privmsg.cpp \
               src/CommandHandler_Quit.cpp \
               src/CommandHandler_Time.cpp \
               src/CommandHandler_Topic.cpp \

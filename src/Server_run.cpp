@@ -126,7 +126,7 @@ void Server::checkPing() {
   std::time_t now = std::time(NULL);
   std::time_t diff = now - this->_lastPingSent;
 
-  if (static_cast<long>(diff) < 10) {
+  if (static_cast<long>(diff) < PING_TIME) {
     return;
   }
   this->setPingTime(now);
@@ -135,11 +135,12 @@ void Server::checkPing() {
       continue;
     } else {
       User &user = this->findUser(this->_pollFd.at(i).fd);
-      if ((user.getState() & User::REGISTERD) == 0) {
+      if (user.getState() != User::REGISTERD) {
         continue;
+      } else {
+        sendPing(user);
+        checkPong(user);
       }
-      sendPing(user);
-      checkPong(user);
     }
   }
 }

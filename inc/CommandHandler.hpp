@@ -62,6 +62,7 @@ private:
   void TRACE(User &user);
   void ADMIN(User &user);
   void INFO(User &user);
+  void PRIVMSG(User &user);
   void KILL(User &user);
   void WHO(User &user);
   void WHOIS(User &user);
@@ -124,8 +125,17 @@ private:
   void sendPong(User &user);
 
   // error method
-
   void sendError(const int fd, const std::string &message);
+
+  // privmsg method
+  void CreatePrivMessage(std::string &message);
+  void sendPrivMessageChannel(const User &sender,
+                              const std::string &channelName,
+                              const std::string &message);
+  void sendPrivMessageUser(const User &sender, const std::string &nick,
+                           const std::string &message);
+  void sendPrivMessage(const User &user, const std::vector<std::string> &sendTo,
+                       const std::string &message);
 
   // debug
   void printStringAsInts(const std::string &input);

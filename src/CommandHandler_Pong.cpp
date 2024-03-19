@@ -9,7 +9,7 @@ void Server::checkPong(User &user) {
   std::time_t now = std::time(NULL);
   std::time_t diff = now - user.getPingTime();
 
-  if (static_cast<long>(diff) < 10) {
+  if (static_cast<long>(diff) < PING_TIME) {
     return;
   }
   delUser(user, "user Killed because of no respons\n\r");

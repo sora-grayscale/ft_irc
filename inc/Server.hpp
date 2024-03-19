@@ -42,6 +42,8 @@
 #define ADMIN_MAIL "admin@student.42tokyo.fr"
 #define ANON_NAME "anonymous"
 
+#define PING_TIME 100000
+
 class Server {
 public:
   Server(int argc, const char *argv[]);
