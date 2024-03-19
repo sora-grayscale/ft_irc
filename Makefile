@@ -3,7 +3,7 @@ NAME_DEBUG := $(NAME)_debug
 
 CXX := c++
 CXXFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98
-CXXFLAGS_DEBUG = $(CXXFLAGS) -g -fsanitize=address #-fsanitize=leak -fsanitize=undefined #-fsanitize=integer
+CXXFLAGS_DEBUG = $(CXXFLAGS) -g -fsanitize=address -fsanitize=leak -fsanitize=undefined #-fsanitize=integer
 DEPFLAGS = -MMD -MP -MF
 
 SRCDIR := src
