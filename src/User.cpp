@@ -3,11 +3,13 @@
 
 User::User()
     : _nickname(""), _username(""), _realname(""), _currentChannel(""), _fd(0),
-      _joinedChannelCount(0), _state(User::NONE), _modeFlags(User::None) {}
+      _joinedChannelCount(0), _pingTime(0), _state(User::NONE),
+      _modeFlags(User::None) {}
 
 User::User(const int fd)
     : _nickname(""), _username(""), _realname(""), _currentChannel(""), _fd(fd),
-      _joinedChannelCount(0), _state(User::NONE), _modeFlags(User::None) {}
+      _joinedChannelCount(0), _pingTime(0), _state(User::NONE),
+      _modeFlags(User::None) {}
 
 User &User::operator=(const User &user) {
   if (this != &user) {

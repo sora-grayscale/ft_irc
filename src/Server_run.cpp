@@ -135,6 +135,9 @@ void Server::checkPing() {
       continue;
     } else {
       User &user = this->findUser(this->_pollFd.at(i).fd);
+      if ((user.getState() & User::REGISTERD) == 0) {
+        continue;
+      }
       sendPing(user);
       checkPong(user);
     }
