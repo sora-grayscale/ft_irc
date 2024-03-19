@@ -6,7 +6,7 @@ void CommandHandler::CreatePrivMessage(std::string &message) {
       message += " ";
     }
 
-    if (i == 1 && this->_params.at(i).at(i) == ':') {
+    if (i == 1 && this->_params.at(1).at(0) == ':') {
       if (this->_params.at(i).size() != 1) {
         message = this->_params.at(i).substr(1);
       }
@@ -56,7 +56,7 @@ void CommandHandler::sendPrivMessage(const User &user,
   for (std::size_t i = 0 ; i < sendTo.size() ; i++) {
     privMessage = "PRIVMSG ";
     privMessage += sendTo.at(i);
-    privMessage += " ";
+    privMessage += " :";
     privMessage += message;
     privMessage += "\n\r";
 

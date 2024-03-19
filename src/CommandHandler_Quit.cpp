@@ -7,7 +7,7 @@ void CommandHandler::QUIT(User &user) {
   // その後deleteUser
   std::string message;
   message += "QUIT :";
-  if (this->_params.size() > 1) {
+  if (this->_params.size() >= 1) {
     for (std::size_t i = 0; i < this->_params.size(); i++) {
       message += " ";
       message += this->_params.at(i);
