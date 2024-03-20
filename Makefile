@@ -54,19 +54,11 @@ SERVER_OBJ = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SERVER_SRC))
 OBJDIR_DEBUG := obj_debug
 SERVER_OBJ_DEBUG = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR_DEBUG)/%.debug.o,$(SERVER_SRC))
 
-#CLIENT_SRC = $(SRCDIR)/client.cpp
-#CLIENT_OBJ = $(OBJDIR)/client.o
-
 INC := inc
 
 RM := rm -rf
 
 all: $(NAME)
-
-# debug: client
-# # debug: CXXFLAGS += -g -fsanitize=address -fsanitize=leak #-fsanitize=integer
-# debug: all
-# #	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server 8080 password
 
 run: all
 	@./$(NAME) 6665 password
@@ -112,22 +104,6 @@ $(NAME_DEBUG): $(SERVER_OBJ_DEBUG)
 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS_DEBUG) $(DEPFLAGS)\n"
 	@echo "     $(MGN)--->$(RES) $(GRN)$(NAME_DEBUG)$(RES)"
 	@echo "$(CYN)==============$(RES)"
-
-# server: $(SERVER_OBJ)
-# 	@$(CXX) -o $@ $(SERVER_OBJ)
-# 	@echo "$(CYN)\n=====link server=====$(RES)"
-# 	@echo "$(YEL)Objects$(RES): $(SERVER_OBJ)\n"
-# 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
-# 	@echo "     $(MGN)--->$(RES) $(GRN)server$(RES)"
-# 	@echo "$(CYN)==============$(RES)"
-
-# client: $(CLIENT_OBJ)
-# 	@$(CXX) -o $@ $(CLIENT_OBJ)
-# 	@echo "$(CYN)\n=====link client=====$(RES)"
-# 	@echo "$(YEL)Objects$(RES): $(CLIENT_OBJ)\n"
-# 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
-# 	@echo "     $(MGN)--->$(RES) $(GRN)client$(RES)"
-# 	@echo "$(CYN)==============$(RES)"
 
 $(OBJDIR):
 	@mkdir -p $@
