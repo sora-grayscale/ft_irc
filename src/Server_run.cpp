@@ -29,9 +29,13 @@ void Server::run() {
                 this->delUser(this->_pollFd.at(i).fd);
               }
             } else if (!receivedMessage.empty()) {
-              CommandHandler commandhandler(*this);
-              commandhandler.handleCommand(receivedMessage,
-                                           this->_pollFd.at(i).fd);
+              std::istringstream iss(receivedMessage);
+              std::string separetedMessage;
+              while (std::getline(iss, separetedMessage)) {
+                CommandHandler commandhandler(*this);
+                commandhandler.handleCommand(separetedMessage,
+                                             this->_pollFd.at(i).fd);
+              }
             }
           }
         } else if ((this->_pollFd.at(i).revents & POLLERR) ||

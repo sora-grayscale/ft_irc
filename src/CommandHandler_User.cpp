@@ -30,12 +30,12 @@ void CommandHandler::USER(User &user) {
     return;
   }
   // params[1]のバリデート mode
-  unsigned int mode;
-  std::istringstream iss(this->_params.at(1));
-  iss >> mode;
-  if (iss.bad() || iss.fail() || !iss.eof()) {
-    return;
-  }
+  // unsigned int mode;
+  // std::istringstream iss(this->_params.at(1));
+  // iss >> mode;
+  // if (iss.bad() || iss.fail() || !iss.eof()) {
+  //   return;
+  // }
 
   // params[2]のバリデート unused
   // do nothing
@@ -57,16 +57,16 @@ void CommandHandler::USER(User &user) {
 
   // 全部ok setをする
   user.setUserName(this->_params.at(0));
-  if ((mode & (1 << 2)) != 0) {
-    user.setMode(User::Wallops, true);
-  } else {
-    user.setMode(User::Wallops, false);
-  }
-  if ((mode & (1 << 3)) != 0) {
-    user.setMode(User::Invisible, true);
-  } else {
-    user.setMode(User::Invisible, false);
-  }
+  // if ((mode & (1 << 2)) != 0) {
+  //   user.setMode(User::Wallops, true);
+  // } else {
+  //   user.setMode(User::Wallops, false);
+  // }
+  // if ((mode & (1 << 3)) != 0) {
+  //   user.setMode(User::Invisible, true);
+  // } else {
+  //   user.setMode(User::Invisible, false);
+  // }
   user.setRealName(realname);
   user.setState(User::USER, true);
 

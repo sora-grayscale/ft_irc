@@ -18,8 +18,8 @@ void CommandHandler::replyRegistered(const User &user) {
   // RPL_CREATED
   this->_server.sendReply(fd, Replies::RPL_CREATED(date));
   // RPL_MYINFO
-  this->_server.sendReply(fd, Replies::RPL_MYINFO(host, ver, availUserMode, availChannnelMode));
-
+  this->_server.sendReply(
+      fd, Replies::RPL_MYINFO(host, ver, availUserMode, availChannnelMode));
 }
 
 bool CommandHandler::isSpecialChar(const char c) {

@@ -9,8 +9,17 @@ void CommandHandler::QUIT(User &user) {
   message += "QUIT :";
   if (this->_params.size() >= 1) {
     for (std::size_t i = 0; i < this->_params.size(); i++) {
-      message += " ";
-      message += this->_params.at(i);
+      if (i != 0) {
+        message += " ";
+      }
+
+      if (i == 0 && this->_params.at(0).at(0) == ':') {
+        if (this->_params.at(i).size() != 1) {
+          message += this->_params.at(i).substr(1);
+        }
+      } else {
+        message += this->_params.at(i);
+      }
     }
   }
   message += "\n\r";

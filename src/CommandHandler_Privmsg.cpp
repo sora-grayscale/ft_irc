@@ -16,8 +16,9 @@ void CommandHandler::CreateParamToOneString(std::string &message) {
   }
 }
 
-const std::string CommandHandler::createPrivMessage(const std::string &sendTo,
-                                    const std::string &message) {
+const std::string
+CommandHandler::createPrivMessage(const std::string &sendTo,
+                                  const std::string &message) {
   std::string str;
   str = "PRIVMSG ";
   str += sendTo;

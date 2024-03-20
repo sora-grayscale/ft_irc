@@ -1,8 +1,8 @@
 #include "CommandHandler.hpp"
 
 void CommandHandler::sendNoticeMessageChannel(const User &sender,
-                                            const std::string &channelName,
-                                            const std::string &message) {
+                                              const std::string &channelName,
+                                              const std::string &message) {
   if (!this->_server.isExistChannel(channelName)) {
     return;
   }
@@ -25,7 +25,8 @@ void CommandHandler::sendNoticeMessageUser(const std::string &nick,
   this->_server.sendReply(sendTo.getFd(), message);
 }
 
-const std::string CommandHandler::createNoticeMessage(const std::string &sendTo,
+const std::string
+CommandHandler::createNoticeMessage(const std::string &sendTo,
                                     const std::string &message) {
   std::string str;
   str = "NOTICE ";
@@ -37,8 +38,8 @@ const std::string CommandHandler::createNoticeMessage(const std::string &sendTo,
 }
 
 void CommandHandler::sendNoticeMessage(const User &user,
-                                     const std::vector<std::string> &sendTo,
-                                     const std::string &message) {
+                                       const std::vector<std::string> &sendTo,
+                                       const std::string &message) {
   std::string noticeMessage;
 
   for (std::size_t i = 0; i < sendTo.size(); i++) {
