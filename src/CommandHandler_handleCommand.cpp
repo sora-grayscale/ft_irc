@@ -49,6 +49,8 @@ void CommandHandler::executeCommand(User &user) {
     JOIN(user);
   } else if (this->_command == "PART") {
     PART(user);
+  } else if (this->_command == "MODE") {
+    MODE(user);
   } else if (this->_command == "TOPIC") {
     TOPIC(user);
   } else if (this->_command == "NAMES") {

@@ -58,6 +58,16 @@ const std::string Replies::RPL_MYINFO(const std::string &servername,
   return (message);
 }
 
+// 221
+const std::string Replies::RPL_UMODEIS(const std::string &userModeString) {
+  std::string message;
+  message += "221 ";
+  message += "+";
+  message += userModeString;
+  message += "\r\n";
+  return (message);
+}
+
 // 251
 const std::string Replies::RPL_LUSERCLIENT(const int &users,
                                            const int &services,
@@ -286,6 +296,45 @@ const std::string Replies::RPL_LISTEND() {
   return (message);
 }
 
+// 324
+const std::string Replies::RPL_CHANNELMODEIS(const std::string &channelName,
+                                             const std::string &mode,
+                                             const std::string &modeParams) {
+  std::string message;
+  message += "324 ";
+  message += channelName;
+  message += " ";
+  message += mode;
+  message += " ";
+  message += modeParams;
+  message += "\r\n";
+  return (message);
+}
+
+// 325
+const std::string Replies::RPL_UNIQOPIS(const std::string &channelName,
+                                        const std::string &nick) {
+  std::string message;
+  message += "325 ";
+  message += channelName;
+  message += " ";
+  message += nick;
+  message += "\r\n";
+  return (message);
+}
+
+// 329
+const std::string Replies::RPL_CREATIONTIME(const std::string &channelName,
+                                            std::time_t creationTime) {
+  std::stringstream ss;
+  ss << "329 ";
+  ss << channelName;
+  ss << " ";
+  ss << creationTime;
+  ss << "\r\n";
+  return (ss.str());
+}
+
 // 331
 const std::string Replies::RPL_NOTOPIC(const std::string &channel) {
   std::string message;
@@ -331,6 +380,50 @@ const std::string Replies::RPL_INVITING(const std::string &channel,
   message += channel;
   message += " ";
   message += nick;
+  message += "\r\n";
+  return (message);
+}
+
+// 346
+const std::string Replies::RPL_INVITELIST(const std::string &channelName,
+                                          std::string &mask) {
+  std::string message;
+  message += "346 ";
+  message += channelName;
+  message += " ";
+  message += mask;
+  message += "\r\n";
+  return (message);
+}
+
+// 347
+const std::string Replies::RPL_ENDOFINVITELIST(const std::string &channelName) {
+  std::string message;
+  message += "347 ";
+  message += channelName;
+  message += " :End of channel invite list";
+  message += "\r\n";
+  return (message);
+}
+
+// 348
+const std::string Replies::RPL_EXCEPTLIST(const std::string &channelName,
+                                          std::string &mask) {
+  std::string message;
+  message += "348 ";
+  message += channelName;
+  message += " ";
+  message += mask;
+  message += "\r\n";
+  return (message);
+}
+
+// 349
+const std::string Replies::RPL_ENDOFEXCEPTLIST(const std::string &channelName) {
+  std::string message;
+  message += "349 ";
+  message += channelName;
+  message += " :End of channel exception list";
   message += "\r\n";
   return (message);
 }
@@ -411,6 +504,28 @@ const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
   message += "366 ";
   message += channelName;
   message += " :End of NAMES list";
+  message += "\r\n";
+  return (message);
+}
+
+// 367
+const std::string Replies::RPL_BANLIST(const std::string &channelName,
+                                       std::string &mask) {
+  std::string message;
+  message += "367 ";
+  message += channelName;
+  message += " ";
+  message += mask;
+  message += "\r\n";
+  return (message);
+}
+
+// 368
+const std::string Replies::RPL_ENDOFBANLIST(const std::string &channelName) {
+  std::string message;
+  message += "368 ";
+  message += channelName;
+  message += " :End of channel ban list";
   message += "\r\n";
   return (message);
 }
@@ -723,12 +838,34 @@ const std::string Replies::ERR_PASSWDMISMATCH() {
   return (message);
 }
 
+// 467
+const std::string Replies::ERR_KEYSET(const std::string &channelName) {
+  std::string message;
+  message += "467 ";
+  message += channelName;
+  message += " :Channel key already set";
+  message += "\r\n";
+  return (message);
+}
+
 // 471
 const std::string Replies::ERR_CHANNELISFULL(const std::string &channelName) {
   std::string message;
   message += "471 ";
   message += channelName;
   message += " :Cannot join channel (+l)";
+  message += "\r\n";
+  return (message);
+}
+
+//  472
+const std::string Replies::ERR_UNKNOWNMODE(const char c,
+                                           const std::string &channelName) {
+  std::string message;
+  message += "472 ";
+  message += c;
+  message += " :is unknown mode char to me for ";
+  message += channelName;
   message += "\r\n";
   return (message);
 }
@@ -773,6 +910,16 @@ const std::string Replies::ERR_BADCHANMASK(const std::string &channelName) {
   return (message);
 }
 
+// 477
+const std::string Replies::ERR_NOCHANMODES(const std::string &channelName) {
+  std::string message;
+  message += "477 ";
+  message += channelName;
+  message += " :Channel doesn't support modes";
+  message += "\r\n";
+  return (message);
+}
+
 // 481
 const std::string Replies::ERR_NOPRIVILEGES() {
   std::string message;
@@ -806,6 +953,24 @@ const std::string Replies::ERR_NOOPERHOST() {
   std::string message;
   message += "491 ";
   message += ":No O-lines for your host";
+  message += "\r\n";
+  return (message);
+}
+
+// 501
+const std::string Replies::ERR_UMODEUNKNOWNFLAG() {
+  std::string message;
+  message += "501 ";
+  message += ":Unknown MODE flag";
+  message += "\r\n";
+  return (message);
+}
+
+// 502
+const std::string Replies::ERR_USERSDONTMATCH() {
+  std::string message;
+  message += "502 ";
+  message += ":Cannot change mode for other users";
   message += "\r\n";
   return (message);
 }

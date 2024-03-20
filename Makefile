@@ -20,6 +20,7 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler_Links.cpp \
               src/CommandHandler_List.cpp \
               src/CommandHandler_Lusers.cpp \
+              src/CommandHandler_Mode.cpp \
               src/CommandHandler_Names.cpp \
               src/CommandHandler_Nick.cpp \
               src/CommandHandler_Notice.cpp \
