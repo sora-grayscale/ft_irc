@@ -4,9 +4,6 @@ void CommandHandler::handleCommand(const std::string &message, const int fd) {
   User &user = this->_server.findUser(fd);
 
   parseMessage(message);
-  for (std::size_t i = 0; i < this->_params.size(); i++) {
-    std::cout << this->_params.at(i) << std::endl;
-  }
   if (!checkRegisterdState(user)) {
     return;
   }
