@@ -7,6 +7,20 @@
 
 class Replies {
 public:
+  // 001
+  static const std::string RPL_WELCOME(const std::string &nick,
+                                       const std::string &user,
+                                       const std::string &host);
+  // 002
+  static const std::string RPL_YOURHOST(const std::string &servername,
+                                        const std::string &ver);
+  // 003
+  static const std::string RPL_CREATED(const std::string &date);
+  // 004
+  static const std::string RPL_MYINFO(const std::string &servername,
+                                      const std::string &version,
+                                      const std::string &availUserMode,
+                                      const std::string &availChannelMode);
   // 251
   static const std::string
   RPL_LUSERCLIENT(const int &users, const int &services, const int &servers);

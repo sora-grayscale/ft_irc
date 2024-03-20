@@ -1,5 +1,63 @@
 #include "Replies.hpp"
 
+// 001
+const std::string Replies::RPL_WELCOME(const std::string &nick,
+                                       const std::string &user,
+                                       const std::string &host) {
+  std::string message;
+  message += "001 ";
+  message += "Welcome to the Internet Relay Network";
+  message += "\r\n";
+  message += nick;
+  message += "!";
+  message += user;
+  message += "@";
+  message += host;
+  message += "\r\n";
+  return (message);
+}
+
+// 002
+const std::string Replies::RPL_YOURHOST(const std::string &servername,
+                                        const std::string &ver) {
+  std::string message;
+  message += "002 ";
+  message += "Your host is ";
+  message += servername;
+  message += ", running version ";
+  message += ver;
+  message += "\r\n";
+  return (message);
+}
+
+// 003
+const std::string Replies::RPL_CREATED(const std::string &date) {
+  std::string message;
+  message += "003 ";
+  message += "This server was created ";
+  message += date;
+  message += "\r\n";
+  return (message);
+}
+
+// 004
+const std::string Replies::RPL_MYINFO(const std::string &servername,
+                                      const std::string &version,
+                                      const std::string &availUserMode,
+                                      const std::string &availChannelMode) {
+  std::string message;
+  message += "004 ";
+  message += servername;
+  message += " ";
+  message += version;
+  message += " ";
+  message += availUserMode;
+  message += " ";
+  message += availChannelMode;
+  message += "\r\n";
+  return (message);
+}
+
 // 251
 const std::string Replies::RPL_LUSERCLIENT(const int &users,
                                            const int &services,
