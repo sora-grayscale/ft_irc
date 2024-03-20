@@ -77,6 +77,7 @@ private:
   bool isSpecialChar(const char c);
   bool validateNick(const std::string &str);
   bool isReservedNick(const std::string &nick);
+  void replyRegistered(const User &user);
 
   // join method
   void splitChannelAndKey(std::vector<std::string> &channels,

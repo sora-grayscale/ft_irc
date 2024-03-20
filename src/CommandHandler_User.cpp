@@ -72,6 +72,7 @@ void CommandHandler::USER(User &user) {
 
   // 登録済みのmapに移動させる
   if (user.getState() == User::REGISTERD) {
+    replyRegistered(user);
     this->_server.addRegisterMap(user.getFd(), User(user));
     this->_server.eraseTmpMap(user.getFd());
   }
