@@ -47,6 +47,7 @@ private:
   void OPER(User &user);
   void JOIN(User &user);
   void PART(User &user);
+  void MODE(User &user);
   void TOPIC(User &user);
   void NAMES(User &user);
   void LIST(User &user);
@@ -95,6 +96,13 @@ private:
 
   // part method
   void splitChannel(std::vector<std::string> &channels);
+
+  // mode method
+  void handleChannnelMode(User &user);
+  void handleUserMode(User &user);
+  const std::string generateUserModeString(const User &user);
+  bool checkUserModeFlag(const std::string &flag);
+  void setUserModeFlag(User &user, const std::string &flag);
 
   // topic method
   void setTopic(const User &user, Channel &channel) const;
