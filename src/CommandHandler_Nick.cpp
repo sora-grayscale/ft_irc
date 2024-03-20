@@ -16,7 +16,7 @@ void CommandHandler::replyRegistered(const User &user) {
   // RPL_YOURHOST
   this->_server.sendReply(fd, Replies::RPL_YOURHOST(host, ver));
   // RPL_CREATED
-  this->_server.sendReply(fd, date);
+  this->_server.sendReply(fd, Replies::RPL_CREATED(date));
   // RPL_MYINFO
   this->_server.sendReply(fd, Replies::RPL_MYINFO(host, ver, availUserMode, availChannnelMode));
 
