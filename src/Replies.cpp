@@ -6,7 +6,8 @@ const std::string Replies::RPL_WELCOME(const std::string &nick,
                                        const std::string &host) {
   std::string message;
   message += "001 ";
-  message += "Welcome to the Internet Relay Network";
+  message += nick;
+  message += " :Welcome to the Internet Relay Network";
   message += nick;
   message += "!";
   message += user;

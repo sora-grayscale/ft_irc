@@ -21,6 +21,9 @@ void Server::run() {
           } else {
             std::string receivedMessage =
                 readClientCommand(this->_pollFd.at(i).fd);
+            //debug --------------------------------------------------
+            std::cout << receivedMessage << std::endl;
+            //debug --------------------------------------------------
             if (receivedMessage == "") {
               try {
                 this->delUser(this->findUser(this->_pollFd.at(i).fd),
