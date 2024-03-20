@@ -80,7 +80,10 @@ public:
   bool isRegiUser(const int &fd);
 
   // send
+  static const std::string createUserPrefix(const User &user);
   static void sendReply(const int fd, const std::string &reply);
+  static void sendReply(const User &sender, const int fd,
+                        const std::string &reply);
 
   // user
   int getUserFd(const std::string &nick) const;
@@ -141,6 +144,6 @@ private:
   Server();
   Server(const Server &server);
   Server &operator=(const Server &server);
-};
+  };
 
 #endif

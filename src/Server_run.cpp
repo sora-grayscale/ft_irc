@@ -29,6 +29,7 @@ void Server::run() {
                 this->delUser(this->_pollFd.at(i).fd);
               }
             } else if (!receivedMessage.empty() && receivedMessage != "\n") {
+              std::cout << receivedMessage << std::endl;
               std::istringstream iss(receivedMessage);
               std::string separetedMessage;
               while (std::getline(iss, separetedMessage)) {
@@ -113,6 +114,43 @@ void Server::sendReply(const int fd, const std::string &reply) {
 
   while (sent < to_send) {
     ssize_t count = send(fd, reply.c_str() + sent, to_send - sent, 0);
+    if (count < 0) {
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        // ノンブロッキング操作で再試行が必要
+        continue;
+      } else {
+        // その他のエラー
+        throw std::runtime_error(std::strerror(errno));
+      }
+    }
+    sent += count;
+  }
+}
+
+const std::string Server::createUserPrefix(const User &user) {
+  std::string prefix;
+
+  prefix += ":";
+  prefix += user.getNickName();
+  prefix += "!";
+  prefix += user.getUserName();
+  prefix += "@";
+  prefix += SERVER_NAME;
+  prefix += " ";
+  return prefix;
+}
+
+void Server::sendReply(const User &sender, const int fd, const std::string &reply) {
+  ssize_t sent = 0;
+  std::string prefix = createUserPrefix(sender);
+  std::string message = prefix;
+  message += reply;
+
+  ssize_t to_send = message.size();
+
+
+  while (sent < to_send) {
+    ssize_t count = send(fd, message.c_str() + sent, to_send - sent, 0);
     if (count < 0) {
       if (errno == EAGAIN || errno == EWOULDBLOCK) {
         // ノンブロッキング操作で再試行が必要
