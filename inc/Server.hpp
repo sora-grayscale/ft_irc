@@ -88,6 +88,7 @@ public:
   std::map<std::string, Channel>::const_iterator getChannelsEnd() const;
   std::map<int, User>::const_iterator getUserBegin() const;
   std::map<int, User>::const_iterator getUserEnd() const;
+  void eraseChannel(const std::string channelName);
 
 private:
   std::string _serverName;

@@ -167,3 +167,10 @@ std::map<int, User>::const_iterator Server::getUserBegin() const {
 std::map<int, User>::const_iterator Server::getUserEnd() const {
   return (this->_registerdUsers.end());
 }
+
+void Server::eraseChannel(const std::string channelName) {
+  if (!this->isExistChannel(channelName)) {
+    return;
+  }
+  this->_channels.erase(channelName);
+}
