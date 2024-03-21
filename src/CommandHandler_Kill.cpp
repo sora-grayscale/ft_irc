@@ -16,7 +16,6 @@ void CommandHandler::KILL(User &user) {
     return;
   }
   // kill_user
-  std::string comment = this->_params.at(1);
-  comment += "\n\r";
-  this->_server.delUser(this->_server.findUser(this->_params.at(0)), comment);
+  this->_server.delUser(this->_server.findUser(this->_params.at(0)),
+                        this->_params.at(1) + "\r\n");
 }

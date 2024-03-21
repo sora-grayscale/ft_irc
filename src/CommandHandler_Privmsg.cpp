@@ -24,7 +24,7 @@ CommandHandler::createPrivMessage(const std::string &sendTo,
   str += sendTo;
   str += " :";
   str += message;
-  str += "\n\r";
+  str += "\r\n";
   return str;
 }
 
