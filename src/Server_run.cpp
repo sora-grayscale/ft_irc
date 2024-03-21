@@ -140,7 +140,8 @@ const std::string Server::createUserPrefix(const User &user) {
   return prefix;
 }
 
-void Server::sendReply(const User &sender, const int fd, const std::string &reply) {
+void Server::sendReply(const User &sender, const int fd,
+                       const std::string &reply) {
   ssize_t sent = 0;
   std::string prefix = createUserPrefix(sender);
   std::string message = prefix;

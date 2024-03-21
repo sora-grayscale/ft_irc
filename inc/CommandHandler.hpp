@@ -153,7 +153,7 @@ private:
   void sendNoticeMessageChannel(const User &sender,
                                 const std::string &channelName,
                                 const std::string &message);
-  void sendNoticeMessageUser(const std::string &nick,
+  void sendNoticeMessageUser(const User &sender, const std::string &nick,
                              const std::string &message);
   void sendNoticeMessage(const User &user,
                          const std::vector<std::string> &sendTo,

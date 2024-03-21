@@ -56,7 +56,7 @@ void CommandHandler::sendPrivMessageUser(const User &sender,
   }
   User &sendTo = this->_server.findUser(nick);
 
-  this->_server.sendReply(sendTo.getFd(), message);
+  this->_server.sendReply(sender, sendTo.getFd(), message);
 }
 
 void CommandHandler::sendPrivMessage(const User &user,

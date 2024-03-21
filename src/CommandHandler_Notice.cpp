@@ -12,17 +12,18 @@ void CommandHandler::sendNoticeMessageChannel(const User &sender,
   if (!sendTo.isUserInChannel(sender)) {
     return;
   }
-  sendTo.broadcastMessage(message, sender.getFd());
+  sendTo.broadcastMessage(message, sender);
 }
 
-void CommandHandler::sendNoticeMessageUser(const std::string &nick,
+void CommandHandler::sendNoticeMessageUser(const User &sender,
+                                           const std::string &nick,
                                            const std::string &message) {
   if (!this->_server.isRegiNick(nick)) {
     return;
   }
   User &sendTo = this->_server.findUser(nick);
 
-  this->_server.sendReply(sendTo.getFd(), message);
+  this->_server.sendReply(sender, sendTo.getFd(), message);
 }
 
 const std::string
@@ -47,7 +48,7 @@ void CommandHandler::sendNoticeMessage(const User &user,
     if (isValidChannelName(sendTo.at(i))) {
       sendNoticeMessageChannel(user, sendTo.at(i), noticeMessage);
     } else {
-      sendNoticeMessageUser(sendTo.at(i), noticeMessage);
+      sendNoticeMessageUser(user, sendTo.at(i), noticeMessage);
     }
   }
 }

@@ -75,14 +75,14 @@ public:
   static const std::string RPL_LISTEND();
   // 324
   static const std::string RPL_CHANNELMODEIS(const std::string &channelName,
-                                               const std::string &mode,
-                                               const std::string &modeParams);
+                                             const std::string &mode,
+                                             const std::string &modeParams);
   // 325
   static const std::string RPL_UNIQOPIS(const std::string &channelName,
-                                          const std::string &nick);
+                                        const std::string &nick);
   // 329
   static const std::string RPL_CREATIONTIME(const std::string &channelName,
-                                              std::time_t creationTime);
+                                            std::time_t creationTime);
   // 331
   static const std::string RPL_NOTOPIC(const std::string &channel);
   // 332
@@ -97,16 +97,14 @@ public:
                                         const std::string &nick);
   // 346
   static const std::string RPL_INVITELIST(const std::string &channelName,
-                                            std::string &mask);
+                                          std::string &mask);
   // 347
-  static const std::string
-  RPL_ENDOFINVITELIST(const std::string &channelName);
+  static const std::string RPL_ENDOFINVITELIST(const std::string &channelName);
   // 348
   static const std::string RPL_EXCEPTLIST(const std::string &channelName,
-                                            std::string &mask);
+                                          std::string &mask);
   // 349
-  static const std::string
-  RPL_ENDOFEXCEPTLIST(const std::string &channelName);
+  static const std::string RPL_ENDOFEXCEPTLIST(const std::string &channelName);
   // 351
   static const std::string RPL_VERSION(const std::string &version,
                                        const std::string &debuglevel,
@@ -124,7 +122,7 @@ public:
   static const std::string RPL_ENDOFNAMES(const std::string &channelName);
   // 367
   static const std::string RPL_BANLIST(const std::string &channelName,
-                                         std::string &mask);
+                                       std::string &mask);
   // 368
   static const std::string RPL_ENDOFBANLIST(const std::string &channelName);
   // 369
@@ -199,7 +197,7 @@ public:
   static const std::string ERR_CHANNELISFULL(const std::string &channelName);
   // 472
   static const std::string ERR_UNKNOWNMODE(const char c,
-                                             const std::string &channelName);
+                                           const std::string &channelName);
   // 473
   static const std::string ERR_INVITEONLYCHAN(const std::string &channelName);
   // 474

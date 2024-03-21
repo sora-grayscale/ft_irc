@@ -144,6 +144,6 @@ private:
   Server();
   Server(const Server &server);
   Server &operator=(const Server &server);
-  };
+};
 
 #endif
