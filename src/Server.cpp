@@ -5,7 +5,7 @@
 Server::Server(int argc, const char *argv[])
     : _serverName(""), _password(""), _port(0), _sfd(0), _addr(), _pollFd(),
       _fdToNickname(), _tmpUsers(), _registerdUsers(), _channels(),
-      _nickHistory(), _startDay() {
+      _nickHistory(), _startDay(), _lastPingSent(std::time(NULL)) {
   try {
     Server::checkServerName(SERVER_NAME);
     this->_serverName = SERVER_NAME;
@@ -58,10 +58,22 @@ void Server::setNickHistory(const std::string &nick) {
 }
 
 void Server::eraseTmpMap(const int fd) { this->_tmpUsers.erase(fd); }
+void Server::eraseRegiMap(const int fd) { this->_registerdUsers.erase(fd); }
+void Server::erasePollfd(const int fd) {
+  for (std::vector<struct pollfd>::iterator it = this->_pollFd.begin();
+       it != this->_pollFd.end(); it++) {
+    if (it->fd == fd) {
+      this->_pollFd.erase(it);
+      return;
+    }
+  }
+}
 
 void Server::addRegisterMap(const int fd, const User &user) {
   this->_registerdUsers[fd] = user; // fd, user
 }
+
+void Server::setPingTime(const std::time_t time) { this->_lastPingSent = time; }
 
 // Lookup
 User &Server::findUser(const int fd) {
@@ -117,7 +129,12 @@ bool Server::isNick(const std::string &nick) {
   return false;
 }
 
-// send
+bool Server::isRegiUser(const int &fd) {
+  if (this->_registerdUsers.find(fd) != this->_registerdUsers.end()) {
+    return true;
+  }
+  return false;
+}
 
 // user
 int Server::getUserFd(const std::string &nick) const {
@@ -160,10 +177,62 @@ std::map<std::string, Channel>::const_iterator Server::getChannelsEnd() const {
   return (this->_channels.end());
 }
 
+std::map<std::string, Channel> &Server::getChannels() {
+  return (this->_channels);
+}
+
 std::map<int, User>::const_iterator Server::getUserBegin() const {
   return (this->_registerdUsers.begin());
 }
 
 std::map<int, User>::const_iterator Server::getUserEnd() const {
   return (this->_registerdUsers.end());
+}
+
+void Server::delUserChannel(User &user, const std::string &comment) {
+  int fd = user.getFd();
+  if (!this->isRegiUser(fd)) {
+    return;
+  }
+  std::map<std::string, Channel> &channels = this->getChannels();
+
+  for (std::map<std::string, Channel>::iterator it = channels.begin();
+       it != channels.end(); it++) {
+    if (it->second.isUserInChannel(user.getNickName())) {
+      it->second.broadcastMessage(comment, user);
+      it->second.removeUser(user);
+    }
+  }
+}
+
+void Server::eraseUserList(User &user) {
+  int fd = user.getFd();
+  if (!this->isRegiUser(fd)) {
+    this->eraseTmpMap(fd);
+  } else {
+    this->eraseRegiMap(fd);
+  }
+  this->erasePollfd(fd);
+}
+
+void Server::delUser(User &user, const std::string &comment) {
+  int fd = user.getFd();
+  // userをチャンネルから消去, messageの送信
+  delUserChannel(user, comment);
+  // userを持っているリスト系から取り除く
+  eraseUserList(user);
+  // userのfdをクローズ
+  close(fd);
+  std::cout << "close socket: " << fd << std::endl;
+}
+
+void Server::delUser(const int fd) {
+  if (!this->isRegiUser(fd)) {
+    this->eraseTmpMap(fd);
+  } else {
+    this->eraseRegiMap(fd);
+  }
+  erasePollfd(fd);
+  close(fd);
+  std::cout << "close socket: " << fd << std::endl;
 }

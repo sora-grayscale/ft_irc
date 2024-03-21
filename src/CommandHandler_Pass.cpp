@@ -14,6 +14,7 @@ void CommandHandler::PASS(User &user) {
   if (this->_params.at(0) != this->_server.getPassword()) {
     user.setState(User::PASS, false);
     this->_server.sendReply(user.getFd(), Replies::ERR_PASSWDMISMATCH());
+    this->_server.delUser(user.getFd());
     return;
   }
   user.setState(User::PASS, true);

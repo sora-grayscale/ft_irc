@@ -34,7 +34,7 @@ void Channel::broadcastMessage(const std::string &message, const User &sender) {
     if (*it == &sender) {
       continue;
     }
-    Server::sendReply((*it)->getFd(), message);
+    Server::sendReply(sender, (*it)->getFd(), message);
   }
 }
 
