@@ -275,11 +275,7 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
 
   for (std::size_t i = 0; i < mode.size(); i++) {
     if (mode.at(i) == 'O' || mode.at(i) == 'o' || mode.at(i) == 'v') {
-      if (!channel.isUserInChannel(this->_params.at(paramPos))) {
-        Server::sendReply(user.getFd(),
-                          Replies::ERR_USERNOTINCHANNEL(
-                              this->_params.at(paramPos), channelName));
-        paramPos++;
+      if (!handleCreOpeVoiMode(user, channel, channelName, paramPos)) {
         continue;
       }
       User &tmpUser = this->_server.findUser(this->_params.at(paramPos));
@@ -315,74 +311,35 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
       }
       channel.setChannelMode(Channel::Key, enable);
     } else if (mode.at(i) == 'l') {
-      if (enable == true) {
-        std::size_t num;
-        std::istringstream iss(this->_params.at(paramPos));
-        paramPos++;
-        iss >> num;
-        if (iss.fail() || iss.bad()) {
-          // notice not a num
-          Server::sendReply(user.getFd(),
-                            Replies::ERR_UNKNOWNMODE('l', channelName));
-          continue;
-        }
-        channel.setUserLimit(num);
+      if (!handleLimitMode(user, channel, channelName, enable, paramPos)) {
+        continue;
       }
       channel.setChannelMode(Channel::Limit, enable);
     } else if (mode.at(i) == 'b') {
-      if (paramPos < this->_params.size()) {
-        if (enable == true) {
-          channel.addBanMask(this->_params.at(paramPos));
-        } else {
-          channel.removeBanMask(this->_params.at(paramPos));
-        }
-        paramPos++;
-      }
-      for (std::set<std::string>::const_iterator it = channel.getBanMaskBegin();
-           it != channel.getBanMaskEnd(); it++) {
-        Server::sendReply(user.getFd(), Replies::RPL_BANLIST(channelName, *it));
-      }
-      Server::sendReply(user.getFd(), Replies::RPL_ENDOFBANLIST(channelName));
+      handleBanMode(user, channel, channelName, enable, paramPos);
       channel.setChannelMode(Channel::BanMask, enable);
     } else if (mode.at(i) == 'e') {
-      if (paramPos < this->_params.size()) {
-        if (enable == true) {
-          channel.addExceptionMask(this->_params.at(paramPos));
-        } else {
-          channel.removeExceptionMask(this->_params.at(paramPos));
-        }
-        paramPos++;
-      }
-      for (std::set<std::string>::const_iterator it =
-               channel.getExceptionMaskBegin();
-           it != channel.getExceptionMaskEnd(); it++) {
-        Server::sendReply(user.getFd(),
-                          Replies::RPL_EXCEPTLIST(channelName, *it));
-      }
-      Server::sendReply(user.getFd(),
-                        Replies::RPL_ENDOFEXCEPTLIST(channelName));
+      handleExceptionMode(user, channel, channelName, enable, paramPos);
       channel.setChannelMode(Channel::ExceptionMask, enable);
     } else if (mode.at(i) == 'I') {
-      if (paramPos < this->_params.size()) {
-        if (enable == true) {
-          channel.addInvitationMask(this->_params.at(paramPos));
-        } else {
-          channel.removeInvitationMask(this->_params.at(paramPos));
-        }
-        paramPos++;
-      }
-      for (std::set<std::string>::const_iterator it =
-               channel.getInvitationMaskBegin();
-           it != channel.getInvitationMaskEnd(); it++) {
-        Server::sendReply(user.getFd(),
-                          Replies::RPL_INVITELIST(channelName, *it));
-      }
-      Server::sendReply(user.getFd(),
-                        Replies::RPL_ENDOFINVITELIST(channelName));
+      handleInvitationMode(user, channel, channelName, enable, paramPos);
       channel.setChannelMode(Channel::InvitationMask, enable);
     }
   }
   sendChannelModeAndCreationTimeResponse(user, channelName, channel);
+}
+
+bool CommandHandler::handleCreOpeVoiMode(const User &user, Channel &channel,
+                                         const std::string &channelName,
+                                         std::size_t &paramPos) {
+  if (!channel.isUserInChannel(this->_params.at(paramPos))) {
+    Server::sendReply(
+        user.getFd(),
+        Replies::ERR_USERNOTINCHANNEL(this->_params.at(paramPos), channelName));
+    paramPos++;
+    return (false);
+  }
+  return (true);
 }
 
 bool CommandHandler::handleKeyMode(const User &user, Channel &channel,
@@ -404,6 +361,84 @@ bool CommandHandler::handleKeyMode(const User &user, Channel &channel,
   }
   paramPos++;
   return (true);
+}
+
+bool CommandHandler::handleLimitMode(const User &user, Channel &channel,
+                                     const std::string &channelName,
+                                     const bool &enable,
+                                     std::size_t &paramPos) {
+  if (enable == true) {
+    std::size_t num;
+    std::istringstream iss(this->_params.at(paramPos));
+    paramPos++;
+    iss >> num;
+    if (iss.fail() || iss.bad()) {
+      // notice not a num
+      Server::sendReply(user.getFd(),
+                        Replies::ERR_UNKNOWNMODE('l', channelName));
+      return (false);
+    }
+    channel.setUserLimit(num);
+  }
+  return (true);
+}
+
+void CommandHandler::handleBanMode(const User &user, Channel &channel,
+                                   const std::string &channelName,
+                                   const bool &enable, std::size_t &paramPos) {
+  if (paramPos < this->_params.size()) {
+    if (enable == true) {
+      channel.addBanMask(this->_params.at(paramPos));
+    } else {
+      channel.removeBanMask(this->_params.at(paramPos));
+    }
+    paramPos++;
+  }
+  for (std::set<std::string>::const_iterator it = channel.getBanMaskBegin();
+       it != channel.getBanMaskEnd(); it++) {
+    Server::sendReply(user.getFd(), Replies::RPL_BANLIST(channelName, *it));
+  }
+  Server::sendReply(user.getFd(), Replies::RPL_ENDOFBANLIST(channelName));
+}
+
+void CommandHandler::handleExceptionMode(const User &user, Channel &channel,
+                                         const std::string &channelName,
+                                         const bool &enable,
+                                         std::size_t &paramPos) {
+  if (paramPos < this->_params.size()) {
+    if (enable == true) {
+      channel.addExceptionMask(this->_params.at(paramPos));
+    } else {
+      channel.removeExceptionMask(this->_params.at(paramPos));
+    }
+    paramPos++;
+  }
+  for (std::set<std::string>::const_iterator it =
+           channel.getExceptionMaskBegin();
+       it != channel.getExceptionMaskEnd(); it++) {
+    Server::sendReply(user.getFd(), Replies::RPL_EXCEPTLIST(channelName, *it));
+  }
+  Server::sendReply(user.getFd(), Replies::RPL_ENDOFEXCEPTLIST(channelName));
+}
+
+void CommandHandler::handleInvitationMode(const User &user, Channel &channel,
+                                          const std::string &channelName,
+                                          const bool &enable,
+                                          std::size_t &paramPos) {
+  if (paramPos < this->_params.size()) {
+    if (enable == true) {
+      channel.addInvitationMask(this->_params.at(paramPos));
+    } else {
+      channel.removeInvitationMask(this->_params.at(paramPos));
+    }
+    paramPos++;
+  }
+  for (std::set<std::string>::const_iterator it =
+           channel.getInvitationMaskBegin();
+       it != channel.getInvitationMaskEnd(); it++) {
+    Server::sendReply(user.getFd(), Replies::RPL_INVITELIST(channelName, *it));
+  }
+  Server::sendReply(user.getFd(), Replies::RPL_ENDOFINVITELIST(channelName));
 }
 
 // User Mode

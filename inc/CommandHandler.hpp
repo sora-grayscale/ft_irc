@@ -117,9 +117,24 @@ private:
   void channelModeSetAndReply(const User &user, Channel &channel,
                               const std::string &channelName,
                               const std::string &mode);
+  bool handleCreOpeVoiMode(const User &user, Channel &channel,
+                           const std::string &channelName,
+                           std::size_t &paramPos);
   bool handleKeyMode(const User &user, Channel &channel,
                      const std::string &channelName, const bool &enable,
                      std::size_t &paramPos);
+  bool handleLimitMode(const User &user, Channel &channel,
+                       const std::string &channelName, const bool &enable,
+                       std::size_t &paramPos);
+  void handleBanMode(const User &user, Channel &channel,
+                     const std::string &channelName, const bool &enable,
+                     std::size_t &paramPos);
+  void handleExceptionMode(const User &user, Channel &channel,
+                           const std::string &channelName, const bool &enable,
+                           std::size_t &paramPos);
+  void handleInvitationMode(const User &user, Channel &channel,
+                            const std::string &channelName, const bool &enable,
+                            std::size_t &paramPos);
 
   // user mode method
   const std::string generateModeString(const User &user);
