@@ -67,6 +67,10 @@ void Channel::removeUser(User &user) {
   this->_users.erase(&user);
   this->_userStatus.erase(&user);
   user.decrementJoinedChannelCount();
+  // if user isNotHere
+  // deleteしたいけどserverに要請しなくてはならない
+  // 案としてはdeleteフラグをfalseにセットしておいてここでtrueにする
+  // server はそれを読み取ってtrueになっていたらdeleteする
 }
 
 std::size_t Channel::userNum() const { return (this->_users.size()); }
