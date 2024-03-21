@@ -15,7 +15,7 @@ void Server::checkPong(User &user) {
   delUser(user, "user Killed because of no respons\n\r");
 }
 
-void CommandHandler::sendPong(User &user) {
+void CommandHandler::sendPong(const User &user) const {
   std::string message;
   message += "PONG ";
   message += this->_params.at(0);

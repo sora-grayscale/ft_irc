@@ -1,6 +1,6 @@
 #include "CommandHandler.hpp"
 
-void CommandHandler::CreateParamToOneString(std::string &message) {
+void CommandHandler::createParamToOneString(std::string &message) const {
   for (std::size_t i = 1; i < this->_params.size(); i++) {
     if (i != 1) {
       message += " ";
@@ -18,7 +18,7 @@ void CommandHandler::CreateParamToOneString(std::string &message) {
 
 const std::string
 CommandHandler::createPrivMessage(const std::string &sendTo,
-                                  const std::string &message) {
+                                  const std::string &message) const {
   std::string str;
   str += "PRIVMSG ";
   str += sendTo;
@@ -30,7 +30,7 @@ CommandHandler::createPrivMessage(const std::string &sendTo,
 
 void CommandHandler::sendPrivMessageChannel(const User &sender,
                                             const std::string &channelName,
-                                            const std::string &message) {
+                                            const std::string &message) const {
   if (!this->_server.isExistChannel(channelName)) {
     this->_server.sendReply(sender.getFd(),
                             Replies::ERR_CANNOTSENDTOCHAN(channelName));
@@ -49,7 +49,7 @@ void CommandHandler::sendPrivMessageChannel(const User &sender,
 
 void CommandHandler::sendPrivMessageUser(const User &sender,
                                          const std::string &nick,
-                                         const std::string &message) {
+                                         const std::string &message) const {
   if (!this->_server.isRegiNick(nick)) {
     this->_server.sendReply(sender.getFd(), Replies::ERR_NOSUCHNICK(nick));
     return;
@@ -61,7 +61,7 @@ void CommandHandler::sendPrivMessageUser(const User &sender,
 
 void CommandHandler::sendPrivMessage(const User &user,
                                      const std::vector<std::string> &sendTo,
-                                     const std::string &message) {
+                                     const std::string &message) const {
   std::string privMessage;
 
   for (std::size_t i = 0; i < sendTo.size(); i++) {
@@ -88,7 +88,7 @@ void CommandHandler::PRIVMSG(User &user) {
   std::vector<std::string> sendTo;
   std::string message;
 
-  CreateParamToOneString(message);
+  createParamToOneString(message);
   splitStringByColon(this->_params.at(0), sendTo);
 
   sendPrivMessage(user, sendTo, message);

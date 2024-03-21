@@ -1,8 +1,8 @@
 #include "CommandHandler.hpp"
 
-void CommandHandler::sendNoticeMessageChannel(const User &sender,
-                                              const std::string &channelName,
-                                              const std::string &message) {
+void CommandHandler::sendNoticeMessageChannel(
+    const User &sender, const std::string &channelName,
+    const std::string &message) const {
   if (!this->_server.isExistChannel(channelName)) {
     return;
   }
@@ -17,7 +17,7 @@ void CommandHandler::sendNoticeMessageChannel(const User &sender,
 
 void CommandHandler::sendNoticeMessageUser(const User &sender,
                                            const std::string &nick,
-                                           const std::string &message) {
+                                           const std::string &message) const {
   if (!this->_server.isRegiNick(nick)) {
     return;
   }
@@ -28,7 +28,7 @@ void CommandHandler::sendNoticeMessageUser(const User &sender,
 
 const std::string
 CommandHandler::createNoticeMessage(const std::string &sendTo,
-                                    const std::string &message) {
+                                    const std::string &message) const {
   std::string str;
   str = "NOTICE ";
   str += sendTo;
@@ -40,7 +40,7 @@ CommandHandler::createNoticeMessage(const std::string &sendTo,
 
 void CommandHandler::sendNoticeMessage(const User &user,
                                        const std::vector<std::string> &sendTo,
-                                       const std::string &message) {
+                                       const std::string &message) const {
   std::string noticeMessage;
 
   for (std::size_t i = 0; i < sendTo.size(); i++) {
@@ -64,7 +64,7 @@ void CommandHandler::NOTICE(User &user) {
   std::vector<std::string> sendTo;
   std::string message;
 
-  CreateParamToOneString(message);
+  createParamToOneString(message);
   splitStringByColon(this->_params.at(0), sendTo);
 
   sendNoticeMessage(user, sendTo, message);

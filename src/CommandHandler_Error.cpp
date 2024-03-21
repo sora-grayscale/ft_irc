@@ -1,6 +1,6 @@
 #include "CommandHandler.hpp"
 
-void CommandHandler::sendError(const int fd, const std::string &message) {
+void CommandHandler::sendError(const int fd, const std::string &message) const {
   this->_server.sendReply(fd, message);
 }
 
