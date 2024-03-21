@@ -1,7 +1,7 @@
 #include "CommandHandler.hpp"
 #include "Server.hpp"
 
-void Server::sendPing(User &user) {
+void Server::sendPing(User &user) const {
   if (user.getPingTime() != 0) {
     return;
   }

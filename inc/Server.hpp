@@ -73,11 +73,11 @@ public:
   // Lookup
   User &findUser(const int fd);
   User &findUser(const std::string &nick);
-  bool isHisNick(const std::string &nick);
-  bool isTmpNick(const std::string &nick);
-  bool isRegiNick(const std::string &nick);
-  bool isNick(const std::string &nick);
-  bool isRegiUser(const int &fd);
+  bool isHisNick(const std::string &nick) const;
+  bool isTmpNick(const std::string &nick) const;
+  bool isRegiNick(const std::string &nick) const;
+  bool isNick(const std::string &nick) const;
+  bool isRegiUser(const int &fd) const;
 
   // send
   static const std::string createUserPrefix(const User &user);
@@ -89,7 +89,7 @@ public:
   int getUserFd(const std::string &nick) const;
 
   // channel
-  bool isExistChannel(const std::string &channelName);
+  bool isExistChannel(const std::string &channelName) const;
   Channel &
   getChannel(const std::string &channelName); // channelがあるかのチェックが必要
   void addChannel(const std::string &channelName);
@@ -134,7 +134,7 @@ private:
   void checkPing();
 
   // ping method
-  void sendPing(User &user);
+  void sendPing(User &user) const;
   void checkPong(User &user);
 
   // delUser method
