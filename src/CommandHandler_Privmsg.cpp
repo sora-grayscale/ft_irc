@@ -44,7 +44,7 @@ void CommandHandler::sendPrivMessageChannel(const User &sender,
                             Replies::ERR_CANNOTSENDTOCHAN(channelName));
     return;
   }
-  sendTo.broadcastMessage(message, sender.getFd());
+  sendTo.broadcastMessage(message, sender);
 }
 
 void CommandHandler::sendPrivMessageUser(const User &sender,

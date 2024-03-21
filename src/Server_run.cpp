@@ -148,7 +148,6 @@ void Server::sendReply(const User &sender, const int fd, const std::string &repl
 
   ssize_t to_send = message.size();
 
-
   while (sent < to_send) {
     ssize_t count = send(fd, message.c_str() + sent, to_send - sent, 0);
     if (count < 0) {
