@@ -196,7 +196,7 @@ void Server::delUserChannel(User &user, const std::string &comment) {
   }
   std::map<std::string, Channel> &channels = this->getChannels();
 
-  for (std::map<std::string, Channel>::const_iterator it = channels.begin();
+  for (std::map<std::string, Channel>::iterator it = channels.begin();
        it != channels.end(); it++) {
     if (it->second.isUserInChannel(user.getNickName())) {
       it->second.broadcastMessage(comment, user);
