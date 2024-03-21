@@ -100,6 +100,21 @@ private:
   // mode method
   void handleChannnelMode(User &user);
   void handleUserMode(User &user);
+
+  // channel mode method
+  const std::string generateChannelModeString(const Channel &channel);
+  bool checkChannelModeFlag(const std::string &flag);
+  const std::string removeDuplicates(const std::string &str);
+  bool checkChannelModeSyntax(const std::string &mode, char &c,
+                              unsigned int &modeFlag);
+  bool isAlreadySetKey(const std::string &modes);
+  bool isOperatorNeed(const std::string &mode, const unsigned int &modeFlag);
+  void replySyntaxError(const User &user, const std::string &channelName,
+                        const char c);
+  void channelModeSetAndReply(const User &user, Channel &channel,
+                              const std::string &mode);
+
+  // user mode method
   const std::string generateUserModeString(const User &user);
   bool checkUserModeFlag(const std::string &flag);
   void setUserModeFlag(User &user, const std::string &flag);

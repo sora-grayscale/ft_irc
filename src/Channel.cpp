@@ -3,21 +3,22 @@
 
 // constructor
 Channel::Channel()
-    : _channelName(""), _users(), _userStatus(), _topic(""), _topicSetUser(""),
-      _topicSetAt(0), _channelModeFlag(Channel::None), _channelKey(""),
-      _userLimit(INT_MAX), _banMasks(), _exceptionMasks(), _invitationMasks() {}
+    : _channelName(""), _channelCreatedTime(getCurrentUnixTimestamp()),
+      _users(), _userStatus(), _topic(""), _topicSetUser(""), _topicSetAt(0),
+      _channelModeFlag(Channel::None), _channelKey(""), _userLimit(INT_MAX),
+      _banMasks(), _exceptionMasks(), _invitationMasks() {}
 
 Channel::Channel(const std::string &channelName)
-    : _channelName(channelName), _users(), _userStatus(), _topic(""),
-      _topicSetUser(""), _topicSetAt(0), _channelModeFlag(Channel::None),
-      _channelKey(""), _userLimit(INT_MAX), _banMasks(), _exceptionMasks(),
-      _invitationMasks() {}
+    : _channelName(channelName), _channelCreatedTime(getCurrentUnixTimestamp()),
+      _users(), _userStatus(), _topic(""), _topicSetUser(""), _topicSetAt(0),
+      _channelModeFlag(Channel::None), _channelKey(""), _userLimit(INT_MAX),
+      _banMasks(), _exceptionMasks(), _invitationMasks() {}
 
 Channel::Channel(const std::string &channelName, const std::string &key)
-    : _channelName(channelName), _users(), _userStatus(), _topic(""),
-      _topicSetUser(""), _topicSetAt(0), _channelModeFlag(Channel::None),
-      _channelKey(key), _userLimit(INT_MAX), _banMasks(), _exceptionMasks(),
-      _invitationMasks() {
+    : _channelName(channelName), _channelCreatedTime(getCurrentUnixTimestamp()),
+      _users(), _userStatus(), _topic(""), _topicSetUser(""), _topicSetAt(0),
+      _channelModeFlag(Channel::None), _channelKey(key), _userLimit(INT_MAX),
+      _banMasks(), _exceptionMasks(), _invitationMasks() {
   if (!key.empty()) {
     this->_channelModeFlag |= Channel::Key;
   }
@@ -40,6 +41,10 @@ void Channel::broadcastMessage(const std::string &message, const User &sender) {
 // getter
 const std::string &Channel::getChannelName() const {
   return (this->_channelName);
+}
+
+const std::time_t &Channel::getChannelCreatedTime() const {
+  return (this->_channelCreatedTime);
 }
 
 // const std::map<User *, unsigned int> &Channel::getUserStatus() const {
@@ -172,7 +177,7 @@ void Channel::setChannelMode(const ChannelModeFlags flag, bool enable) {
 }
 
 bool Channel::hasChannleMode(const ChannelModeFlags flag) const {
-  if ((this->_channelModeFlag & flag) == 1) {
+  if ((this->_channelModeFlag & flag) != 0) {
     return (true);
   }
   return (false);
@@ -204,6 +209,16 @@ bool Channel::isBanned(const std::string &mask) const {
   return (false);
 }
 
+std::size_t Channel::sizeOfBanMask() const { return (this->_banMasks.size()); }
+
+std::set<std::string>::const_iterator Channel::getBanMaskBegin() const {
+  return (this->_banMasks.begin());
+}
+
+std::set<std::string>::const_iterator Channel::getBanMaskEnd() const {
+  return (this->_banMasks.end());
+}
+
 // e flag
 void Channel::addExceptionMask(const std::string &mask) {
   this->_exceptionMasks.insert(mask);
@@ -220,6 +235,18 @@ bool Channel::hasException(const std::string &mask) const {
   return (false);
 }
 
+std::size_t Channel::sizeOfExceptionMask() const {
+  return (this->_exceptionMasks.size());
+}
+
+std::set<std::string>::const_iterator Channel::getExceptionMaskBegin() const {
+  return (this->_exceptionMasks.begin());
+}
+
+std::set<std::string>::const_iterator Channel::getExceptionMaskEnd() const {
+  return (this->_exceptionMasks.end());
+}
+
 // // I flag
 void Channel::addInvitationMask(const std::string &mask) {
   this->_invitationMasks.insert(mask);
@@ -234,6 +261,18 @@ bool Channel::isInvited(const std::string &mask) const {
     return (true);
   }
   return (false);
+}
+
+std::size_t Channel::sizeOfInvitationMask() const {
+  return (this->_invitationMasks.size());
+}
+
+std::set<std::string>::const_iterator Channel::getInvitationMaskBegin() const {
+  return (this->_invitationMasks.begin());
+}
+
+std::set<std::string>::const_iterator Channel::getInvitationMaskEnd() const {
+  return (this->_invitationMasks.end());
 }
 
 // func
