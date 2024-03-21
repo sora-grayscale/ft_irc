@@ -1,26 +1,5 @@
 #include "CommandHandler.hpp"
 
-// RPL_CHANNELMODEIS (324)
-// RPL_CREATIONTIME (329)
-
-// ERR_CHANOPRIVSNEEDED (482)
-
-// ERR_KEYSET
-// ERR_NOCHANMODES
-// ERR_CHANOPRIVSNEEDED
-// ERR_USERNOTINCHANNEL
-// ERR_UNKNOWNMODE
-
-// RPL_CHANNELMODEIS
-// RPL_BANLIST
-// RPL_ENDOFBANLIST
-// RPL_EXCEPTLIST
-// RPL_ENDOFEXCEPTLIST
-// RPL_INVITELIST
-// RPL_ENDOFINVITELIST
-
-// RPL_UNIQOPIS
-
 void CommandHandler::MODE(User &user) {
   if (this->_params.size() == 0) {
     this->_server.sendReply(user.getFd(),
@@ -50,61 +29,32 @@ void CommandHandler::handleChannnelMode(User &user) {
 
   // <modestring> is not given
   if (this->_params.size() == 1) {
-    std::cout << "<modestring> is not given" << std::endl;
-    const std::string mode = generateChannelModeString(channel);
-    if (mode.find_first_of("l") == std::string::npos) {
-      Server::sendReply(user.getFd(),
-                        Replies::RPL_CHANNELMODEIS(channelName, mode));
-    } else {
-      Server::sendReply(user.getFd(),
-                        Replies::RPL_CHANNELMODEIS(channelName, mode,
-                                                   channel.getUserLimit()));
-    }
-    Server::sendReply(user.getFd(),
-                      Replies::RPL_CREATIONTIME(
-                          channelName, channel.getChannelCreatedTime()));
+    sendChannelModeAndCreationTimeResponse(user, channelName, channel);
     return;
   }
-  std::cout << 1 << std::endl;
 
   // <modestring> is given
   const std::string mode = removeDuplicates(this->_params.at(1));
   char invalidChar;
   unsigned int modeFlag = Channel::None;
 
-  std::cout << 2 << std::endl;
-  //   if (mode.at(0) == '+' &&
-  //   isAlreadySetKey(generateChannelModeString(channel))) { std::cout << 2.1
-  //   << std::endl;
-  //     Server::sendReply(user.getFd(), Replies::ERR_KEYSET(channelName));
-  //   std::cout << 2.2 << std::endl;
-  //     return;
-  //   }
-  std::cout << 3 << std::endl;
-  std::cout << "mode: " << mode << std::endl;
-
   // check valid Mode
   if (!checkChannelModeFlag(this->_params.at(1))) {
-    std::cout << 3.1 << std::endl;
     std::size_t pos =
         this->_params.at(1).find_first_not_of("+-OovaimnqpsrtklbeI");
     if (pos == std::string::npos) {
       pos = this->_params.at(1).find_first_of("OovaimnqpsrtklbeI");
     }
-    std::cout << 3.2 << std::endl;
     Server::sendReply(
         user.getFd(),
         Replies::ERR_UNKNOWNMODE(this->_params.at(1).at(pos), channelName));
-    std::cout << 3.3 << std::endl;
     return;
   }
 
-  std::cout << 4 << std::endl;
   if (!checkChannelModeSyntax(mode, invalidChar, modeFlag)) {
     replySyntaxError(user, channelName, invalidChar);
     return;
   }
-  std::cout << 5 << std::endl;
 
   // check Operator privis
   if (isOperatorNeed(mode, modeFlag)) {
@@ -118,16 +68,12 @@ void CommandHandler::handleChannnelMode(User &user) {
       return;
     }
   }
-  std::cout << 6 << std::endl;
 
   // set and reply
-  std::cout << 7 << std::endl;
-  channelModeSetAndReply(user, channel, mode);
-  std::cout << 8 << std::endl;
+  channelModeSetAndReply(user, channel, channelName, mode);
 }
 
-const std::string
-CommandHandler::generateChannelModeString(const Channel &channel) {
+const std::string CommandHandler::generateModeString(const Channel &channel) {
   std::string mode = "";
 
   if (channel.hasChannleMode(Channel::ChannelCreator)) {
@@ -139,10 +85,8 @@ CommandHandler::generateChannelModeString(const Channel &channel) {
   if (channel.hasChannleMode(Channel::ChannelVoice)) {
     mode += "v";
   }
-  std::cout << "check" << std::endl;
   if (channel.hasChannleMode(Channel::Anonymous)) {
     mode += "a";
-    std::cout << "ok: hasChannleMode" << std::endl;
   }
   if (channel.hasChannleMode(Channel::InviteOnly)) {
     mode += "i";
@@ -184,6 +128,22 @@ CommandHandler::generateChannelModeString(const Channel &channel) {
     mode += "I";
   }
   return (mode);
+}
+
+void CommandHandler::sendChannelModeAndCreationTimeResponse(
+    const User &user, const std::string &channelName, const Channel &channel) {
+  const std::string mode = generateModeString(channel);
+  if (mode.find_first_of("l") == std::string::npos) {
+    Server::sendReply(user.getFd(),
+                      Replies::RPL_CHANNELMODEIS(channelName, mode));
+  } else {
+    Server::sendReply(
+        user.getFd(),
+        Replies::RPL_CHANNELMODEIS(channelName, mode, channel.getUserLimit()));
+  }
+  Server::sendReply(
+      user.getFd(),
+      Replies::RPL_CREATIONTIME(channelName, channel.getChannelCreatedTime()));
 }
 
 bool CommandHandler::checkChannelModeFlag(const std::string &flag) {
@@ -304,8 +264,8 @@ bool CommandHandler::isOperatorNeed(const std::string &mode,
 }
 
 void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
+                                            const std::string &channelName,
                                             const std::string &mode) {
-  std::cout << 7.1 << std::endl;
   bool enable = false;
   std::size_t paramPos = 2;
 
@@ -313,21 +273,19 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
     enable = true;
   }
 
-  std::cout << 7.2 << std::endl;
   for (std::size_t i = 0; i < mode.size(); i++) {
-    std::cout << 7.3 << std::endl;
     if (mode.at(i) == 'O' || mode.at(i) == 'o' || mode.at(i) == 'v') {
       if (!channel.isUserInChannel(this->_params.at(paramPos))) {
-        Server::sendReply(user.getFd(), Replies::ERR_USERNOTINCHANNEL(
-                                            this->_params.at(paramPos),
-                                            channel.getChannelName()));
+        Server::sendReply(user.getFd(),
+                          Replies::ERR_USERNOTINCHANNEL(
+                              this->_params.at(paramPos), channelName));
         paramPos++;
         continue;
       }
       User &tmpUser = this->_server.findUser(this->_params.at(paramPos));
       paramPos++;
       if (mode.at(i) == 'O') {
-        //        channel.setUserStatus(tmpUser, Channel::Creator, enable);
+        // channel.setUserStatus(tmpUser, Channel::Creator, enable);
       } else if (mode.at(i) == 'o') {
         channel.setUserStatus(tmpUser, Channel::Operator, enable);
       } else if (mode.at(i) == 'v') {
@@ -335,7 +293,6 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
       }
     } else if (mode.at(i) == 'a') {
       channel.setChannelMode(Channel::Anonymous, enable);
-      std::cout << "ok: setChannelMode" << std::endl;
     } else if (mode.at(i) == 'i') {
       channel.setChannelMode(Channel::InviteOnly, enable);
     } else if (mode.at(i) == 'm') {
@@ -353,23 +310,9 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
     } else if (mode.at(i) == 't') {
       channel.setChannelMode(Channel::TopicOpOnly, enable);
     } else if (mode.at(i) == 'k') {
-      if (enable == true) {
-        if (isAlreadySetKey(generateChannelModeString(channel))) {
-          Server::sendReply(user.getFd(),
-                            Replies::ERR_KEYSET(channel.getChannelName()));
-          paramPos++;
-          continue;
-        }
-        channel.setKey(this->_params.at(paramPos));
-      } else {
-        if (channel.getKey() != this->_params.at(paramPos)) {
-          Server::sendReply(user.getFd(),
-                            Replies::ERR_KEYSET(channel.getChannelName()));
-          paramPos++;
-          continue;
-        }
+      if (!handleKeyMode(user, channel, channelName, enable, paramPos)) {
+        continue;
       }
-      paramPos++;
       channel.setChannelMode(Channel::Key, enable);
     } else if (mode.at(i) == 'l') {
       if (enable == true) {
@@ -379,8 +322,8 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
         iss >> num;
         if (iss.fail() || iss.bad()) {
           // notice not a num
-          Server::sendReply(user.getFd(), Replies::ERR_UNKNOWNMODE(
-                                              'l', channel.getChannelName()));
+          Server::sendReply(user.getFd(),
+                            Replies::ERR_UNKNOWNMODE('l', channelName));
           continue;
         }
         channel.setUserLimit(num);
@@ -397,11 +340,9 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
       }
       for (std::set<std::string>::const_iterator it = channel.getBanMaskBegin();
            it != channel.getBanMaskEnd(); it++) {
-        Server::sendReply(user.getFd(),
-                          Replies::RPL_BANLIST(channel.getChannelName(), *it));
+        Server::sendReply(user.getFd(), Replies::RPL_BANLIST(channelName, *it));
       }
-      Server::sendReply(user.getFd(),
-                        Replies::RPL_ENDOFBANLIST(channel.getChannelName()));
+      Server::sendReply(user.getFd(), Replies::RPL_ENDOFBANLIST(channelName));
       channel.setChannelMode(Channel::BanMask, enable);
     } else if (mode.at(i) == 'e') {
       if (paramPos < this->_params.size()) {
@@ -415,11 +356,11 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
       for (std::set<std::string>::const_iterator it =
                channel.getExceptionMaskBegin();
            it != channel.getExceptionMaskEnd(); it++) {
-        Server::sendReply(user.getFd(), Replies::RPL_EXCEPTLIST(
-                                            channel.getChannelName(), *it));
+        Server::sendReply(user.getFd(),
+                          Replies::RPL_EXCEPTLIST(channelName, *it));
       }
       Server::sendReply(user.getFd(),
-                        Replies::RPL_ENDOFEXCEPTLIST(channel.getChannelName()));
+                        Replies::RPL_ENDOFEXCEPTLIST(channelName));
       channel.setChannelMode(Channel::ExceptionMask, enable);
     } else if (mode.at(i) == 'I') {
       if (paramPos < this->_params.size()) {
@@ -433,23 +374,36 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
       for (std::set<std::string>::const_iterator it =
                channel.getInvitationMaskBegin();
            it != channel.getInvitationMaskEnd(); it++) {
-        Server::sendReply(user.getFd(), Replies::RPL_INVITELIST(
-                                            channel.getChannelName(), *it));
+        Server::sendReply(user.getFd(),
+                          Replies::RPL_INVITELIST(channelName, *it));
       }
       Server::sendReply(user.getFd(),
-                        Replies::RPL_ENDOFINVITELIST(channel.getChannelName()));
+                        Replies::RPL_ENDOFINVITELIST(channelName));
       channel.setChannelMode(Channel::InvitationMask, enable);
     }
   }
-  std::cout << 7.4 << std::endl;
-  Server::sendReply(user.getFd(), Replies::RPL_CHANNELMODEIS(
-                                      channel.getChannelName(),
-                                      generateChannelModeString(channel)));
-  std::cout << 7.5 << std::endl;
-  Server::sendReply(user.getFd(),
-                    Replies::RPL_CREATIONTIME(channel.getChannelName(),
-                                              channel.getChannelCreatedTime()));
-  std::cout << 7.6 << std::endl;
+  sendChannelModeAndCreationTimeResponse(user, channelName, channel);
+}
+
+bool CommandHandler::handleKeyMode(const User &user, Channel &channel,
+                                   const std::string &channelName,
+                                   const bool &enable, std::size_t &paramPos) {
+  if (enable == true) {
+    if (isAlreadySetKey(generateModeString(channel))) {
+      Server::sendReply(user.getFd(), Replies::ERR_KEYSET(channelName));
+      paramPos++;
+      return (false);
+    }
+    channel.setKey(this->_params.at(paramPos));
+  } else {
+    if (channel.getKey() != this->_params.at(paramPos)) {
+      Server::sendReply(user.getFd(), Replies::ERR_KEYSET(channelName));
+      paramPos++;
+      return (false);
+    }
+  }
+  paramPos++;
+  return (true);
 }
 
 // User Mode
@@ -467,7 +421,7 @@ void CommandHandler::handleUserMode(User &user) {
   // <modestring> is not given
   if (this->_params.size() == 1) {
     this->_server.sendReply(user.getFd(),
-                            Replies::RPL_UMODEIS(generateUserModeString(user)));
+                            Replies::RPL_UMODEIS(generateModeString(user)));
     return;
   }
 
@@ -479,11 +433,11 @@ void CommandHandler::handleUserMode(User &user) {
     }
     setUserModeFlag(user, this->_params.at(1));
     Server::sendReply(user.getFd(),
-                      Replies::RPL_UMODEIS(generateUserModeString(user)));
+                      Replies::RPL_UMODEIS(generateModeString(user)));
   }
 }
 
-const std::string CommandHandler::generateUserModeString(const User &user) {
+const std::string CommandHandler::generateModeString(const User &user) {
   std::string mode;
 
   if (user.hasMode(User::Away)) {
