@@ -387,7 +387,7 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
       }
       channel.setChannelMode(Channel::Limit, enable);
     } else if (mode.at(i) == 'b') {
-      if (paramPos < this->_params.size() - 2) {
+      if (paramPos < this->_params.size()) {
         if (enable == true) {
           channel.addBanMask(this->_params.at(paramPos));
         } else {
@@ -404,7 +404,7 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
                         Replies::RPL_ENDOFBANLIST(channel.getChannelName()));
       channel.setChannelMode(Channel::BanMask, enable);
     } else if (mode.at(i) == 'e') {
-      if (paramPos < this->_params.size() - 2) {
+      if (paramPos < this->_params.size()) {
         if (enable == true) {
           channel.addExceptionMask(this->_params.at(paramPos));
         } else {
@@ -422,7 +422,7 @@ void CommandHandler::channelModeSetAndReply(const User &user, Channel &channel,
                         Replies::RPL_ENDOFEXCEPTLIST(channel.getChannelName()));
       channel.setChannelMode(Channel::ExceptionMask, enable);
     } else if (mode.at(i) == 'I') {
-      if (paramPos < this->_params.size() - 2) {
+      if (paramPos < this->_params.size()) {
         if (enable == true) {
           channel.addInvitationMask(this->_params.at(paramPos));
         } else {
