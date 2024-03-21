@@ -37,7 +37,7 @@ void CommandHandler::sendPrivMessageChannel(const User &sender,
     return;
   }
 
-  Channel &sendTo = this->_server.getChannel(channelName);
+  const Channel &sendTo = this->_server.getChannel(channelName);
 
   if (!sendTo.isUserInChannel(sender)) {
     this->_server.sendReply(sender.getFd(),
@@ -54,7 +54,7 @@ void CommandHandler::sendPrivMessageUser(const User &sender,
     this->_server.sendReply(sender.getFd(), Replies::ERR_NOSUCHNICK(nick));
     return;
   }
-  User &sendTo = this->_server.findUser(nick);
+  const User &sendTo = this->_server.findUser(nick);
 
   this->_server.sendReply(sender, sendTo.getFd(), message);
 }

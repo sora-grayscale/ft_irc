@@ -2,8 +2,8 @@
 
 void CommandHandler::QUIT(User &user) {
   // userに対してERRORで接続の終了を通達
-  sendError(user.getFd(), "Terminate server connection\n\rThank you for using "
-                          "our IRCserver :)\n\r");
+  sendError(user.getFd(), "Terminate server connection\r\nThank you for using "
+                          "our IRCserver :)\r\n");
   // その後deleteUser
   std::string message;
   message += "QUIT :";
@@ -22,6 +22,6 @@ void CommandHandler::QUIT(User &user) {
       }
     }
   }
-  message += "\n\r";
+  message += "\r\n";
   this->_server.delUser(user, message);
 }

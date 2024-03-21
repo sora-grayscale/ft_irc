@@ -24,7 +24,7 @@ void Server::run() {
             if (receivedMessage == "") {
               try {
                 this->delUser(this->findUser(this->_pollFd.at(i).fd),
-                              "user Killed because of no respons\n\r");
+                              "user Killed because of no respons\r\n");
               } catch (const std::exception &e) {
                 this->delUser(this->_pollFd.at(i).fd);
               }
