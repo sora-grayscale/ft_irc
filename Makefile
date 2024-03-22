@@ -61,27 +61,6 @@ RM := rm -rf
 
 all: $(NAME)
 
-run: all
-	@./$(NAME) 6665 password
-
-run_debug: debug
-	@./$(NAME_DEBUG) 6665 password
-
-run_debug_6665: debug
-	@./$(NAME_DEBUG) 6665 password
-
-run_debug_6666: debug
-	@./$(NAME_DEBUG) 6666 password
-
-run_debug_6667: debug
-	@./$(NAME_DEBUG) 6667 password
-
-run_debug_6668: debug
-	@./$(NAME_DEBUG) 6668 password
-
-run_debug_6669: debug
-	@./$(NAME_DEBUG) 6669 password
-
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) $(DEPFLAGS) "$(@:%.o=%.d)" -I$(INC) -c -o $@ $<
 	@echo "$< =========> $(GRN) $@ $(RES)"
@@ -115,8 +94,6 @@ $(OBJDIR_DEBUG):
 -include $(OBJDIR)/*.d
 -include $(OBJDIR_DEBUG)/*.d
 
-debug: $(NAME_DEBUG)
-
 clean:
 	@echo "$(CYN)\n===== clean =====$(RES)"
 	@echo "$(YEL)delete: $(RES) $(GRN)$(OBJDIR)/*\n$(RES)"
@@ -131,7 +108,45 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re run server client debug run_debug run_debug_6665 run_debug_6666 run_debug_6667 run_debug_6668 run_debug_6669
+debug: $(NAME_DEBUG)
+
+run: all
+	@./$(NAME) 6665 password
+
+run_debug: debug
+	@./$(NAME_DEBUG) 6665 password
+
+run_debug_6665: debug
+	@./$(NAME_DEBUG) 6665 password
+
+run_debug_6666: debug
+	@./$(NAME_DEBUG) 6666 password
+
+run_debug_6667: debug
+	@./$(NAME_DEBUG) 6667 password
+
+run_debug_6668: debug
+	@./$(NAME_DEBUG) 6668 password
+
+run_debug_6669: debug
+	@./$(NAME_DEBUG) 6669 password
+
+connect:
+	irssi --config irssi_conf/one.conf
+
+connect_one:
+	irssi --config irssi_conf/one.conf
+
+connect_two:
+	irssi --config irssi_conf/two.conf
+
+connect_three:
+	irssi --config irssi_conf/three.conf
+
+connect_four:
+	irssi --config irssi_conf/four.conf
+
+.PHONY: all clean fclean re debug run run_debug run_debug_6665 run_debug_6666 run_debug_6667 run_debug_6668 run_debug_6669 connect connect_one connect_two connect_three connect_four
 
 RED = \033[31m
 GRN = \033[32m
