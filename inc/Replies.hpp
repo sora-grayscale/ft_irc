@@ -75,8 +75,11 @@ public:
   static const std::string RPL_LISTEND();
   // 324
   static const std::string RPL_CHANNELMODEIS(const std::string &channelName,
+                                             const std::string &mode);
+  // 324
+  static const std::string RPL_CHANNELMODEIS(const std::string &channelName,
                                              const std::string &mode,
-                                             const std::string &modeParams);
+                                             const std::size_t &modeParams);
   // 325
   static const std::string RPL_UNIQOPIS(const std::string &channelName,
                                         const std::string &nick);
@@ -97,12 +100,12 @@ public:
                                         const std::string &nick);
   // 346
   static const std::string RPL_INVITELIST(const std::string &channelName,
-                                          std::string &mask);
+                                          const std::string &mask);
   // 347
   static const std::string RPL_ENDOFINVITELIST(const std::string &channelName);
   // 348
   static const std::string RPL_EXCEPTLIST(const std::string &channelName,
-                                          std::string &mask);
+                                          const std::string &mask);
   // 349
   static const std::string RPL_ENDOFEXCEPTLIST(const std::string &channelName);
   // 351
@@ -122,7 +125,7 @@ public:
   static const std::string RPL_ENDOFNAMES(const std::string &channelName);
   // 367
   static const std::string RPL_BANLIST(const std::string &channelName,
-                                       std::string &mask);
+                                       const std::string &mask);
   // 368
   static const std::string RPL_ENDOFBANLIST(const std::string &channelName);
   // 369

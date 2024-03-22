@@ -48,7 +48,7 @@ public:
 
   // getter
   const std::string &getChannelName() const;
-  //  const std::map<User *, unsigned int> &getUserStatus() const;
+  const std::time_t &getChannelCreatedTime() const;
 
   // user
   void addUser(User &user);
@@ -87,19 +87,29 @@ public:
   void addBanMask(const std::string &mask);
   void removeBanMask(const std::string &mask);
   bool isBanned(const std::string &mask) const;
+  std::size_t sizeOfBanMask() const;
+  std::set<std::string>::const_iterator getBanMaskBegin() const;
+  std::set<std::string>::const_iterator getBanMaskEnd() const;
 
   // e flag
   void addExceptionMask(const std::string &mask);
   void removeExceptionMask(const std::string &mask);
   bool hasException(const std::string &mask) const;
+  std::size_t sizeOfExceptionMask() const;
+  std::set<std::string>::const_iterator getExceptionMaskBegin() const;
+  std::set<std::string>::const_iterator getExceptionMaskEnd() const;
 
   // I flag
   void addInvitationMask(const std::string &mask);
   void removeInvitationMask(const std::string &mask);
   bool isInvited(const std::string &mask) const;
+  std::size_t sizeOfInvitationMask() const;
+  std::set<std::string>::const_iterator getInvitationMaskBegin() const;
+  std::set<std::string>::const_iterator getInvitationMaskEnd() const;
 
 private:
   std::string _channelName;
+  std::time_t _channelCreatedTime;
 
   std::set<User *> _users;
   std::map<User *, unsigned int> _userStatus; // nickname, userStatus

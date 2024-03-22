@@ -298,17 +298,29 @@ const std::string Replies::RPL_LISTEND() {
 
 // 324
 const std::string Replies::RPL_CHANNELMODEIS(const std::string &channelName,
-                                             const std::string &mode,
-                                             const std::string &modeParams) {
+                                             const std::string &mode) {
   std::string message;
   message += "324 ";
   message += channelName;
-  message += " ";
+  message += " +";
   message += mode;
-  message += " ";
-  message += modeParams;
   message += "\r\n";
   return (message);
+}
+
+// 324
+const std::string Replies::RPL_CHANNELMODEIS(const std::string &channelName,
+                                             const std::string &mode,
+                                             const std::size_t &modeParams) {
+  std::stringstream ss;
+  ss << "324 ";
+  ss << channelName;
+  ss << " +";
+  ss << mode;
+  ss << " ";
+  ss << modeParams;
+  ss << "\r\n";
+  return (ss.str());
 }
 
 // 325
@@ -386,7 +398,7 @@ const std::string Replies::RPL_INVITING(const std::string &channel,
 
 // 346
 const std::string Replies::RPL_INVITELIST(const std::string &channelName,
-                                          std::string &mask) {
+                                          const std::string &mask) {
   std::string message;
   message += "346 ";
   message += channelName;
@@ -408,7 +420,7 @@ const std::string Replies::RPL_ENDOFINVITELIST(const std::string &channelName) {
 
 // 348
 const std::string Replies::RPL_EXCEPTLIST(const std::string &channelName,
-                                          std::string &mask) {
+                                          const std::string &mask) {
   std::string message;
   message += "348 ";
   message += channelName;
@@ -510,7 +522,7 @@ const std::string Replies::RPL_ENDOFNAMES(const std::string &channelName) {
 
 // 367
 const std::string Replies::RPL_BANLIST(const std::string &channelName,
-                                       std::string &mask) {
+                                       const std::string &mask) {
   std::string message;
   message += "367 ";
   message += channelName;
@@ -858,7 +870,7 @@ const std::string Replies::ERR_CHANNELISFULL(const std::string &channelName) {
   return (message);
 }
 
-//  472
+// 472
 const std::string Replies::ERR_UNKNOWNMODE(const char c,
                                            const std::string &channelName) {
   std::string message;

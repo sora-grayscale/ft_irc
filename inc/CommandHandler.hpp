@@ -108,7 +108,44 @@ private:
   // mode method
   void handleChannnelMode(User &user);
   void handleUserMode(User &user);
-  const std::string generateUserModeString(const User &user);
+
+  // channel mode method
+  const std::string generateModeString(const Channel &channel);
+  void sendChannelModeAndCreationTimeResponse(const User &user,
+                                              const std::string &channelName,
+                                              const Channel &channel);
+  const std::string removeDuplicates(const std::string &str);
+  bool checkChannelModeFlag(const std::string &flag);
+  bool checkChannelModeSyntax(const std::string &mode, char &c,
+                              unsigned int &modeFlag);
+  bool isAlreadySetKey(const std::string &modes);
+  bool isOperatorNeed(const std::string &mode, const unsigned int &modeFlag);
+  void replySyntaxError(const User &user, const std::string &channelName,
+                        const char c);
+  void channelModeSetAndReply(const User &user, Channel &channel,
+                              const std::string &channelName,
+                              const std::string &mode);
+  bool handleCreOpeVoiMode(const User &user, Channel &channel,
+                           const std::string &channelName,
+                           std::size_t &paramPos);
+  bool handleKeyMode(const User &user, Channel &channel,
+                     const std::string &channelName, const bool &enable,
+                     std::size_t &paramPos);
+  bool handleLimitMode(const User &user, Channel &channel,
+                       const std::string &channelName, const bool &enable,
+                       std::size_t &paramPos);
+  void handleBanMode(const User &user, Channel &channel,
+                     const std::string &channelName, const bool &enable,
+                     std::size_t &paramPos);
+  void handleExceptionMode(const User &user, Channel &channel,
+                           const std::string &channelName, const bool &enable,
+                           std::size_t &paramPos);
+  void handleInvitationMode(const User &user, Channel &channel,
+                            const std::string &channelName, const bool &enable,
+                            std::size_t &paramPos);
+
+  // user mode method
+  const std::string generateModeString(const User &user);
   bool checkUserModeFlag(const std::string &flag);
   void setUserModeFlag(User &user, const std::string &flag);
 
