@@ -1,14 +1,14 @@
 #include "CommandHandler.hpp"
 #include "Server.hpp"
 
-void CommandHandler::replyRegistered(const User &user) {
+void CommandHandler::replyRegistered(const User &user) const {
   const std::string &nick = user.getNickName();
   const std::string &username = user.getUserName();
   const std::string &date = this->_server.getStartDay();
   const std::string host = SERVER_NAME;
   const std::string ver = SERVER_VERSION;
   const std::string availUserMode = "aiwroOs";
-  const std::string availChannnelMode = "OovaimnqpsrtklbeI";
+  const std::string availChannnelMode = "aimnqpsrtklbeI";
   const int &fd = user.getFd();
 
   // RPL_WELCOME

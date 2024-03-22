@@ -12,14 +12,14 @@ void Server::checkPong(User &user) {
   if (static_cast<long>(diff) < PING_TIME) {
     return;
   }
-  delUser(user, "user Killed because of no respons\n\r");
+  delUser(user, "user Killed because of no respons\r\n");
 }
 
-void CommandHandler::sendPong(User &user) {
+void CommandHandler::sendPong(const User &user) const {
   std::string message;
   message += "PONG ";
   message += this->_params.at(0);
-  message += "\n\r";
+  message += "\r\n";
 
   this->_server.sendReply(user.getFd(), message);
 }

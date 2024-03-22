@@ -78,7 +78,7 @@ private:
   bool isSpecialChar(const char c);
   bool validateNick(const std::string &str);
   bool isReservedNick(const std::string &nick);
-  void replyRegistered(const User &user);
+  void replyRegistered(const User &user) const;
 
   // join method
   void splitChannelAndKey(std::vector<std::string> &channels,
@@ -132,34 +132,34 @@ private:
   void displayAllChannel(const int fd, const std::string &nick) const;
 
   // pong method
-  void sendPong(User &user);
+  void sendPong(const User &user) const;
 
   // error method
-  void sendError(const int fd, const std::string &message);
+  void sendError(const int fd, const std::string &message) const;
 
   // privmsg method
-  void CreateParamToOneString(std::string &message);
+  void createParamToOneString(std::string &message) const;
   void sendPrivMessageChannel(const User &sender,
                               const std::string &channelName,
-                              const std::string &message);
+                              const std::string &message) const;
   void sendPrivMessageUser(const User &sender, const std::string &nick,
-                           const std::string &message);
+                           const std::string &message) const;
   void sendPrivMessage(const User &user, const std::vector<std::string> &sendTo,
-                       const std::string &message);
+                       const std::string &message) const;
   const std::string createPrivMessage(const std::string &sendTo,
-                                      const std::string &message);
+                                      const std::string &message) const;
 
   // notice method
   void sendNoticeMessageChannel(const User &sender,
                                 const std::string &channelName,
-                                const std::string &message);
+                                const std::string &message) const;
   void sendNoticeMessageUser(const User &sender, const std::string &nick,
-                             const std::string &message);
+                             const std::string &message) const;
   void sendNoticeMessage(const User &user,
                          const std::vector<std::string> &sendTo,
-                         const std::string &message);
+                         const std::string &message) const;
   const std::string createNoticeMessage(const std::string &sendTo,
-                                        const std::string &message);
+                                        const std::string &message) const;
 
   // debug
   void printStringAsInts(const std::string &input);

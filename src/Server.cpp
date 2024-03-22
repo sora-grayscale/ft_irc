@@ -97,13 +97,13 @@ User &Server::findUser(const std::string &nick) {
   throw std::runtime_error("Not found User");
 }
 
-bool Server::isHisNick(const std::string &nick) {
+bool Server::isHisNick(const std::string &nick) const {
   if (this->_nickHistory.find(nick) != this->_nickHistory.end())
     return true;
   return false;
 }
 
-bool Server::isTmpNick(const std::string &nick) {
+bool Server::isTmpNick(const std::string &nick) const {
   for (std::map<int, User>::const_iterator it = this->_tmpUsers.begin();
        it != this->_tmpUsers.end(); it++) {
     if (it->second.getNickName() == nick)
@@ -112,7 +112,7 @@ bool Server::isTmpNick(const std::string &nick) {
   return false;
 }
 
-bool Server::isRegiNick(const std::string &nick) {
+bool Server::isRegiNick(const std::string &nick) const {
   for (std::map<int, User>::const_iterator it = this->_registerdUsers.begin();
        it != this->_registerdUsers.end(); it++) {
     if (it->second.getNickName() == nick)
@@ -121,7 +121,7 @@ bool Server::isRegiNick(const std::string &nick) {
   return false;
 }
 
-bool Server::isNick(const std::string &nick) {
+bool Server::isNick(const std::string &nick) const {
   if (isHisNick(nick))
     return true;
   if (isTmpNick(nick))
@@ -129,7 +129,7 @@ bool Server::isNick(const std::string &nick) {
   return false;
 }
 
-bool Server::isRegiUser(const int &fd) {
+bool Server::isRegiUser(const int &fd) const {
   if (this->_registerdUsers.find(fd) != this->_registerdUsers.end()) {
     return true;
   }
@@ -148,7 +148,7 @@ int Server::getUserFd(const std::string &nick) const {
 }
 
 // channel
-bool Server::isExistChannel(const std::string &channelName) {
+bool Server::isExistChannel(const std::string &channelName) const {
   if (this->_channels.find(channelName) != this->_channels.end()) {
     return (true);
   }
