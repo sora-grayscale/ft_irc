@@ -7,6 +7,20 @@
 
 class Replies {
 public:
+  // 001
+  static const std::string RPL_WELCOME(const std::string &nick,
+                                       const std::string &user,
+                                       const std::string &host);
+  // 002
+  static const std::string RPL_YOURHOST(const std::string &servername,
+                                        const std::string &ver);
+  // 003
+  static const std::string RPL_CREATED(const std::string &date);
+  // 004
+  static const std::string RPL_MYINFO(const std::string &servername,
+                                      const std::string &version,
+                                      const std::string &availUserMode,
+                                      const std::string &availChannelMode);
   // 221
   static const std::string RPL_UMODEIS(const std::string &userModeString);
   // 251
@@ -138,10 +152,16 @@ public:
   static const std::string ERR_NOSUCHSERVER(const std::string &serverName);
   // 403
   static const std::string ERR_NOSUCHCHANNEL(const std::string &channelName);
+  // 404
+  static const std::string ERR_CANNOTSENDTOCHAN(const std::string &channelName);
   // 405
   static const std::string ERR_TOOMANYCHANNELS(const std::string &channelName);
   // 406
   static const std::string ERR_WASNOSUCHNICK(const std::string &nickName);
+  // 411
+  static const std::string ERR_NORECIPIENT(const std::string &command);
+  // 412
+  static const std::string ERR_NOTEXTTOSEND();
   // 421
   static const std::string ERR_UNKNOWNCOMMAND(const std::string &command);
   // 422

@@ -44,7 +44,7 @@ public:
   };
 
   // chat
-  void broadcastMessage(const std::string &message, const User &sender);
+  void broadcastMessage(const std::string &message, const User &sender) const;
 
   // getter
   const std::string &getChannelName() const;

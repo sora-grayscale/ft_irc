@@ -49,12 +49,18 @@ void CommandHandler::JOIN(User &user) {
     }
 
     const Channel &channel = this->_server.getChannel(channelNames.at(i));
-    if (keys.size() <= i || keys.at(i).empty()) {
-      if (!evaluateChannelJoinCondition(user, channel)) {
+
+    if (channel.hasChannleMode(Channel::Key)) {
+      if (keys.size() <= i || keys.at(i).empty()) {
+        this->_server.sendReply(
+            user.getFd(), Replies::ERR_BADCHANNELKEY(channel.getChannelName()));
+        return;
+      }
+      if (!evaluateChannelJoinCondition(user, channel, keys.at(i))) {
         continue;
       }
     } else {
-      if (!evaluateChannelJoinCondition(user, channel, keys.at(i))) {
+      if (!evaluateChannelJoinCondition(user, channel)) {
         continue;
       }
     }
