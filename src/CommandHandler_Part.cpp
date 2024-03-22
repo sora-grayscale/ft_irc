@@ -31,6 +31,9 @@ void CommandHandler::PART(User &user) {
                               Replies::ERR_NOTONCHANNEL(channelNames.at(i)));
     }
     const_cast<Channel &>(channel).removeUser(user);
+    if (channel.isDelete()) {
+      this->_server.eraseChannel(channel.getChannelName());
+    }
   }
 }
 

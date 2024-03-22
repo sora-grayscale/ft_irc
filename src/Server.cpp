@@ -189,6 +189,13 @@ std::map<int, User>::const_iterator Server::getUserEnd() const {
   return (this->_registerdUsers.end());
 }
 
+void Server::eraseChannel(const std::string &channelName) {
+  if (!this->isExistChannel(channelName)) {
+    return;
+  }
+  this->_channels.erase(channelName);
+}
+
 void Server::delUserChannel(User &user, const std::string &comment) {
   int fd = user.getFd();
   if (!this->isRegiUser(fd)) {
@@ -201,6 +208,9 @@ void Server::delUserChannel(User &user, const std::string &comment) {
     if (it->second.isUserInChannel(user.getNickName())) {
       it->second.broadcastMessage(comment, user);
       it->second.removeUser(user);
+      if (it->second.isDelete()) {
+        this->eraseChannel(it->first);
+      }
     }
   }
 }
