@@ -38,6 +38,7 @@ public:
   void setPingTime(const std::time_t &time);
   void incrementJoinedChannelCount();
   void decrementJoinedChannelCount();
+  void incrementPassTryCount();
 
   // getter
   const std::string &getNickName() const;
@@ -47,6 +48,7 @@ public:
   int getJoinedChannelCount() const;
   const std::string &getCurrentChannel() const;
   const std::time_t &getPingTime() const;
+  const std::size_t &getPassTryCount() const;
 
   // mode
   void setMode(unsigned int mode, bool enable);
@@ -67,6 +69,8 @@ private:
 
   RegisterState _state;
   unsigned int _modeFlags;
+
+  std::size_t _passTryCount;
 };
 
 #endif
