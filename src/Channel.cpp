@@ -6,19 +6,19 @@ Channel::Channel()
     : _channelName(""), _channelCreatedTime(getCurrentUnixTimestamp()),
       _users(), _userStatus(), _topic(""), _topicSetUser(""), _topicSetAt(0),
       _channelModeFlag(Channel::None), _channelKey(""), _userLimit(INT_MAX),
-      _banMasks(), _exceptionMasks(), _invitationMasks() {}
+      _banMasks(), _exceptionMasks(), _invitationMasks(), _delete(false) {}
 
 Channel::Channel(const std::string &channelName)
     : _channelName(channelName), _channelCreatedTime(getCurrentUnixTimestamp()),
       _users(), _userStatus(), _topic(""), _topicSetUser(""), _topicSetAt(0),
       _channelModeFlag(Channel::None), _channelKey(""), _userLimit(INT_MAX),
-      _banMasks(), _exceptionMasks(), _invitationMasks() {}
+      _banMasks(), _exceptionMasks(), _invitationMasks(), _delete(false) {}
 
 Channel::Channel(const std::string &channelName, const std::string &key)
     : _channelName(channelName), _channelCreatedTime(getCurrentUnixTimestamp()),
       _users(), _userStatus(), _topic(""), _topicSetUser(""), _topicSetAt(0),
       _channelModeFlag(Channel::None), _channelKey(key), _userLimit(INT_MAX),
-      _banMasks(), _exceptionMasks(), _invitationMasks() {
+      _banMasks(), _exceptionMasks(), _invitationMasks(), _delete(false) {
   if (!key.empty()) {
     this->_channelModeFlag |= Channel::Key;
   }
@@ -28,13 +28,14 @@ Channel::Channel(const std::string &channelName, const std::string &key)
 Channel::~Channel() {}
 
 // chat
-void Channel::broadcastMessage(const std::string &message, const User &sender) {
+void Channel::broadcastMessage(const std::string &message,
+                               const User &sender) const {
   for (std::set<User *>::const_iterator it = this->_users.begin();
        it != this->_users.end(); it++) {
     if (*it == &sender) {
       continue;
     }
-    Server::sendReply((*it)->getFd(), message);
+    Server::sendReply(sender, (*it)->getFd(), message);
   }
 }
 
@@ -67,6 +68,9 @@ void Channel::removeUser(User &user) {
   this->_users.erase(&user);
   this->_userStatus.erase(&user);
   user.decrementJoinedChannelCount();
+  if (this->userNum() == 0) {
+    this->_delete = true;
+  }
 }
 
 std::size_t Channel::userNum() const { return (this->_users.size()); }
@@ -280,3 +284,5 @@ std::time_t Channel::getCurrentUnixTimestamp() {
   std::time_t now = std::time(NULL);
   return (now);
 }
+
+bool Channel::isDelete() const { return (this->_delete); }

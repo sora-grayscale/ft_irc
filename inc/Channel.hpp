@@ -44,7 +44,7 @@ public:
   };
 
   // chat
-  void broadcastMessage(const std::string &message, const User &sender);
+  void broadcastMessage(const std::string &message, const User &sender) const;
 
   // getter
   const std::string &getChannelName() const;
@@ -107,6 +107,9 @@ public:
   std::set<std::string>::const_iterator getInvitationMaskBegin() const;
   std::set<std::string>::const_iterator getInvitationMaskEnd() const;
 
+  // delete flag
+  bool isDelete() const;
+
 private:
   std::string _channelName;
   std::time_t _channelCreatedTime;
@@ -124,6 +127,8 @@ private:
   std::set<std::string> _banMasks;        // b flag
   std::set<std::string> _exceptionMasks;  // e flag
   std::set<std::string> _invitationMasks; // I flag
+
+  bool _delete;
 
   // setTopic func
   std::time_t getCurrentUnixTimestamp();

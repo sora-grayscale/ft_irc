@@ -43,6 +43,8 @@ void CommandHandler::executeCommand(User &user) {
     NICK(user);
   } else if (this->_command == "OPER") {
     OPER(user);
+  } else if (this->_command == "QUIT") {
+    QUIT(user);
   } else if (this->_command == "JOIN") {
     JOIN(user);
   } else if (this->_command == "PART") {
@@ -59,6 +61,10 @@ void CommandHandler::executeCommand(User &user) {
     INVITE(user);
   } else if (this->_command == "KICK") {
     KICK(user);
+  } else if (this->_command == "PRIVMSG") {
+    PRIVMSG(user);
+  } else if (this->_command == "NOTICE") {
+    NOTICE(user);
   } else if (this->_command == "MOTD") {
     MOTD(user);
   } else if (this->_command == "LUSERS") {
@@ -83,6 +89,12 @@ void CommandHandler::executeCommand(User &user) {
     WHOIS(user);
   } else if (this->_command == "WHOWAS") {
     WHOWAS(user);
+  } else if (this->_command == "KILL") {
+    KILL(user);
+  } else if (this->_command == "PING") {
+    PING(user);
+  } else if (this->_command == "PONG") {
+    PONG(user);
   } else {
     this->_server.sendReply(user.getFd(),
                             Replies::ERR_UNKNOWNCOMMAND(this->_command));

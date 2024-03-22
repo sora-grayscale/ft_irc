@@ -11,27 +11,34 @@ SERVER_SRC =  src/Channel.cpp \
               src/CommandHandler.cpp \
               src/CommandHandler_Admin.cpp \
               src/CommandHandler_Connect.cpp \
+              src/CommandHandler_Error.cpp \
               src/CommandHandler_Info.cpp \
               src/CommandHandler_Invite.cpp \
               src/CommandHandler_Join.cpp \
               src/CommandHandler_Kick.cpp \
+              src/CommandHandler_Kill.cpp \
               src/CommandHandler_Links.cpp \
               src/CommandHandler_List.cpp \
               src/CommandHandler_Lusers.cpp \
               src/CommandHandler_Mode.cpp \
               src/CommandHandler_Names.cpp \
               src/CommandHandler_Nick.cpp \
+              src/CommandHandler_Notice.cpp \
               src/CommandHandler_Oper.cpp \
               src/CommandHandler_Part.cpp \
               src/CommandHandler_Pass.cpp \
+              src/CommandHandler_Ping.cpp \
+              src/CommandHandler_Pong.cpp \
+              src/CommandHandler_Privmsg.cpp \
+              src/CommandHandler_Quit.cpp \
               src/CommandHandler_Time.cpp \
               src/CommandHandler_Topic.cpp \
               src/CommandHandler_Trace.cpp \
               src/CommandHandler_User.cpp \
               src/CommandHandler_Version.cpp \
               src/CommandHandler_Who.cpp \
-              src/CommandHandler_Whowas.cpp \
               src/CommandHandler_Whois.cpp \
+              src/CommandHandler_Whowas.cpp \
               src/CommandHandler_debug.cpp \
               src/CommandHandler_handleCommand.cpp \
               src/CommandHandler_parseMessage.cpp \
@@ -48,19 +55,11 @@ SERVER_OBJ = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SERVER_SRC))
 OBJDIR_DEBUG := obj_debug
 SERVER_OBJ_DEBUG = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR_DEBUG)/%.debug.o,$(SERVER_SRC))
 
-#CLIENT_SRC = $(SRCDIR)/client.cpp
-#CLIENT_OBJ = $(OBJDIR)/client.o
-
 INC := inc
 
 RM := rm -rf
 
 all: $(NAME)
-
-# debug: client
-# # debug: CXXFLAGS += -g -fsanitize=address -fsanitize=leak #-fsanitize=integer
-# debug: all
-# #	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./server 8080 password
 
 run: all
 	@./$(NAME) 6665 password
@@ -106,22 +105,6 @@ $(NAME_DEBUG): $(SERVER_OBJ_DEBUG)
 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS_DEBUG) $(DEPFLAGS)\n"
 	@echo "     $(MGN)--->$(RES) $(GRN)$(NAME_DEBUG)$(RES)"
 	@echo "$(CYN)==============$(RES)"
-
-# server: $(SERVER_OBJ)
-# 	@$(CXX) -o $@ $(SERVER_OBJ)
-# 	@echo "$(CYN)\n=====link server=====$(RES)"
-# 	@echo "$(YEL)Objects$(RES): $(SERVER_OBJ)\n"
-# 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
-# 	@echo "     $(MGN)--->$(RES) $(GRN)server$(RES)"
-# 	@echo "$(CYN)==============$(RES)"
-
-# client: $(CLIENT_OBJ)
-# 	@$(CXX) -o $@ $(CLIENT_OBJ)
-# 	@echo "$(CYN)\n=====link client=====$(RES)"
-# 	@echo "$(YEL)Objects$(RES): $(CLIENT_OBJ)\n"
-# 	@echo "$(YEL)Flags$(RES): $(CXXFLAGS) $(DEPFLAGS)\n"
-# 	@echo "     $(MGN)--->$(RES) $(GRN)client$(RES)"
-# 	@echo "$(CYN)==============$(RES)"
 
 $(OBJDIR):
 	@mkdir -p $@
