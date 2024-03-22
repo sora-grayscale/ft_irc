@@ -29,7 +29,6 @@ void Server::run() {
                 this->delUser(this->_pollFd.at(i).fd);
               }
             } else if (!receivedMessage.empty() && receivedMessage != "\n") {
-              std::cout << receivedMessage << std::endl;
               std::istringstream iss(receivedMessage);
               std::string separetedMessage;
               while (std::getline(iss, separetedMessage)) {
