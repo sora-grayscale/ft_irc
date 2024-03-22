@@ -208,6 +208,9 @@ void Server::delUserChannel(User &user, const std::string &comment) {
     if (it->second.isUserInChannel(user.getNickName())) {
       it->second.broadcastMessage(comment, user);
       it->second.removeUser(user);
+      if (it->second.isDelete()) {
+        this->eraseChannel(it->first);
+      }
     }
   }
 }

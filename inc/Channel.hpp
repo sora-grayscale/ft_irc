@@ -108,7 +108,7 @@ public:
   std::set<std::string>::const_iterator getInvitationMaskEnd() const;
 
   // delete flag
-  bool isDelete()const;
+  bool isDelete() const;
 
 private:
   std::string _channelName;
