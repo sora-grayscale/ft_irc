@@ -4,12 +4,14 @@
 User::User()
     : _nickname(""), _username(""), _realname(""), _currentChannel(""), _fd(0),
       _joinedChannelCount(0), _pingTime(0), _state(User::NONE),
-      _modeFlags(User::None) {}
+      _modeFlags(User::None), _passTryCount(0), _nonPassCommandCount(0),
+      _nonPassNickUserCommandCount(0) {}
 
 User::User(const int fd)
     : _nickname(""), _username(""), _realname(""), _currentChannel(""), _fd(fd),
       _joinedChannelCount(0), _pingTime(0), _state(User::NONE),
-      _modeFlags(User::None) {}
+      _modeFlags(User::None), _passTryCount(0), _nonPassCommandCount(0),
+      _nonPassNickUserCommandCount(0) {}
 
 User &User::operator=(const User &user) {
   if (this != &user) {
@@ -46,6 +48,12 @@ void User::setPingTime(const std::time_t &time) { this->_pingTime = time; }
 void User::incrementJoinedChannelCount() { this->_joinedChannelCount += 1; }
 void User::decrementJoinedChannelCount() { this->_joinedChannelCount -= 1; }
 
+void User::incrementPassTryCount() { this->_passTryCount += 1; }
+void User::incrementNonPassCommandCount() { this->_nonPassCommandCount += 1; }
+void User::incrementNonPassNickUserCommandCount() {
+  this->_nonPassNickUserCommandCount += 1;
+}
+
 // getter
 const std::string &User::getNickName() const { return this->_nickname; }
 const std::string &User::getRealName() const { return this->_realname; }
@@ -56,6 +64,15 @@ const std::string &User::getCurrentChannel() const {
   return this->_currentChannel;
 }
 const std::time_t &User::getPingTime() const { return (this->_pingTime); }
+const std::size_t &User::getPassTryCount() const {
+  return (this->_passTryCount);
+}
+const std::size_t &User::getNonPassCommandCount() const {
+  return (this->_nonPassCommandCount);
+}
+const std::size_t &User::getNonPassNickUserCommandCount() const {
+  return (this->_nonPassNickUserCommandCount);
+}
 
 // mode
 void User::setMode(unsigned int mode, bool enable) {
