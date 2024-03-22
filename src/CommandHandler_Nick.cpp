@@ -116,6 +116,13 @@ void CommandHandler::NICK(User &user) {
     return;
   }
 
+  // success reply
+  std::string successMessage;
+  successMessage = this->_server.createUserPrefix(user);
+  successMessage += "NIKC :";
+  successMessage += this->_params.at(0);
+  successMessage += "\r\n";
+
   // set
   user.setNickName(this->_params.at(0));
   this->_server.setNickHistory(user.getNickName());
@@ -128,6 +135,8 @@ void CommandHandler::NICK(User &user) {
       this->_server.addRegisterMap(user.getFd(), user);
       this->_server.eraseTmpMap(user.getFd());
     }
+  } else {
+    this->_server.sendReply(user.getFd(), successMessage);
   }
   return;
 }
