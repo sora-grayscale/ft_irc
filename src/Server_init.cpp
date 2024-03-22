@@ -77,11 +77,12 @@ void Server::initSocket() {
   }
 
   // non blocking I/O
-  int flags = fcntl(this->_sfd, F_GETFL, 0);
-  if (flags == -1) {
-    throw std::runtime_error(std::strerror(errno));
-  }
-  flags |= O_NONBLOCK;
+  // int flags = fcntl(this->_sfd, F_GETFL, 0);
+  // if (flags == -1) {
+  //   throw std::runtime_error(std::strerror(errno));
+  // }
+  // flags |= O_NONBLOCK;
+  int flags = O_NONBLOCK;
   if (fcntl(this->_sfd, F_SETFL, flags) == -1) {
     throw std::runtime_error(std::strerror(errno));
   }
