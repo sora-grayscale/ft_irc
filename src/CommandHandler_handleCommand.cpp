@@ -13,13 +13,17 @@ void CommandHandler::handleCommand(const std::string &message, const int fd) {
 
 // The `parseMessage` function is implemented in a separate file.
 
-bool CommandHandler::checkRegisterdState(const User &user) {
+bool CommandHandler::checkRegisterdState(User &user) {
   std::string reply;
   if (user.getState() == User::NONE) {
     if (this->_command != "PASS") {
       reply = Replies::ERR_NOTREGISTERED();
       reply += " [You need PASS command first] \r\n";
       this->_server.sendReply(user.getFd(), reply);
+      user.incrementNonPassCommandCount();
+      if ((COMMAND_ATTEMPT_NUM) <= user.getNonPassCommandCount()) {
+        this->_server.delUser(user.getFd());
+      }
       return (false);
     }
   } else if (user.getState() != User::REGISTERD) {
@@ -28,6 +32,10 @@ bool CommandHandler::checkRegisterdState(const User &user) {
       reply = Replies::ERR_NOTREGISTERED();
       reply += " [You can only use PASS, NICK, USER command now!] \r\n";
       this->_server.sendReply(user.getFd(), reply);
+      user.incrementNonPassNickUserCommandCount();
+      if ((COMMAND_ATTEMPT_NUM) <= user.getNonPassNickUserCommandCount()) {
+        this->_server.delUser(user.getFd());
+      }
       return (false);
     }
   }

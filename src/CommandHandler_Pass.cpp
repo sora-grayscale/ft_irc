@@ -15,7 +15,7 @@ void CommandHandler::PASS(User &user) {
     user.setState(User::PASS, false);
     this->_server.sendReply(user.getFd(), Replies::ERR_PASSWDMISMATCH());
     user.incrementPassTryCount();
-    if (3 <= user.getPassTryCount()) {
+    if ((COMMAND_ATTEMPT_NUM) <= user.getPassTryCount()) {
       this->_server.delUser(user.getFd());
     }
     return;

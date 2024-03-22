@@ -13,6 +13,7 @@ class Server;
 #include <vector>
 
 #define USER_CHANNEL_LIMIT 10
+#define COMMAND_ATTEMPT_NUM 3
 
 class CommandHandler {
 public:
@@ -35,7 +36,7 @@ private:
   void extractParam(std::istringstream &iss);
 
   // checkRegisterdState
-  bool checkRegisterdState(const User &user);
+  bool checkRegisterdState(User &user);
 
   // executeCommand
   void executeCommand(User &user);

@@ -39,6 +39,8 @@ public:
   void incrementJoinedChannelCount();
   void decrementJoinedChannelCount();
   void incrementPassTryCount();
+  void incrementNonPassCommandCount();
+  void incrementNonPassNickUserCommandCount();
 
   // getter
   const std::string &getNickName() const;
@@ -49,6 +51,8 @@ public:
   const std::string &getCurrentChannel() const;
   const std::time_t &getPingTime() const;
   const std::size_t &getPassTryCount() const;
+  const std::size_t &getNonPassCommandCount() const;
+  const std::size_t &getNonPassNickUserCommandCount() const;
 
   // mode
   void setMode(unsigned int mode, bool enable);
@@ -71,6 +75,8 @@ private:
   unsigned int _modeFlags;
 
   std::size_t _passTryCount;
+  std::size_t _nonPassCommandCount;
+  std::size_t _nonPassNickUserCommandCount;
 };
 
 #endif
