@@ -1,5 +1,63 @@
 #include "Replies.hpp"
 
+// 001
+const std::string Replies::RPL_WELCOME(const std::string &nick,
+                                       const std::string &user,
+                                       const std::string &host) {
+  std::string message;
+  message += "001 ";
+  message += nick;
+  message += " :Welcome to the Internet Relay Network";
+  message += nick;
+  message += "!";
+  message += user;
+  message += "@";
+  message += host;
+  message += "\r\n";
+  return (message);
+}
+
+// 002
+const std::string Replies::RPL_YOURHOST(const std::string &servername,
+                                        const std::string &ver) {
+  std::string message;
+  message += "002 ";
+  message += "Your host is ";
+  message += servername;
+  message += ", running version ";
+  message += ver;
+  message += "\r\n";
+  return (message);
+}
+
+// 003
+const std::string Replies::RPL_CREATED(const std::string &date) {
+  std::string message;
+  message += "003 ";
+  message += "This server was created ";
+  message += date;
+  message += "\r\n";
+  return (message);
+}
+
+// 004
+const std::string Replies::RPL_MYINFO(const std::string &servername,
+                                      const std::string &version,
+                                      const std::string &availUserMode,
+                                      const std::string &availChannelMode) {
+  std::string message;
+  message += "004 ";
+  message += servername;
+  message += " ";
+  message += version;
+  message += " ";
+  message += availUserMode;
+  message += " ";
+  message += availChannelMode;
+  message += "\r\n";
+  return (message);
+}
+
 // 221
 const std::string Replies::RPL_UMODEIS(const std::string &userModeString) {
   std::string message;
@@ -594,6 +652,17 @@ const std::string Replies::ERR_NOSUCHCHANNEL(const std::string &channelName) {
   return (message);
 }
 
+// 404
+const std::string
+Replies::ERR_CANNOTSENDTOCHAN(const std::string &channelName) {
+  std::string message;
+  message += "404 ";
+  message += channelName;
+  message += " :Cannot send to channel";
+  message += "\r\n";
+  return (message);
+}
+
 // 405
 const std::string Replies::ERR_TOOMANYCHANNELS(const std::string &channelName) {
   std::string message;
@@ -610,6 +679,25 @@ const std::string Replies::ERR_WASNOSUCHNICK(const std::string &nickName) {
   message += "406 ";
   message += nickName;
   message += " :There was no such nickname";
+  message += "\r\n";
+  return (message);
+}
+
+// 411
+const std::string Replies::ERR_NORECIPIENT(const std::string &command) {
+  std::string message;
+  message += "411 ";
+  message += ":No recipient given ";
+  message += command;
+  message += "\r\n";
+  return (message);
+}
+
+// 412
+const std::string Replies::ERR_NOTEXTTOSEND() {
+  std::string message;
+  message += "412 ";
+  message += ":No text to send";
   message += "\r\n";
   return (message);
 }

@@ -42,6 +42,8 @@
 #define ADMIN_MAIL "admin@student.42tokyo.fr"
 #define ANON_NAME "anonymous"
 
+#define PING_TIME 100000
+
 class Server {
 public:
   Server(int argc, const char *argv[]);
@@ -54,6 +56,7 @@ public:
   const std::string &getNickHistory() const;
   const std::string &getPassword() const;
   const std::string &getStartDay() const;
+  std::map<std::string, Channel> &getChannels();
   std::size_t numOfUser() const;
   std::size_t numOfChannel() const;
   std::size_t numOfOpeUser() const;
@@ -62,24 +65,31 @@ public:
   void changeNickname(const std::string &before, const std::string &after);
   void setNickHistory(const std::string &nick);
   void eraseTmpMap(const int fd);
+  void eraseRegiMap(const int fd);
+  void erasePollfd(const int fd);
   void addRegisterMap(const int fd, const User &user);
+  void setPingTime(const std::time_t time);
 
   // Lookup
   User &findUser(const int fd);
   User &findUser(const std::string &nick);
-  bool isHisNick(const std::string &nick);
-  bool isTmpNick(const std::string &nick);
-  bool isRegiNick(const std::string &nick);
-  bool isNick(const std::string &nick);
+  bool isHisNick(const std::string &nick) const;
+  bool isTmpNick(const std::string &nick) const;
+  bool isRegiNick(const std::string &nick) const;
+  bool isNick(const std::string &nick) const;
+  bool isRegiUser(const int &fd) const;
 
   // send
+  static const std::string createUserPrefix(const User &user);
   static void sendReply(const int fd, const std::string &reply);
+  static void sendReply(const User &sender, const int fd,
+                        const std::string &reply);
 
   // user
   int getUserFd(const std::string &nick) const;
 
   // channel
-  bool isExistChannel(const std::string &channelName);
+  bool isExistChannel(const std::string &channelName) const;
   Channel &
   getChannel(const std::string &channelName); // channelがあるかのチェックが必要
   void addChannel(const std::string &channelName);
@@ -88,6 +98,10 @@ public:
   std::map<std::string, Channel>::const_iterator getChannelsEnd() const;
   std::map<int, User>::const_iterator getUserBegin() const;
   std::map<int, User>::const_iterator getUserEnd() const;
+
+  // erase method
+  void delUser(User &user, const std::string &comment);
+  void delUser(const int fd);
 
 private:
   std::string _serverName;
@@ -102,6 +116,7 @@ private:
   std::map<std::string, Channel> _channels;          /// channelname, channel
   std::set<std::string> _nickHistory;
   std::string _startDay;
+  std::time_t _lastPingSent;
 
   // Server init
   void checkServerName(const std::string &serverName) const;
@@ -116,6 +131,15 @@ private:
   int pollSockets();
   void acceptNewSocket();
   std::string readClientCommand(int fd);
+  void checkPing();
+
+  // ping method
+  void sendPing(User &user) const;
+  void checkPong(User &user);
+
+  // delUser method
+  void eraseUserList(User &user);
+  void delUserChannel(User &user, const std::string &comment);
 
   Server();
   Server(const Server &server);

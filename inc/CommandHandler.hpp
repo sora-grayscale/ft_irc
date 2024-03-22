@@ -45,6 +45,7 @@ private:
   void USER(User &user);
   void NICK(User &user);
   void OPER(User &user);
+  void QUIT(User &user);
   void JOIN(User &user);
   void PART(User &user);
   void MODE(User &user);
@@ -62,15 +63,22 @@ private:
   void TRACE(User &user);
   void ADMIN(User &user);
   void INFO(User &user);
+  void PRIVMSG(User &user);
+  void NOTICE(User &user);
+  void KILL(User &user);
   void WHO(User &user);
   void WHOIS(User &user);
   void WHOWAS(User &user);
+  void PING(User &user);
+  void PONG(User &user);
+  void ERROR(User &user);
 
   // nick method
   void convertChar(std::string &str);
   bool isSpecialChar(const char c);
   bool validateNick(const std::string &str);
   bool isReservedNick(const std::string &nick);
+  void replyRegistered(const User &user) const;
 
   // join method
   void splitChannelAndKey(std::vector<std::string> &channels,
@@ -159,6 +167,36 @@ private:
   void displayWhoisQuery(const User &user, const std::string &nick) const;
   void displayOpeUser(const int fd, const std::string &nick) const;
   void displayAllChannel(const int fd, const std::string &nick) const;
+
+  // pong method
+  void sendPong(const User &user) const;
+
+  // error method
+  void sendError(const int fd, const std::string &message) const;
+
+  // privmsg method
+  void createParamToOneString(std::string &message) const;
+  void sendPrivMessageChannel(const User &sender,
+                              const std::string &channelName,
+                              const std::string &message) const;
+  void sendPrivMessageUser(const User &sender, const std::string &nick,
+                           const std::string &message) const;
+  void sendPrivMessage(const User &user, const std::vector<std::string> &sendTo,
+                       const std::string &message) const;
+  const std::string createPrivMessage(const std::string &sendTo,
+                                      const std::string &message) const;
+
+  // notice method
+  void sendNoticeMessageChannel(const User &sender,
+                                const std::string &channelName,
+                                const std::string &message) const;
+  void sendNoticeMessageUser(const User &sender, const std::string &nick,
+                             const std::string &message) const;
+  void sendNoticeMessage(const User &user,
+                         const std::vector<std::string> &sendTo,
+                         const std::string &message) const;
+  const std::string createNoticeMessage(const std::string &sendTo,
+                                        const std::string &message) const;
 
   // debug
   void printStringAsInts(const std::string &input);

@@ -28,13 +28,14 @@ Channel::Channel(const std::string &channelName, const std::string &key)
 Channel::~Channel() {}
 
 // chat
-void Channel::broadcastMessage(const std::string &message, const User &sender) {
+void Channel::broadcastMessage(const std::string &message,
+                               const User &sender) const {
   for (std::set<User *>::const_iterator it = this->_users.begin();
        it != this->_users.end(); it++) {
     if (*it == &sender) {
       continue;
     }
-    Server::sendReply((*it)->getFd(), message);
+    Server::sendReply(sender, (*it)->getFd(), message);
   }
 }
 

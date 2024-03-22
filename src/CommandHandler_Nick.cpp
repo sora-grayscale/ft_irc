@@ -1,4 +1,26 @@
 #include "CommandHandler.hpp"
+#include "Server.hpp"
+
+void CommandHandler::replyRegistered(const User &user) const {
+  const std::string &nick = user.getNickName();
+  const std::string &username = user.getUserName();
+  const std::string &date = this->_server.getStartDay();
+  const std::string host = SERVER_NAME;
+  const std::string ver = SERVER_VERSION;
+  const std::string availUserMode = "aiwroOs";
+  const std::string availChannnelMode = "aimnqpsrtklbeI";
+  const int &fd = user.getFd();
+
+  // RPL_WELCOME
+  this->_server.sendReply(fd, Replies::RPL_WELCOME(nick, username, host));
+  // RPL_YOURHOST
+  this->_server.sendReply(fd, Replies::RPL_YOURHOST(host, ver));
+  // RPL_CREATED
+  this->_server.sendReply(fd, Replies::RPL_CREATED(date));
+  // RPL_MYINFO
+  this->_server.sendReply(
+      fd, Replies::RPL_MYINFO(host, ver, availUserMode, availChannnelMode));
+}
 
 bool CommandHandler::isSpecialChar(const char c) {
   const std::string special = "[]\\`_^{|}";
@@ -102,6 +124,7 @@ void CommandHandler::NICK(User &user) {
   if (user.getState() != User::REGISTERD) {
     user.setState(User::NICK, true);
     if (user.getState() == User::REGISTERD) {
+      replyRegistered(user);
       this->_server.addRegisterMap(user.getFd(), user);
       this->_server.eraseTmpMap(user.getFd());
     }
