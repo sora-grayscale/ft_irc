@@ -44,6 +44,8 @@ void CommandHandler::TOPIC(User &user) {
                                                       channel.getTopicSetUser(),
                                                       channel.getTopicSetAt()));
   }
+  Server::sendReply(user, user.getFd(),
+                    "TOPIC " + channelName + " " + channel.getTopic() + "\r\n");
 }
 
 void CommandHandler::setTopic(const User &user, Channel &channel) const {

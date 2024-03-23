@@ -37,12 +37,14 @@ void Server::run() {
                                              this->_pollFd.at(i).fd);
               }
             }
+
+            std::cout << RED << "recv: " << RES << receivedMessage;
           }
         } else if ((this->_pollFd.at(i).revents & POLLERR) ||
                    (this->_pollFd.at(i).revents & POLLHUP) ||
                    (this->_pollFd.at(i).revents & POLLNVAL)) {
           this->delUser(this->findUser(this->_pollFd.at(i).fd),
-                        "user Killed because of no respons\n\r");
+                        "user Killed because of no respons\r\n");
         }
       }
       checkPing();
@@ -124,6 +126,7 @@ void Server::sendReply(const int fd, const std::string &reply) {
     }
     sent += count;
   }
+  std::cout << GRN << "send: " << RES << reply;
 }
 
 const std::string Server::createUserPrefix(const User &user) {
@@ -161,6 +164,7 @@ void Server::sendReply(const User &sender, const int fd,
     }
     sent += count;
   }
+  std::cout << GRN << "send: " << RES << message;
 }
 
 void Server::checkPing() {
