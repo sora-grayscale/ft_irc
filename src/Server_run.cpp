@@ -167,6 +167,29 @@ void Server::sendReply(const User &sender, const int fd,
   std::cout << GRN << "send: " << RES << message;
 }
 
+void Server::sendReply(const std::string &host, const int fd,
+                       const std::string &reply) {
+  ssize_t sent = 0;
+  std::string message = host + reply;
+
+  ssize_t to_send = message.size();
+
+  while (sent < to_send) {
+    ssize_t count = send(fd, message.c_str() + sent, to_send - sent, 0);
+    if (count < 0) {
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        // ノンブロッキング操作で再試行が必要
+        continue;
+      } else {
+        // その他のエラー
+        throw std::runtime_error(std::strerror(errno));
+      }
+    }
+    sent += count;
+  }
+  std::cout << GRN << "send: " << RES << message;
+}
+
 void Server::checkPing() {
   std::time_t now = std::time(NULL);
   std::time_t diff = now - this->_lastPingSent;
