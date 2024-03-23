@@ -16,7 +16,7 @@ void CommandHandler::INVITE(User &user) {
     return;
   }
   if (this->_server.isExistChannel(channelName)) {
-    const Channel &channel = this->_server.getChannel(channelName);
+    Channel &channel = this->_server.getChannel(channelName);
     if (!channel.isUserInChannel(user)) {
       this->_server.sendReply(user.getFd(),
                               Replies::ERR_NOTONCHANNEL(channelName));
@@ -30,6 +30,7 @@ void CommandHandler::INVITE(User &user) {
         return;
       }
     }
+    channel.addInvitationMask(nickName);
   }
 
   // check ok
