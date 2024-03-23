@@ -22,6 +22,14 @@ void CommandHandler::TOPIC(User &user) {
     return;
   }
 
+  if (channel.hasChannleMode(Channel::TopicOpOnly)) {
+    if (!channel.hasUserStatus(user, Channel::Operator)) {
+      this->_server.sendReply(user.getFd(),
+                              Replies::ERR_CHANOPRIVSNEEDED(channelName));
+      return;
+    }
+  }
+
   if (2 <= this->_params.size()) {
     setTopic(user, const_cast<Channel &>(channel));
   }
