@@ -196,7 +196,7 @@ void CommandHandler::addUserToChannel(
   channel.addUser(user);
   mode |= userStatus;
   mode |= channel.getUserStatus(user);
-  channel.setUserStatus(user, userStatus, true);
+  channel.setUserStatus(user, static_cast<Channel::UserStatusFlags>(mode), true);
 }
 
 void CommandHandler::sendTopicReply(const User &user,
