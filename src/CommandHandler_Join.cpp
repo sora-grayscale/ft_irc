@@ -68,6 +68,9 @@ void CommandHandler::JOIN(User &user) {
     addUserToChannel(user, const_cast<Channel &>(channel),
                      static_cast<Channel::UserStatusFlags>(userStatus));
     user.setCurrentChannel(channelNames.at(i));
+    Server::sendReply(user, user.getFd(),
+                      "JOIN :" + channelNames.at(i) + "\r\n");
+    channel.broadcastMessage("JOIN :" + channelNames.at(i) + "\r\n", user);
     sendJoinResponses(user, channel);
   }
 }
@@ -153,15 +156,18 @@ bool CommandHandler::evaluateChannelJoinCondition(
     const User &user, const Channel &channel) const {
   if (!checkBanStatus(channel, user.getNickName())) {
     this->_server.sendReply(
-        user.getFd(), Replies::ERR_BANNEDFROMCHAN(channel.getChannelName()));
+        user, user.getFd(),
+        Replies::ERR_BANNEDFROMCHAN(channel.getChannelName()));
     return (false);
   } else if (!checkChannelCapacity(channel)) {
     this->_server.sendReply(
-        user.getFd(), Replies::ERR_CHANNELISFULL(channel.getChannelName()));
+        user, user.getFd(),
+        Replies::ERR_CHANNELISFULL(channel.getChannelName()));
     return (false);
   } else if (!checkInviteOnlyStatus(channel, user.getNickName())) {
     this->_server.sendReply(
-        user.getFd(), Replies::ERR_INVITEONLYCHAN(channel.getChannelName()));
+        user, user.getFd(),
+        Replies::ERR_INVITEONLYCHAN(channel.getChannelName()));
     return (false);
   }
   return (true);
@@ -171,19 +177,23 @@ bool CommandHandler::evaluateChannelJoinCondition(
     const User &user, const Channel &channel, const std::string &key) const {
   if (!verifyChannelKey(channel, key)) {
     this->_server.sendReply(
-        user.getFd(), Replies::ERR_BADCHANNELKEY(channel.getChannelName()));
+        user, user.getFd(),
+        Replies::ERR_BADCHANNELKEY(channel.getChannelName()));
     return (false);
   } else if (!checkBanStatus(channel, user.getNickName())) {
     this->_server.sendReply(
-        user.getFd(), Replies::ERR_BANNEDFROMCHAN(channel.getChannelName()));
+        user, user.getFd(),
+        Replies::ERR_BANNEDFROMCHAN(channel.getChannelName()));
     return (false);
   } else if (!checkChannelCapacity(channel)) {
     this->_server.sendReply(
-        user.getFd(), Replies::ERR_CHANNELISFULL(channel.getChannelName()));
+        user, user.getFd(),
+        Replies::ERR_CHANNELISFULL(channel.getChannelName()));
     return (false);
   } else if (!checkInviteOnlyStatus(channel, user.getNickName())) {
     this->_server.sendReply(
-        user.getFd(), Replies::ERR_INVITEONLYCHAN(channel.getChannelName()));
+        user, user.getFd(),
+        Replies::ERR_INVITEONLYCHAN(channel.getChannelName()));
     return (false);
   }
   return (true);
@@ -196,17 +206,18 @@ void CommandHandler::addUserToChannel(
   channel.addUser(user);
   mode |= userStatus;
   mode |= channel.getUserStatus(user);
-  channel.setUserStatus(user, static_cast<Channel::UserStatusFlags>(mode), true);
+  channel.setUserStatus(user, static_cast<Channel::UserStatusFlags>(mode),
+                        true);
 }
 
 void CommandHandler::sendTopicReply(const User &user,
                                     const Channel &channel) const {
   // RPL_TOPIC (332)
   this->_server.sendReply(
-      user.getFd(),
+      user, user.getFd(),
       Replies::RPL_TOPIC(channel.getChannelName(), channel.getTopic()));
   // RPL_TOPICWHOTIME (333)
-  this->_server.sendReply(user.getFd(),
+  this->_server.sendReply(user, user.getFd(),
                           Replies::RPL_TOPICWHOTIME(channel.getChannelName(),
                                                     user.getNickName(),
                                                     channel.getTopicSetAt()));
@@ -217,14 +228,15 @@ void CommandHandler::sendNamReply(const User &user,
   // RPL_NAMREPLY (353)
   for (std::set<User *>::const_iterator it = channel.getUserBegin();
        it != channel.getUserEnd(); it++) {
-    this->_server.sendReply(user.getFd(), Replies::RPL_NAMREPLY(channel, **it));
+    this->_server.sendReply(user, user.getFd(),
+                            Replies::RPL_NAMREPLY(channel, **it));
   }
 }
 
 void CommandHandler::sendEndOfNamesReply(const User &user,
                                          const Channel &channel) const {
   // RPL_ENDOFNAMES (366)
-  this->_server.sendReply(user.getFd(),
+  this->_server.sendReply(user, user.getFd(),
                           Replies::RPL_ENDOFNAMES(channel.getChannelName()));
 }
 
