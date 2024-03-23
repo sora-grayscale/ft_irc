@@ -94,9 +94,9 @@ std::string Server::readClientCommand(int fd) {
   memset(buf, 0, RECEVE_MAX_LEN + 1);
   count = recv(fd, buf, RECEVE_MAX_LEN, 0);
   if (count < 0) {
-    if (errno == EAGAIN || errno == EWOULDBLOCK) {
-      return ("");
-    }
+    // if (errno == EAGAIN || errno == EWOULDBLOCK) {
+    //   return ("");
+    // }
     close(fd);
     this->_tmpUsers.erase(fd);
     throw std::runtime_error(std::strerror(errno));
@@ -116,13 +116,13 @@ void Server::sendReply(const int fd, const std::string &reply) {
   while (sent < to_send) {
     ssize_t count = send(fd, reply.c_str() + sent, to_send - sent, 0);
     if (count < 0) {
-      if (errno == EAGAIN || errno == EWOULDBLOCK) {
-        // ノンブロッキング操作で再試行が必要
-        continue;
-      } else {
+      // if (errno == EAGAIN || errno == EWOULDBLOCK) {
+      //   // ノンブロッキング操作で再試行が必要
+      //   continue;
+      // } else {
         // その他のエラー
         throw std::runtime_error(std::strerror(errno));
-      }
+      // }
     }
     sent += count;
   }
@@ -154,13 +154,13 @@ void Server::sendReply(const User &sender, const int fd,
   while (sent < to_send) {
     ssize_t count = send(fd, message.c_str() + sent, to_send - sent, 0);
     if (count < 0) {
-      if (errno == EAGAIN || errno == EWOULDBLOCK) {
-        // ノンブロッキング操作で再試行が必要
-        continue;
-      } else {
+      // if (errno == EAGAIN || errno == EWOULDBLOCK) {
+      //   // ノンブロッキング操作で再試行が必要
+      //   continue;
+      // } else {
         // その他のエラー
         throw std::runtime_error(std::strerror(errno));
-      }
+      // }
     }
     sent += count;
   }
@@ -177,13 +177,13 @@ void Server::sendReply(const std::string &host, const int fd,
   while (sent < to_send) {
     ssize_t count = send(fd, message.c_str() + sent, to_send - sent, 0);
     if (count < 0) {
-      if (errno == EAGAIN || errno == EWOULDBLOCK) {
-        // ノンブロッキング操作で再試行が必要
-        continue;
-      } else {
+      // if (errno == EAGAIN || errno == EWOULDBLOCK) {
+      //   // ノンブロッキング操作で再試行が必要
+      //   continue;
+      // } else {
         // その他のエラー
         throw std::runtime_error(std::strerror(errno));
-      }
+      // }
     }
     sent += count;
   }
